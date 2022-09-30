@@ -1,0 +1,10 @@
+.check {
+  @include flex-center();
+  justify-content: right;
+  span {
+    @include flex-center();
+    &:nth-child(1){
+      margin-right: 10px;
+    }
+  }
+}

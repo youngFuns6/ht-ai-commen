@@ -1,0 +1,30 @@
+.hidden-btn {
+  background-color: $color-arrow-bgc;
+  position: relative;
+  cursor: pointer;
+}
+
+.arrow-left {
+  border: 5px solid transparent;
+  border-right: 5px solid $color-arrow;
+  @include position-center();
+}
+.arrow-right {
+  border: 5px solid transparent;
+  border-left: 5px solid $color-arrow;
+  @include position-center();
+}
+.arrow-top {
+  border: 5px solid transparent;
+  border-bottom: 5px solid $color-arrow;
+  @include position-center();
+}
+.arrow-bottom {
+  border: 5px solid transparent;
+  border-top: 5px solid $color-arrow;
+  @include position-center();
+}
+
+.active-rotate {
+  transform: rotate(-90deg);
+}

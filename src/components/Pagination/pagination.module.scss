@@ -1,0 +1,12 @@
+.pagination {
+  @include flex-center();
+  user-select: none;
+  .center {
+    width: 60px;
+    margin: 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #3484ee;
+    text-align: center;
+  }
+}

@@ -1,0 +1,24 @@
+.analysis {
+  @include flex-center();
+  height: 100%;
+}
+
+.hiddenLeft {
+  display: none;
+}
+
+.left {
+  margin-right: 16px;
+  height: 100%;
+  width: 300px;
+}
+
+.center {
+  flex: 1;
+  height: 100%;
+  // transition: all .5s ease-in-out;
+}
+
+.right {
+  height: 100%;
+}

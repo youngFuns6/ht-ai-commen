@@ -1,0 +1,52 @@
+.rightBox {
+  width: 300px;
+  height: 789px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $color-border-base;
+  h3 {
+    line-height: 2;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    background-color: #0b3070;
+    margin-bottom: 10px;
+  }
+
+  .wrop {
+    flex: 1;
+    height: 100%;
+    height: 100%;
+    overflow: hidden;
+    
+    .rightBoxImg {
+      width: 83%;
+      margin: 10px auto;
+      display: flex;
+      flex-direction: column;
+      // align-items: center;
+      justify-content: center;
+      border: 1px solid #406ea0;
+
+      .imgWrop {
+        flex: 1;
+        position: relative;
+      }
+
+      .textWrop {
+        margin-top: 5px;
+        font-size: 12px;
+        color: #fff;
+
+        p {
+          line-height: 1.5;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+}

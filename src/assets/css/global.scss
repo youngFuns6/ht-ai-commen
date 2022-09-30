@@ -1,0 +1,87 @@
+@mixin position-center() {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin flex-center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-sb() {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin text-es() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html {
+  overflow: auto !important;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+:global(.ant-input:hover) {
+  background: transparent !important;
+  border-color: #ff4d4f;
+}
+
+:global(.ant-input-affix-wrapper) {
+  background-color: transparent !important;
+  border: 1px solid #00EAFF;
+}
+
+:global(.ant-picker-header-view) {
+  color: #fff;
+}
+
+:global(.ant-picker-header button) {
+  color: #fff !important;
+}
+
+:global(.ant-picker-cell) {
+  color: rgb(92, 89, 89) !important;
+}
+
+:global(.ant-picker-cell-in-view) {
+  color: #fff !important;
+}
+
+:global(.ant-picker) {
+  border-color: #10337E !important;
+}
+
+:global(.ant-picker-suffix) {
+  color: #fff !important;
+}
+
+:global(.ant-select-arrow) {
+  color: #fff !important;
+}
+
+:global(.ant-modal-close:hover) {
+  color: rgb(163, 162, 162) !important;
+}
+
+:global(.ant-picker) {
+  width: 100%;
+}
+
+:global(.ant-pagination-disabled .ant-pagination-item-link) {
+  color: rgb(187, 186, 186) !important;
+}
+
+$color-border: #92FFFF;
+$color-bgc: rgba(21, 39, 53, 0.65);
+$color-arrow: rgba(77, 176, 252, 1);
+$color-border-base: #0686D8;
+$color-arrow-bgc: rgba(21, 39, 53, 1);
+$color-text-desc: rgb(214, 208, 208);
