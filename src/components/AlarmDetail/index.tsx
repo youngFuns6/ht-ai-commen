@@ -13,11 +13,13 @@ import { AlarmImage, Alarm, AlarmHandle } from '@/types/Alarm';
 import { getAlarmLev } from '@/utils/commen';
 import Config from '@/config/network';
 import { State as AuthState } from '@/store/reducer/authSlice';
+import { Record } from '@/types/Record';
 
 interface Props {
   alarmInfo?: Alarm;
   alarmImgArr?: AlarmImage[];
   isShow?: boolean;
+  alarmRecord: Record[];
   onClose?: () => void;
   onSubmit?: (alarmHandle: AlarmHandle) => void;
 }
@@ -27,7 +29,7 @@ import rightBtn from '@/assets/images/btn/tools/right_btn.png';
 import commenBtn from '@/assets/images/btn/tools/commen.png';
 
 export default function TecAlarm(props: Props) {
-  const { alarmInfo, alarmImgArr, isShow, onClose, onSubmit: formSubmit } = props;
+  const { alarmInfo, alarmImgArr, isShow, alarmRecord, onClose, onSubmit: formSubmit } = props;
   const { token } = useSelector((state: AuthState) => state.auth);
   const ulRef = useRef<HTMLUListElement>(null);
   const formListRef = useRef<FormInstance>(null);
@@ -103,7 +105,7 @@ export default function TecAlarm(props: Props) {
           <div className="tec-alarm-wrop">
             <div className='tec-alarm-left'>
               <div className="tec-alarm-lt">
-                <Player />
+                {alarmRecord.length > 0 && <Player flvUrl={`http://${Config.BASE_URL_HOST}${alarmRecord[0].url}?token=${token}` || ''} />}
               </div>
               <div className="tec-alarm-lb">
                 <ToolBtn onClick={() => onScroll('left')} native width='30px' height='80px' src={leftBtn} />
