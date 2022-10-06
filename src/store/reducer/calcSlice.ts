@@ -1,33 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SearchAlarm } from '@/types/Alarm';
 
-interface alarmState {
+interface CalcState {
   searchAlarm: SearchAlarm;
+  chartType: string;
 }
 
 export interface State {
-  alarm: alarmState;
+  calc: CalcState;
 }
 
-export const alarmSlice = createSlice({
-  name: "alarm",
+export const calcSlice = createSlice({
+  name: "calc",
   initialState: {
     searchAlarm: {
       start_time: Date.now() - 60 * 60 * 24 * 1000 * 30,
       stop_time: Date.now(),
-      priority: '全部',
+      region: '全部',
       device: '全部',
+      domain: '全部',
       type: '全部',
+      priority: '全部',
       handled: '全部',
-      page: 1,
-      limit: 8,
     },
+    chartType: 'line',
   },
   reducers: {
-    changeAlarm(state: alarmState, action) {
+    changeCalc(state: CalcState, action) {
       state = Object.assign(state, { ...action.payload});
     },
   }
 });
 
-export const { changeAlarm, } = alarmSlice.actions;
+export const { changeCalc, } = calcSlice.actions;

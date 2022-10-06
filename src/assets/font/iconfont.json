@@ -1,0 +1,23 @@
+{
+  "id": "3682636",
+  "name": "ai-commen",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6537205",
+      "name": "报警",
+      "font_class": "baojing",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "24848376",
+      "name": "车辆管理",
+      "font_class": "cheliangguanli",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    }
+  ]
+}

@@ -8,7 +8,7 @@ import { playerParse } from '@/utils/dataParse';
 import { drawLinesForZones, drawLinesForBoxes } from '@/utils/drawLines';
 import { State } from '@/store/reducer/screenSlice';
 import styles from './alarmInfo.module.scss';
-import { getAlarType } from '@/utils/commen';
+import { getAlarmLev } from '@/utils/commen';
 
 const baseMessage: DevicesInfo = {
   type: MessgeType.REQUEST,
@@ -151,7 +151,7 @@ export default function AlarmInfo() {
               <AntdImage width={'100%'} height="100%" src={item.src} />
             </div>
             <div className={styles.textWrop}>
-              <p>告警类型：{getAlarType(item.alarmGrade)}</p>
+              <p>告警类型：{getAlarmLev(item.alarmGrade)}</p>
               {/* <p>所属摄像机：{chnListByRegion.find((channel: any) => channel.id === item.chnId)?.name}</p> */}
               <p>描述：{item.desc}</p>
             </div>

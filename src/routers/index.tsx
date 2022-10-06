@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { Navigate, useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes, } from 'react-router-dom';
 import { RouteObject } from './types';
 import lazyLoad from "@/routers/utils/lazyLoad";
 

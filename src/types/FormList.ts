@@ -7,6 +7,7 @@ export interface FormListProps {
   wrapperSpan?: number;
   buttonPosition?: any;
   col?: ColProps;
+  initialValues?: {[key: string]: any};
 }
 
 export interface FormListFace {

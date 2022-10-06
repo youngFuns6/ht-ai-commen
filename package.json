@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@ant-design/plots": "^1.2.2",
     "@reduxjs/toolkit": "^1.8.5",
     "animate.css": "^4.1.1",
     "antd": "^4.23.2",

@@ -6,6 +6,7 @@ import { getAlarmImagesById } from '@/api/alarm';
 import { AlarmImage } from '@/types/Alarm';
 import Config from '@/config/network';
 import { State as AuthState } from '@/store/reducer/authSlice';
+import { reactQueryKey } from '@/config/constance';
 
 
 interface Props {
@@ -21,7 +22,7 @@ export default function CardItem(props: Props) {
 
   const { token } = useSelector((state: AuthState) => state.auth);
 
-  const { data }: { data?: AlarmImage[] } = useQuery('get-alarm-images' + id, () => getAlarmImagesById(id));
+  const { data }: { data?: AlarmImage[] } = useQuery(reactQueryKey.getAlarmImages + id, () => getAlarmImagesById(id));
 
   return (
     <div onClick={() => {if(onClick) onClick(data)}} className={styles.cardItem} style={{ width }}>

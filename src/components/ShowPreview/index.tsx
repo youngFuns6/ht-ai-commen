@@ -1,4 +1,5 @@
 import React, { useCallback, useState, } from 'react';
+import { Layout,  } from 'antd';
 import { cloneDeep } from 'lodash';
 import styles from './showPreview.module.scss';
 import ToolBtn from '../base/ToolBtn';
@@ -12,6 +13,8 @@ import HiddenBtn from '../base/HiddenBtn';
 import qpBtn from '@/assets/images/btn/tools/qp.png';
 import gbBtn from '@/assets/images/btn/tools/gb.png';
 import fpBtn from '@/assets/images/btn/tools/fp.png';
+
+const { Content, } = Layout;
 
 const ShowPreview = () => {
 
@@ -39,11 +42,11 @@ const ShowPreview = () => {
   }
 
   return (
-    <div className={styles.showPreview}>
+    <Layout className={styles.showPreview}>
       <div className={styles.btn}><HiddenBtn onChange={() => dispatch(changeScreen({hiddenLeftBar: !hiddenLeftBar}))} width='15px' height='100px' arrow={hiddenLeftBar ? 'right' : 'left'} /></div>
-      <div className={styles.content}>
+      <Content className={styles.content}>
         <LayoutScreen />
-      </div>
+      </Content>
       <div className={styles.tools}>
         <div className={styles.left}>
           <ToolBtn src={qpBtn} onClick={handlerFull} />
@@ -57,8 +60,8 @@ const ShowPreview = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   )
 }
 
-export default ShowPreview;
+export default React.memo(ShowPreview);

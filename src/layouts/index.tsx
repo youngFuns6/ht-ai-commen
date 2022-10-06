@@ -34,7 +34,7 @@ const Layouts = () => {
   const [active, setActive] = useState<string>('');
 
   const onMouseEnter = (key: string) => {
-    if (key !== location.pathname) {
+    if (!location.pathname.match(key)) {
       setActive(key);
     }
   }
@@ -47,7 +47,7 @@ const Layouts = () => {
       <Footer className={styles.footer}>
         <div>
           {optionArr.map(item => (
-            <img onClick={() => navigate(item.key)} onMouseLeave={() => setActive('')} onMouseEnter={() => onMouseEnter(item.key)} key={item.key} src={active === item.key || location.pathname === item.key ? item.activeBtn : item.btn} />
+            <img onClick={() => navigate(item.key)} onMouseLeave={() => setActive('')} onMouseEnter={() => onMouseEnter(item.key)} key={item.key} src={active === item.key || location.pathname.match(item.key) ? item.activeBtn : item.btn} />
           ))}
         </div>
       </Footer>

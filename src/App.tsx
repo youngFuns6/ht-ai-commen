@@ -6,6 +6,7 @@ import AuthRouter from "@/routers/utils/authRouter";
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
+import '@/assets/font/iconfont.css';
 
 const queryClient = new QueryClient();
 

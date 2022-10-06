@@ -13,10 +13,6 @@
       left: -8px;
     }
 
-  .content {
-    flex: 1;
-  }
-
   .tools {
     @include flex-sb();
     margin-top: 20px;
@@ -69,6 +65,7 @@
   .layoutScreen {
     height: 100%;
     display: grid;
+    min-height: 0;
     grid-gap: 20px;
     .screen {
       // border: 1px solid #0154BE;

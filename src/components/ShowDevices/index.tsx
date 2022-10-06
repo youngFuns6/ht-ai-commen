@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState, } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import styles from './ShowDevices.module.scss';
 import VirtualList from 'rc-virtual-list';
 import { List } from 'antd';
@@ -14,7 +14,7 @@ import mergePageList from '@/utils/mergePageList';
 import { State, changeScreen } from '@/store/reducer/screenSlice';
 import PanControl from '@/components/PanControl';
 import HiddenBtn from '../base/HiddenBtn';
-
+import { reactQueryKey } from '@/config/constance';
 
 import previewBar from '@/assets/images/text/preview_bar.png';
 
@@ -24,27 +24,23 @@ interface Props {
 
 const ShowDevices = (props: Props) => {
   const { showPanControl = false } = props;
-  const { selectRegionId, hiddenPreviewList, panControlSelect} = useSelector((state: State) => state.screen);
+  const showDevicesRef = useRef<HTMLDivElement>(null);
+  const { selectRegionId, hiddenPreviewList, panControlSelect } = useSelector((state: State) => state.screen);
   const dispatch = useDispatch();
   const [containerHeight, setContainerHeight] = useState<number>(0);
 
   useLayoutEffect(() => {
-    if (hiddenPreviewList) {
-      if(panControlSelect){
-        setContainerHeight(131);
-      }else {
-        setContainerHeight(282);
-      }
-    }else{
-      setContainerHeight(600);
+    const h = showDevicesRef.current?.offsetHeight;
+    if (h) {
+      setContainerHeight((h - 150) * 0.7);
     }
   }, [panControlSelect, hiddenPreviewList])
 
   // 获取区域信息
-  const { data: regionInfo, isFetched, hasNextPage, fetchNextPage } = useGetCommenList('get-region', getRegion, {});
+  const { data: regionInfo, isFetched, hasNextPage, fetchNextPage } = useGetCommenList(reactQueryKey.getRegion, getRegion, {});
 
   // 根据区域获取通道信息
-  const { data: chnInfo, isFetched: chnIsFetched, fetchNextPage: chnFetchNextPage } = useGetCommenList<SearchDeviceChn>(['get-deviceChn', selectRegionId], getDevicesChn, { region: selectRegionId as number }, isFetched);
+  const { data: chnInfo, isFetched: chnIsFetched, fetchNextPage: chnFetchNextPage } = useGetCommenList<SearchDeviceChn>([reactQueryKey.getDeviceChn, selectRegionId], getDevicesChn, { region: selectRegionId as number }, isFetched);
 
   useEffect(() => {
     if (isFetched && !selectRegionId) {
@@ -88,7 +84,7 @@ const ShowDevices = (props: Props) => {
 
   return (
     <div className={styles.left}>
-      <div className={styles.showDevices}>
+      <div className={styles.showDevices} ref={showDevicesRef}>
         {showPanControl && <div className={styles.hiddenArrow}><HiddenBtn onChange={() => dispatch(changeScreen({ hiddenPreviewList: !hiddenPreviewList }))} width='100px' height='15px' arrow={hiddenPreviewList ? 'bottom' : 'top'} /></div>}
         <TextBar src={previewBar} />
         <div className={styles.selectRegion}>

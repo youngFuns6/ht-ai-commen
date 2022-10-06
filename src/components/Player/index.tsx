@@ -12,7 +12,7 @@ interface Props {
   flvUrl?: string;
 }
 
-export default React.memo(React.forwardRef(function Player(props: Props, ref) {
+export default React.forwardRef(function Player(props: Props, ref) {
   const { channelId, controls = true, width = "100%", height = "100%", autoPlay = false, muted = false, flvUrl = '' } = props;
   const videoRef = useRef<HTMLVideoElement>(null);
   const [flvPlayer, setFlvPlayer] = useState<flvjs.Player | null>(null);
@@ -56,4 +56,4 @@ export default React.memo(React.forwardRef(function Player(props: Props, ref) {
       {(channelId || flvUrl) && <video ref={videoRef} muted={muted} autoPlay={autoPlay} controls={controls} width={width} height={height}></video>}
     </>
   )
-}))
+})

@@ -21,3 +21,11 @@ export const handlerAlarmById = (alarmId: number, handle: AlarmHandle): Promise<
     data: handle
   })
 }
+
+// 自定义获取告警统计
+export const getCustomAlarmCount = (search?: SearchAlarm) => {
+  return request({
+    url: '/alarm/alarm/count/custom',
+    params: search
+  })
+}

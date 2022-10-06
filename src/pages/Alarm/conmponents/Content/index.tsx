@@ -17,6 +17,8 @@ import ToolBtn from '@/components/base/ToolBtn';
 import outputExcel from '@/utils/outputExcel';
 import { getRecord } from '@/api/record';
 import { Record } from '@/types/Record';
+import { reactQueryKey } from '@/config/constance';
+import { fillterQuery } from '@/utils/commen';
 
 interface Props {
   queryChn?: boolean;
@@ -50,9 +52,9 @@ const Content = React.forwardRef((props: Props & PropsWithChildren, ref: any) =>
   })
 
 
-  const { data: alarmInfo, isFetched: alarmIsfetched, hasNextPage: alarmHasNextPage, fetchNextPage: alarmFetchNextPage, refetch: alarmRefetch } = useGetCommenList<SearchAlarm>(['get-alarm', searchAlarm], getAlarm, searchAlarm, queryChn);
+  const { data: alarmInfo, isFetched: alarmIsfetched, hasNextPage: alarmHasNextPage, fetchNextPage: alarmFetchNextPage, refetch: alarmRefetch } = useGetCommenList<SearchAlarm>([reactQueryKey.getAlarm, searchAlarm], getAlarm, {...fillterQuery(searchAlarm, '全部'), limit: 8}, queryChn);
 
-  // 获取详情
+  // 获取详情(包含录像查询)
   const onDetail = async (alarmImage?: AlarmImage[], alarm?: Alarm) => {
     const {items}: any = await getRecord({start_time: alarm?.start_time, stop_time: alarm?.stop_time, device: alarm?.device});
     setCurrentAlarmDetail({ ...currentAlarmDetail, isShow: true, alarmImgArr: alarmImage || [], alarmInfo: alarm, alarmRecord: items });
