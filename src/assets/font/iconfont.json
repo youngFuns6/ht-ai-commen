@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4747957",
+      "name": "检查结果",
+      "font_class": "jianchajieguo",
+      "unicode": "e7c2",
+      "unicode_decimal": 59330
+    },
+    {
+      "icon_id": "4784093",
+      "name": "计划",
+      "font_class": "jihua",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    },
+    {
+      "icon_id": "23392068",
+      "name": "煤矿",
+      "font_class": "meikuang",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
       "icon_id": "6537205",
       "name": "报警",
       "font_class": "baojing",

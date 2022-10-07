@@ -1,0 +1,10 @@
+.plan {
+  @include flex-center();
+  justify-content: left;
+  .plan-left {
+    width: 300px;
+  }
+  .plan-content {
+    flex-grow: 1;
+  }
+}

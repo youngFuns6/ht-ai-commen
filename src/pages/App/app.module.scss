@@ -1,0 +1,12 @@
+.appCom {
+  @include flex-center();
+  justify-content: left;
+
+  .nav {
+    flex-shrink: 0;
+    margin-right: 30px;
+  }
+  .content {
+    flex-grow: 1;
+  }
+}

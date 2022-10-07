@@ -3,7 +3,7 @@ import { Form, Input, Row, Col, } from 'antd';
 import { FormListProps } from '@/types/FormList';
 
 const FormList = React.forwardRef((props: FormListProps, ref) => {
-  const { formList, col, searchForm = true, labelSpan = 4, wrapperSpan = 16, buttonPosition = 'left', initialValues } = props;
+  const { formList, col, searchForm = true, labelSpan = 4, wrapperSpan = 16, buttonPosition = 'left', initialValues, labelOut='horizontal' } = props;
 
   const layout = {
     labelCol: { span: labelSpan },
@@ -56,7 +56,8 @@ const FormList = React.forwardRef((props: FormListProps, ref) => {
 
   return (
     <Form
-    initialValues={initialValues}
+      layout={labelOut}
+      initialValues={initialValues}
       autoComplete='off'
       {...layout}
       form={form}

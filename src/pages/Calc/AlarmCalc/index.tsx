@@ -34,7 +34,7 @@ import { useQuery } from 'react-query';
 export default function AlarmCalc() {
   const formRef = useRef<FormInstance>(null);
   const dispatch = useDispatch();
-  const { searchAlarm, chartType } = useSelector((state: CalcState) => state.calc);
+  const { searchAlarm, chartType, } = useSelector((state: CalcState) => state.calc);
 
   const { data: chnInfo, isFetched: chnIsFetched, hasNextPage: chnHasNexPage, fetchNextPage: chnFetchNextPage } = useGetCommenList([reactQueryKey.getDeviceChn], getDevicesChn, {});
 
@@ -139,7 +139,7 @@ export default function AlarmCalc() {
   ]
 
   return (
-    <div className={styles.carCalc}>
+    <div className={styles.alarmCalc}>
       <div className={styles.left}>
         <h3>报警分析</h3>
         <TextBar src={dataQuery} width='250px' height='20px' />

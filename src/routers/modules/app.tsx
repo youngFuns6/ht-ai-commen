@@ -17,7 +17,36 @@ const appRouter: Array<RouteObject> = [
 					requiresAuth: true,
 					title: "智能应用",
 					key: "app"
-				}
+				},
+				children: [
+					{
+						index: true,
+						element: lazyLoad(React.lazy(() => import('@/pages/App/Plan'))),
+						meta: {
+							requiresAuth: true,
+							title: '巡检计划',
+							key: 'home/app/plan'
+						}
+					},
+					{
+						path: '/home/app/result',
+						element: lazyLoad(React.lazy(() => import('@/pages/App/Result'))),
+						meta: {
+							requiresAuth: true,
+							title: '巡检结果',
+							key: 'home/app/result'
+						}
+					},
+					{
+						path: '/home/app/calcCoal',
+						element: lazyLoad(React.lazy(() => import('@/pages/App/CalcCoal'))),
+						meta: {
+							requiresAuth: true,
+							title: '煤量检测',
+							key: 'home/app/calcCoal'
+						}
+					}
+				]
 			}
 		]
 	}

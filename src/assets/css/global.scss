@@ -75,6 +75,10 @@ html {
   width: 100%;
 }
 
+:global(.ant-empty) {
+  color: #fff !important;
+}
+
 :global(.ant-pagination-disabled .ant-pagination-item-link) {
   color: rgb(187, 186, 186) !important;
 }

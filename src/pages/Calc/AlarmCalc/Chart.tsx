@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line, LineConfig, Column, ColumnConfig } from '@ant-design/plots';
+import { Line, LineConfig, Column, ColumnConfig, Plot, } from '@ant-design/plots';
 
 interface Props {
   data: Array<{
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function Chart(props: Props) {
-  const { data, type='line' } = props;
+  const { data, type='line', } = props;
 
   const lineConfig: LineConfig = {
     data,
@@ -43,13 +43,13 @@ export default function Chart(props: Props) {
         }
       },
     },
-    slider: {
-      start: 0.1,
-      end: 0.5,
-      textStyle: {
-        fill: '#fff'
-      }
-    },
+    // slider: {
+    //   start: sliderRange[0],
+    //   end: sliderRange[1],
+    //   textStyle: {
+    //     fill: '#fff'
+    //   }
+    // },
   };
 
   const columnConfig: ColumnConfig = {
@@ -58,13 +58,13 @@ export default function Chart(props: Props) {
     xField: 'Date',
     yField: 'count',
     maxColumnWidth: 60,
-    slider: {
-      start: 0.1,
-      end: 0.2,
-      textStyle: {
-        fill: '#fff'
-      }
-    },
+    // slider: {
+    //   start: sliderRange[0],
+    //   end: sliderRange[1],
+    //   textStyle: {
+    //     fill: '#fff'
+    //   }
+    // },
   };
 
   return (

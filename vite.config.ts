@@ -34,6 +34,11 @@ export default defineConfig({
           '@text-color': '#fff', // 文字颜色
           '@input-bg': 'transparent', // 输入框背景色
           '@item-hover-bg': 'rgba(15, 60, 53, 0.5)', // select item hover
+          '@table-border-color': 'rgba(15, 60, 53, 0.5)',
+          '@table-bg': '#07375F',
+          '@table-header-bg': '#0D5788',
+          '@table-header-color': '#fff',
+          '@table-header-cell-split-color': '#000',
           '@select-item-selected-bg': 'rgba(15, 60, 53, 0.5)', 
           '@label-color': '#00E3FF', 
           '@picker-basic-cell-disabled-bg': '#fff',

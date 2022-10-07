@@ -104,7 +104,7 @@ export default function Alarm() {
       label: '报警类型',
       name: 'type',
       defNode: (
-        <Select onPopupScroll={(e) => onPopupScroll('algo', e)} options={chnIsFetched ? [{ label: '全部', value: '', key: 'null' }, ...mergePageList<Algo>(algo!.pages).map(item => ({ label: item.alarm_type, value: item.alarm_type_code, key: item.id }))] : []} />
+        <Select onPopupScroll={(e) => onPopupScroll('algo', e)} options={chnIsFetched ? [{ label: '全部', value: '', key: 'null' }, ...mergePageList<Algo>(algo?.pages).map(item => ({ label: item.alarm_type, value: item.alarm_type_code, key: item.id }))] : []} />
       )
     }
   ]
