@@ -98,21 +98,21 @@ export default function AlarmCalc() {
       label: '报警区域',
       name: 'region',
       defNode: (
-        <Select onPopupScroll={(e) => onPopupScroll('region', e)} options={regionIsFetched ? [{ label: '全部', value: '', key: 'null' }, ...mergePageList<Region>(regionInfo!.pages).map(item => ({ label: item.name, value: item.id, key: item.id }))] : []} />
+        <Select onPopupScroll={(e) => onPopupScroll('region', e)} options={regionIsFetched ? [{ label: '全部', value: '', key: 'null' }, ...mergePageList<Region>(regionInfo?.pages).map(item => ({ label: item.name, value: item.id, key: item.id }))] : []} />
       )
     },
     {
       label: '所属通道',
       name: 'device',
       defNode: (
-        <Select onPopupScroll={(e) => onPopupScroll('chn', e)} options={chnIsFetched ? [{ label: '全部', value: '', key: 'null' }, ...mergePageList<DeviceChn>(chnInfo!.pages).map(item => ({ label: item.id, value: item.id, key: item.id }))] : []} />
+        <Select onPopupScroll={(e) => onPopupScroll('chn', e)} options={chnIsFetched ? [{ label: '全部', value: '', key: 'null' }, ...mergePageList<DeviceChn>(chnInfo?.pages).map(item => ({ label: item.id, value: item.id, key: item.id }))] : []} />
       )
     },
     {
       label: '事件类型',
       name: 'domain',
       defNode: (
-        <Select onPopupScroll={(e) => onPopupScroll('algo', e)} options={algoIsFetched ? [{ label: '全部', value: '', key: 'null' }, ...mergePageList<Algo>(algo!.pages).map(item => ({ label: item.event_type, value: item.event_type, key: item.id }))] : []} />
+        <Select onPopupScroll={(e) => onPopupScroll('algo', e)} options={algoIsFetched ? [{ label: '全部', value: '', key: 'null' }, ...mergePageList<Algo>(algo?.pages).map(item => ({ label: item.event_type, value: item.event_type, key: item.id }))] : []} />
       )
     },
     {
@@ -163,7 +163,7 @@ export default function AlarmCalc() {
           </div>
         </div>
         {countAlarmIsfetched && <Col span={24}>
-          <Chart type={chartType} data={(countAlarmInfo as CustomAlarmCount[]).map(item => ({ Date: `${item.year}-${item.month}-${item.day}`, count: item.count }))} />
+          <Chart type={chartType} data={(countAlarmInfo as CustomAlarmCount[])?.map(item => ({ Date: `${item.year}-${item.month}-${item.day}`, count: item.count }))} />
         </Col>}
       </div>
     </div>

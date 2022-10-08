@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function Chart(props: Props) {
-  const { data, type='line', } = props;
+  const { data=[], type='line', } = props;
 
   const lineConfig: LineConfig = {
     data,

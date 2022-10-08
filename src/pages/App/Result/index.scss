@@ -1,0 +1,12 @@
+.result {
+  @include flex-center();
+  justify-content: left;
+  .result-left {
+    width: 200px;
+    margin-top: 30px;
+    margin-right: 20px;
+  }
+  .result-content {
+    flex-grow: 1; 
+  }
+}

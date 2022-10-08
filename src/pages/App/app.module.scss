@@ -1,7 +1,7 @@
 .appCom {
   @include flex-center();
   justify-content: left;
-
+  align-items: flex-start;
   .nav {
     flex-shrink: 0;
     margin-right: 30px;

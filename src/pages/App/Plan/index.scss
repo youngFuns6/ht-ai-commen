@@ -1,8 +1,13 @@
 .plan {
   @include flex-center();
-  justify-content: left;
-  .plan-left {
+  justify-content: right;
+  align-items: flex-start;
+  .plan-right {
     width: 300px;
+    margin-left: 20px;
+    .plan-right-opt {
+      margin-top: 100px;
+    }
   }
   .plan-content {
     flex-grow: 1;

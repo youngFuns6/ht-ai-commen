@@ -14,7 +14,7 @@ export const getAlarmLev = (alarmGrade?: number) => {
 }
 
 // 过滤查询参数
-export const fillterQuery = (obj: { [key: string]: any }, fillter: string) => {
+export const fillterQuery = (obj: { [key: string]: any }, fillter: string = '全部') => {
   let newObj = clone(obj);
   Object.keys(newObj).forEach(item => {
     if(newObj[item] === fillter){

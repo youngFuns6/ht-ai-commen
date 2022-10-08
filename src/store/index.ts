@@ -4,6 +4,7 @@ import { authSlice } from "./reducer/authSlice";
 import { screenSlice } from "./reducer/screenSlice";
 import { alarmSlice } from "./reducer/alarmSlice";
 import { calcSlice } from "./reducer/calcSlice";
+import { appSlice } from "./reducer/appSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     screen: screenSlice.reducer,
     alarm: alarmSlice.reducer,
     calc: calcSlice.reducer,
+    app: appSlice.reducer,
   }
 })
 

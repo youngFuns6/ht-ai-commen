@@ -41,6 +41,10 @@ export default function CarCalc() {
     }
   }
 
+  const onPageChange = () => {
+    
+  }
+
   const formList: FormListFace[] = [
     {
       label: '所属通道',
@@ -71,8 +75,8 @@ export default function CarCalc() {
         <Table bordered dataSource={[]} columns={columns} />
         <div className={styles.calcPage}>
         <Pagination
-        current={18}
-        // onChange={onPageChange}
+        current={1}
+        onChange={onPageChange}
         pageSize={8}
         total={100}
         showQuickJumper

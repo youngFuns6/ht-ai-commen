@@ -82,6 +82,10 @@ html {
 :global(.ant-pagination-disabled .ant-pagination-item-link) {
   color: rgb(187, 186, 186) !important;
 }
+:global(.ant-table-thead > tr > th::before) {
+  width: 2px !important;
+  height: 100% !important;
+}
 
 $color-border: #92FFFF;
 $color-bgc: rgba(21, 39, 53, 0.65);

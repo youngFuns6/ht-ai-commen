@@ -45,12 +45,13 @@ request.interceptors.response.use(
   },
   (error: AxiosError) => {
     Nprogress.done();
-    console.log(error.response)
-    if(error.response?.status === 401 && error.response?.config.method !== 'get'){
+    if(error.response?.status === 401){
       window.location.href = window.location.origin + '/login';
       message.error('登陆已失效，请重新登录');
     }else {
-      message.error((error.response?.data as any)?.message || '未知错误');
+      if(error.response?.config && error.response?.config?.method !== 'get'){
+        message.error((error.response?.data as any)?.message || '未知错误');
+      }
     }
     return Promise.reject(error);
   }

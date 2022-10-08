@@ -34,5 +34,10 @@ export const reactQueryKey = {
   /**
    * 自定义统计告警
    */
-   getCustomAlarmCount: 'get-custom-alarm-count'
+   getCustomAlarmCount: 'get-custom-alarm-count',
+
+   /**
+   * 获取巡检计划
+   */
+    getPatrolPlan: 'get-patrol-plan',
 }
