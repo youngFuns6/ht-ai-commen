@@ -1,5 +1,5 @@
 import request from "@/utils/http";
-import { SearchPatrolPlan, PatrolPlan, PatrolRecord } from "@/types/Coal";
+import { SearchPatrolPlan, PatrolPlan, searchPatrolRecord, SearchCoalCount } from "@/types/Coal";
 
 // 获取巡检计划
 export const getPatrolPlan = (search: SearchPatrolPlan) => {
@@ -36,9 +36,34 @@ export const deletePatrolPlan = (id: number) => {
 } 
 
 // 获取设备巡检结果
-export const getPatrolRecord = (search: PatrolRecord) => {
+export const getPatrolRecord = (search: searchPatrolRecord) => {
   return request({
     url: '/device/patrol/record',
+    params: search
+  })
+}
+
+// 获取巡检人员列表
+export const getPatrolWorkerList = () => {
+  return request({
+    url: '/patrol/worker/worker/list'
+  })
+}
+
+// 煤量统计
+export const getCoalCount = (search: SearchCoalCount) => {
+  return request({
+    url: search.id ? `/stat/coal/:${search.id}` : '/stat/coal',
+    params: {
+      unit: search.unit
+    }
+  })
+}
+
+// 煤量合计
+export const getCoalAll = (search: SearchCoalCount) => {
+  return request({
+    url: '/count/coal',
     params: search
   })
 }

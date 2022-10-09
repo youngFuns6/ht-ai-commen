@@ -26,6 +26,7 @@
     "rc-virtual-list": "^3.4.8",
     "react": "^18.2.0",
     "react-activation": "0.12",
+    "react-countup": "^6.3.1",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.2",
     "react-redux": "^8.0.2",

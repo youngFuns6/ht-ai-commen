@@ -40,4 +40,14 @@ export const reactQueryKey = {
    * 获取巡检计划
    */
     getPatrolPlan: 'get-patrol-plan',
+
+    /**
+   * 获取巡检结果
+   */
+     getPatrolRecord: 'get-patrol-record',
+
+    /**
+   * 获取煤量统计
+   */
+     getCoalCount: 'get-coal-count',
 }

@@ -1,0 +1,14 @@
+.charts {
+  padding: 30px;
+  background: url('@/assets/images/bgc/calc_big.png') no-repeat;
+  background-size: 100% 100%;
+  .charts-header {
+    @include flex-sb();
+    margin-bottom: 50px;
+
+    .charts-header-btn {
+      @include flex-sb();
+      width: 220px;
+    }
+  }
+}

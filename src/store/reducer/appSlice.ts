@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { SearchPatrolPlan, PatrolPlan, SearchPatrolResult } from '@/types/Coal';
+import { SearchPatrolPlan, PatrolPlan, searchPatrolRecord, SearchCoalCount } from '@/types/Coal';
 
 interface planState {
   searchPatrolPlan: SearchPatrolPlan;
   patrolPlan: PatrolPlan;
-  searchPatrolResult: SearchPatrolResult;
+  searchPatrolResult: searchPatrolRecord;
+  searchCoalCount: SearchCoalCount;
+  chartType: string;
 }
 
 export interface State {
@@ -16,7 +18,9 @@ export const appSlice = createSlice({
   initialState: {
     searchPatrolPlan: {
       device: '全部',
-      type: '全部'
+      type: '全部',
+      page: 1,
+      limit: 15
     },
     patrolPlan: {
       type: 'XJ_001',
@@ -28,14 +32,22 @@ export const appSlice = createSlice({
     },
     searchPatrolResult: {
       device: '全部',
-      begin_time: Date.now()
-    }
+      begin_time: Date.now(),
+      page: 1,
+      limit: 15
+    },
+    searchCoalCount: {
+      id: '全部',
+      unit: 2,
+      start_time: Date.now()
+    },
+    chartType: 'line',
   },
   reducers: {
-    changePatrolPlan(state: planState, action) {
+    changeApp(state: planState, action) {
       state = Object.assign(state, { ...action.payload});
     },
   }
 });
 
-export const { changePatrolPlan, } = appSlice.actions;
+export const { changeApp, } = appSlice.actions;

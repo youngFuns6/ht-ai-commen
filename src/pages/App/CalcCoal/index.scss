@@ -1,0 +1,22 @@
+.calc-coal {
+  @include flex-center();
+  justify-content: left;
+  align-items: flex-start;
+  .calc-coal-left {
+    width: 200px;
+    margin-top: 30px;
+    margin-right: 20px;
+  }
+  .calc-coal-content {
+    flex-grow: 1;
+    width: 0;
+    .coal-count-all {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 2fr;
+      .coal-counter {
+        background: url('@/assets/images/bgc/cocal_counter.png') no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+  }
+}

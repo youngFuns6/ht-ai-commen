@@ -7,7 +7,7 @@ import moment from 'moment';
 import TextBar from '@/components/base/TextBar';
 import FormList from '@/components/FormList';
 import ToolBtn from '@/components/base/ToolBtn';
-import Chart from './Chart';
+import Charts from '@/components/Charts';
 import { FormListFace } from '@/types/FormList';
 import { DeviceChn } from '@/types/Device';
 import { Algo } from '@/types/Algo';
@@ -26,8 +26,6 @@ import { fillterQuery } from '@/utils/commen';
 
 import dataQuery from '@/assets/images/text/data_query.png';
 import commenBtn from '@/assets/images/btn/tools/commen.png'
-import chartCircleBtn from '@/assets/images/btn/tools/chart_circle.png'
-import chartLineBtn from '@/assets/images/btn/tools/chart_line.png'
 import calcBar from '@/assets/images/text/calc.png'
 import { useQuery } from 'react-query';
 
@@ -155,16 +153,9 @@ export default function AlarmCalc() {
         </div>
       </div>
       <div className={styles.right}>
-        <div className={styles.rightHeader}>
-          <TextBar src={calcBar} />
-          <div className={styles.btn}>
-            <ToolBtn onClick={() => { dispatch(changeCalc({ chartType: 'line' })) }} src={chartLineBtn} />
-            <ToolBtn onClick={() => { dispatch(changeCalc({ chartType: 'column' })) }} src={chartCircleBtn} />
-          </div>
-        </div>
-        {countAlarmIsfetched && <Col span={24}>
-          <Chart type={chartType} data={(countAlarmInfo as CustomAlarmCount[])?.map(item => ({ Date: `${item.year}-${item.month}-${item.day}`, count: item.count }))} />
-        </Col>}
+        <Col span={24}>
+          <Charts onClick={(type) => {dispatch(changeCalc({chartType: type}))}} textBarSrc={calcBar} xField='Date' yField='count' type={chartType} data={(countAlarmInfo as CustomAlarmCount[])?.map(item => ({ Date: `${item.year}-${item.month}-${item.day}`, count: item.count }))} />
+        </Col>
       </div>
     </div>
   )

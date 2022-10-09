@@ -27,14 +27,17 @@ export default function AppCom() {
 
   const nav = [
     {
+      title: '巡检计划',
       path: '/home/app',
       node: <i className='iconfont icon-jihua' style={{ fontSize: '25px', color: location.pathname === '/home/app' ? 'skyblue' : '#eee' }}></i>
     },
     {
+      title: '巡检结果',
       path: '/home/app/result',
       node: <i className='iconfont icon-jianchajieguo' style={{ fontSize: '25px', color: location.pathname === '/home/app/result' ? 'skyblue' : '#eee' }}></i>
     },
     {
+      title: '煤量检测',
       path: '/home/app/calcCoal',
       node: <i className='iconfont icon-meikuang' style={{ fontSize: '25px', color: location.pathname === '/home/app/calcCoal' ? 'skyblue' : '#eee' }}></i>
     }
@@ -45,7 +48,7 @@ export default function AppCom() {
       <div className={styles.nav}>
       {
         nav.map(item => (
-          <ChildrenNav path={item.path} children={item.node} key={item.path} />
+          <ChildrenNav title={item.title} path={item.path} children={item.node} key={item.path} />
         ))
       }
       </div>

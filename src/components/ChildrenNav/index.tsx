@@ -8,12 +8,13 @@ import { clone } from 'lodash';
 
 interface Props {
   path: string;
+  title?: string;
   children: React.ReactNode;
 }
 
 export default function ChildrenNav(props: Props) {
 
-  const { path, children } = props;
+  const { path, title, children } = props;
   const dispatch = useDispatch();
   const { menu } = useSelector((state: State) => state.menu);
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function ChildrenNav(props: Props) {
   }
 
   return (
-    <div onClick={toggleNav} className='children-nav'>
+    <div title={title} onClick={toggleNav} className='children-nav'>
       {children}
     </div>
   )

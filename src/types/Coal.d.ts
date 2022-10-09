@@ -1,11 +1,11 @@
 import { CommenSearch } from './Commen';
 
-export interface SearchPatrolPlan {
+export interface SearchPatrolPlan extends CommenSearch {
   device?: string;
   type?: string;
 }
 
-export interface SearchPatrolResult {
+export interface searchPatrolRecord extends CommenSearch {
   device?: string;
   begin_time?: number;
 }
@@ -18,14 +18,6 @@ export interface PatrolPlan {
   worker: string;
   type: string;
   name: string;
-}
-
-export interface PatrolRecord extends CommenSearch {
-  start_time?: number;
-  stop_time?: number;
-  device?: string;
-  worker?: string;
-  type?: string;
 }
 
 export interface PatrolRecord {
@@ -48,4 +40,12 @@ export interface PatrolRecord {
   device_name: string;
   device_ip: string;
   type: string;
+}
+
+export interface SearchCoalCount {
+  id?: string;
+  device?: string;
+  unit?: number;
+  start_time?: number;
+  stop_time?: number;
 }

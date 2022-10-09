@@ -26,6 +26,7 @@ specifiers:
   rc-virtual-list: ^3.4.8
   react: ^18.2.0
   react-activation: '0.12'
+  react-countup: ^6.3.1
   react-dom: ^18.2.0
   react-query: ^3.39.2
   react-redux: ^8.0.2
@@ -54,6 +55,7 @@ dependencies:
   rc-virtual-list: 3.4.8_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-activation: 0.12.0_sh5qlbywuemxd2y3xkrw2y2kr4
+  react-countup: 6.3.1_react@18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-query: 3.39.2_biqbaboplfbrettd7655fr4n2y
   react-redux: 8.0.2_6hrpdt74nuubt2lijsfizev3cu
@@ -1093,6 +1095,10 @@ packages:
     resolution: {integrity: sha512-Vme1Z6RUDzrb6xAI7EZlVZ5uvOk2F//GaxKUxajDqm9LhOVM1inxNAD2vy+UZDYsd0uyA9s7b3/FVZPSxqrCfg==}
     dependencies:
       toggle-selection: 1.0.6
+    dev: false
+
+  /countup.js/2.3.2:
+    resolution: {integrity: sha512-dQ7F/CmKGjaO6cDfhtEXwsKVlXIpJ89dFs8PvkaZH9jBVJ2Z8GU4iwG/qP7MgY8qwr+1skbwR6qecWWQLUzB8Q==}
     dev: false
 
   /crc-32/1.2.2:
@@ -2776,6 +2782,15 @@ packages:
     peerDependencies:
       react: '>=16.0.0'
     dependencies:
+      react: 18.2.0
+    dev: false
+
+  /react-countup/6.3.1_react@18.2.0:
+    resolution: {integrity: sha512-+Bf1caAZHtmVQ5Jmhe2MZuN1cw1CEP5OdeMph9CBwM5K8DEDGmg00AzcN6fO9XolUhqUfiR0pOEiSyngSrHwig==}
+    peerDependencies:
+      react: '>= 16.3.0'
+    dependencies:
+      countup.js: 2.3.2
       react: 18.2.0
     dev: false
 

@@ -1,15 +1,17 @@
 import React from 'react';
 import { useOutletContext } from 'react-router-dom';
 import './index.scss';
-import { Select, DatePicker, Table } from 'antd';
+import { Select, DatePicker, Table, Pagination } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import useGetCommenList from '@/hooks/useGetCommenList';
 import FormList from '@/components/FormList';
-import { getPatrolRecord } from '@/api/coal';
 import ToolBtn from '@/components/base/ToolBtn';
+import { getPatrolRecord } from '@/api/coal';
+import { reactQueryKey } from '@/config/constance';
 import { FormListFace } from '@/types/FormList';
 import { DeviceChn } from '@/types/Device';
-import { State as AppState, changePatrolPlan } from '@/store/reducer/appSlice';
+import { State as AppState, changeApp } from '@/store/reducer/appSlice';
+import { fillterQuery } from '@/utils/commen';
 
 import commenBtn from '@/assets/images/btn/tools/query_btn.png';
 import moment from 'moment';
@@ -51,6 +53,14 @@ export default function Result() {
   const { deviceChnArr, onChnScroll } = useOutletContext<{ deviceChnArr: DeviceChn[]; onChnScroll: Function }>();
 
   const { searchPatrolResult } = useSelector((state: AppState) => state.app);
+  const dispatch = useDispatch();
+
+  const { data: patrolRecordInfo, isFetched: patrolRecordIsFetched, hasNextPage: patrolRecordHasNexPage, fetchNextPage: patrolRecordFetchNextPage } = useGetCommenList([reactQueryKey.getPatrolRecord, searchPatrolResult], getPatrolRecord, { ...fillterQuery(searchPatrolResult, '全部') });
+
+  // 分页
+  const onPageChange = (page: number, pageSize: number) => {
+    dispatch(changeApp({ searchPatrolPlan: { page, limit: pageSize } }));
+  }
 
   const formList: FormListFace[] = [
     {
@@ -72,11 +82,21 @@ export default function Result() {
   return (
     <div className='result'>
       <div className="result-left">
-        <FormList initialValues={{...searchPatrolResult, begin_time: moment(searchPatrolResult.begin_time)}} col={{ span: 24 }} labelSpan={24} wrapperSpan={24} labelOut='vertical' formList={formList} />
+        <FormList initialValues={{ ...searchPatrolResult, begin_time: moment(searchPatrolResult.begin_time) }} col={{ span: 24 }} labelSpan={24} wrapperSpan={24} labelOut='vertical' formList={formList} />
         <ToolBtn native src={commenBtn} />
       </div>
       <div className="result-content">
-        <Table columns={columns} />
+        <Table rowKey='id' dataSource={patrolRecordInfo?.pages[patrolRecordInfo.pages.length - 1].items} columns={columns} />
+        <div className='result-page'>
+          <Pagination
+            current={searchPatrolResult.page}
+            onChange={onPageChange}
+            pageSize={15}
+            total={patrolRecordInfo?.pages[0].total}
+            showQuickJumper
+            showTotal={total => `共 ${total} 条数据`}
+          />
+        </div>
       </div>
     </div>
   )

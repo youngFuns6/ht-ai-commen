@@ -8,7 +8,8 @@ export interface FormListProps {
   buttonPosition?: any;
   col?: ColProps;
   initialValues?: {[key: string]: any};
-  labelOut?: 'horizontal' | 'vertical' | 'inline'
+  labelOut?: 'horizontal' | 'vertical' | 'inline';
+  onValuesChange?: (changedValues: any, allValues: any) => void;
 }
 
 export interface FormListFace {
