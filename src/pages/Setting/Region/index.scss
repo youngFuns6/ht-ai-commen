@@ -1,0 +1,17 @@
+.set-region {
+  @include flex-center();
+  align-items: flex-start;
+  .set-region-left {
+    flex-grow: 1;
+  }
+  .set-region-right {
+    width: 300px;
+    margin-left: 20px;
+    margin-top: 20px;
+    padding-right: 10px;
+    .set-region-right-btn {
+      @include flex-sb();
+      margin-top: 30px;
+    }
+  }
+}

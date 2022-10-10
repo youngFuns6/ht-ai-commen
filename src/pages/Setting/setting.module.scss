@@ -1,0 +1,31 @@
+.menuItem {
+
+}
+
+:global(.ant-form-item) {
+  margin-bottom: 10px !important;
+}
+
+.setting {
+  height: 100%; 
+  @include flex-center();
+  justify-content: left;
+  .left {
+    @include flex-center();
+    flex-direction: column;
+    justify-content: left;
+    width: 220px;
+    height: 100%;
+    margin-right: 20px;
+    padding: 20px 50px;
+    background: url('@/assets/images/bgc/menu_nav.png') no-repeat;
+    background-size: 100% 100%;
+  }
+  .content {
+    flex-grow: 1;
+    height: 100%;
+    padding: 10px;
+    background: url('@/assets/images/bgc/commen_big.png') no-repeat;
+    background-size: 100% 100%;
+  }
+}

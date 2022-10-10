@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import './index.scss';
 import { Select, Radio, Space, DatePicker, Col, Row } from 'antd';
@@ -13,7 +13,7 @@ import FormList from '@/components/FormList';
 import ToolBtn from '@/components/base/ToolBtn';
 import Charts from '@/components/Charts';
 import { State as AppState, changeApp } from '@/store/reducer/appSlice';
-import { getCoalCount } from '@/api/coal';
+import { getCoalCount, getCoalSection } from '@/api/coal';
 import { FormListFace } from '@/types/FormList';
 import { DeviceChn } from '@/types/Device';
 import { fillterQuery } from '@/utils/commen';
@@ -25,11 +25,17 @@ const CalcCoal = () => {
 
   const { deviceChnArr, onChnScroll } = useOutletContext<{ deviceChnArr: DeviceChn[]; onChnScroll: Function }>();
 
-  const { searchCoalCount } = useSelector((state: AppState) => state.app);
+  const coalCountRef = useRef<FormInstance>(null);
+  const cocalSectionRef = useRef<FormInstance>(null);
+
+  const { searchCoalCount, searchSectionCount } = useSelector((state: AppState) => state.app);
   const dispatch = useDispatch();
 
   // 获取煤量统计
   const { data: countCoalInfo, isFetched: countCoalIsfetched, }: any = useQuery([reactQueryKey.getCoalCount, searchCoalCount], () => getCoalCount(fillterQuery(searchCoalCount, '全部')));
+
+  // 获取煤量合计区间
+  const { data: cocalSectionInfo, isFetched: cocalSectionIsfetched, }: any = useQuery([reactQueryKey.getCoalSection, searchSectionCount], () => getCoalSection(fillterQuery(searchSectionCount, '全部')));
 
   const onTimeTyChange = (e: RadioChangeEvent) => {
 
@@ -83,11 +89,35 @@ const CalcCoal = () => {
     },
   ]
 
+  const sectionFormList: FormListFace[] = [
+    {
+      label: '开始时间',
+      name: 'start_time',
+      defNode: (
+        <DatePicker showTime />
+      )
+    },
+    {
+      label: '结束时间',
+      name: 'stop_time',
+      defNode: (
+        <DatePicker showTime />
+      )
+    },
+    {
+      label: '所属通道',
+      name: 'device',
+      defNode: (
+        <Select onPopupScroll={(e) => onChnScroll('chn', e)} options={deviceChnArr.map(item => ({ label: item.id, value: item.id, key: item.id }))} />
+      )
+    },
+  ]
+
   return (
     <div className='calc-coal'>
       <div className="calc-coal-left">
-        <FormList onValuesChange={onCountChange} initialValues={{ ...searchCoalCount, start_time: moment(searchCoalCount.start_time) }} labelOut='horizontal' labelSpan={24} wrapperSpan={24} col={{ span: 24 }} formList={countFormList} />
-        <ToolBtn native src={commenBtn} />
+        <FormList ref={coalCountRef} onValuesChange={onCountChange} initialValues={{ ...searchCoalCount, start_time: moment(searchCoalCount.start_time) }} labelOut='horizontal' labelSpan={24} wrapperSpan={24} col={{ span: 24 }} formList={countFormList} />
+        <ToolBtn onClick={() => { dispatch(changeApp({ searchCoalCount: {...coalCountRef.current?.getFieldsValue(), start_time: coalCountRef.current?.getFieldValue('start_time').valueOf(), stop_time: coalCountRef.current?.getFieldValue('stop_time').valueOf()} })) }} native src={commenBtn} />
       </div>
       <div className="calc-coal-content">
         <Row>
@@ -95,24 +125,31 @@ const CalcCoal = () => {
             <Charts data={countCoalInfo} xField='' yField='' textBarSrc={cocalCount} onClick={(type) => { dispatch(changeApp({ chartType: type })) }} />
           </Col>
         </Row>
-        <Row>
-          <Col span={24}>
-            <div className="coal-count-all">
-              <div className="coal-counter">
-                <CountUp end={1000}></CountUp>
+        <div className="cocal-count-all">
+          <div className="cocal-counter">
+            <i><CountUp end={1000}></CountUp></i>
+            <span>当日煤量</span>
+          </div>
+          <div className="cocal-counter">
+            <i><CountUp end={1000}></CountUp></i>
+            <span>当月煤量</span>
+          </div>
+          <div className="cocal-counter">
+            <i><CountUp end={1000}></CountUp></i>
+            <span>当年煤量</span>
+          </div>
+          <div className="cocal-count-section">
+            <h3>区间统计<i>查询结果：{cocalSectionInfo && cocalSectionInfo.volume}</i></h3>
+            <div className='cocal-count-section-form'>
+              <div className='cocal-count-section-formlist'>
+                <FormList ref={cocalSectionRef} initialValues={{ ...searchSectionCount, start_time: moment(searchSectionCount.start_time), stop_time: moment(searchSectionCount.stop_time) }} labelSpan={7} wrapperSpan={17} col={{ span: 24 }} formList={sectionFormList} />
               </div>
-              <div className="coal-counter">
-                <CountUp end={1000}></CountUp>
-              </div>
-              <div className="coal-counter">
-                <CountUp end={1000}></CountUp>
-              </div>
-              <div className="coal-count-all-search">
-                <CountUp end={1000}></CountUp>
+              <div>
+                <ToolBtn onClick={() => { dispatch(changeApp({ searchSectionCount: {...cocalSectionRef.current?.getFieldsValue(), start_time: cocalSectionRef.current?.getFieldValue('start_time').valueOf(), stop_time: cocalSectionRef.current?.getFieldValue('stop_time').valueOf()} })) }} width='100px' native src={commenBtn} />
               </div>
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </div>
     </div>
   )

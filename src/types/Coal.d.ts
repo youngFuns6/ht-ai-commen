@@ -49,3 +49,9 @@ export interface SearchCoalCount {
   start_time?: number;
   stop_time?: number;
 }
+
+export interface SearchSectionCount {
+  start_time: number;
+  stop_time: number;
+  device?: string;
+}

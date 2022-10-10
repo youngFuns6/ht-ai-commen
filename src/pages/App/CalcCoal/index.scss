@@ -14,13 +14,54 @@
     flex-direction: column;
     width: 0;
     height: 100%;
-    .coal-count-all {
+    .cocal-count-all {
       flex-grow: 1;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr 2fr;
-      .coal-counter {
+      height: 0;
+      grid-gap: 20px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+      padding: 10px 30px;
+      .cocal-counter {
         background: url('@/assets/images/bgc/cocal_counter.png') no-repeat;
         background-size: 100% 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        i {
+          font-size: 26px;
+          font-weight: 700;
+          margin-bottom: 15px;
+        }
+        span {
+          margin-top: 15px;
+          color: $color-text-base;
+        }
+      }
+      .cocal-count-section {
+        background: url('@/assets/images/bgc/cocal_counter.png') no-repeat;
+        background-size: 100% 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 20px 0 20px;
+        h3 {
+          margin-bottom: 10px;
+          color: $color-text-base;
+          i {
+            color: $color-text-base;
+            margin-left: 20px;
+          }
+        }
+        .cocal-count-section-form {
+          @include flex-center();
+          justify-content: left;
+          .cocal-count-section-formlist {
+            width: 70%;
+            margin-right: 20px;
+          }
+        }
       }
     }
   }

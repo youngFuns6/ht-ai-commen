@@ -50,4 +50,9 @@ export const reactQueryKey = {
    * 获取煤量统计
    */
      getCoalCount: 'get-coal-count',
+
+    /**
+   * 获取煤量区间合计
+   */
+     getCoalSection: 'get-coal-section',
 }

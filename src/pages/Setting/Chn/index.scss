@@ -1,0 +1,15 @@
+.set-chn {
+  @include flex-center();
+  align-items: flex-start;
+  .set-chn-left {
+    flex-grow: 1;
+  }
+  .set-chn-right {
+    width: 300px;
+    margin-left: 20px;
+    padding-right: 10px;
+    .set-chn-right-btn {
+      @include flex-sb();
+    }
+  }
+}

@@ -61,7 +61,7 @@ export const getCoalCount = (search: SearchCoalCount) => {
 }
 
 // 煤量合计
-export const getCoalAll = (search: SearchCoalCount) => {
+export const getCoalSection = (search: SearchCoalCount) => {
   return request({
     url: '/count/coal',
     params: search

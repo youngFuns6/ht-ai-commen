@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { SearchPatrolPlan, PatrolPlan, searchPatrolRecord, SearchCoalCount } from '@/types/Coal';
+import { SearchPatrolPlan, PatrolPlan, searchPatrolRecord, SearchCoalCount, SearchSectionCount } from '@/types/Coal';
 
 interface planState {
   searchPatrolPlan: SearchPatrolPlan;
@@ -7,6 +7,7 @@ interface planState {
   searchPatrolResult: searchPatrolRecord;
   searchCoalCount: SearchCoalCount;
   chartType: string;
+  searchSectionCount: SearchSectionCount;
 }
 
 export interface State {
@@ -42,6 +43,11 @@ export const appSlice = createSlice({
       start_time: Date.now()
     },
     chartType: 'line',
+    searchSectionCount: {
+      start_time: Date.now() - 60 * 60 * 24 * 1000,
+      stop_time: Date.now(),
+      device: '全部'
+    }
   },
   reducers: {
     changeApp(state: planState, action) {
