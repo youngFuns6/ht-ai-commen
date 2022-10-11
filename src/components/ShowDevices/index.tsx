@@ -49,7 +49,7 @@ const ShowDevices = (props: Props) => {
     if (chnIsFetched) {
       // 创建至少为显示最大数的数组存储通道列表
       const arr = Array.from({ length: 16 });
-      arr.splice(0, 16, ...mergePageList<DeviceChn>(chnInfo!.pages));
+      arr.splice(0, 16, ...mergePageList<DeviceChn>(chnInfo?.pages));
       dispatch(changeScreen({ chnListByRegion: arr || [], }));
     }
   }, [isFetched, chnInfo])

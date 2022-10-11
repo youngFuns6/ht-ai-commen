@@ -26,8 +26,8 @@ export const appSlice = createSlice({
     patrolPlan: {
       type: 'XJ_001',
       name: '',
-      begin_time: 0,
-      duration: 0,
+      begin_time: null,
+      duration: null,
       device: '',
       worker: ''
     },

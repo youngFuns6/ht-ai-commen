@@ -13,8 +13,8 @@ export interface searchPatrolRecord extends CommenSearch {
 export interface PatrolPlan {
   id?: number;
   device?: string;
-  begin_time: number;
-  duration: number;
+  begin_time: number | null;
+  duration: number | null;
   worker: string;
   type: string;
   name: string;
@@ -54,4 +54,13 @@ export interface SearchSectionCount {
   start_time: number;
   stop_time: number;
   device?: string;
+}
+
+export interface Worker {
+  id: string;
+  name: string;
+  unit: string;
+  phone: string;
+  face: string;
+  filepath: string;
 }

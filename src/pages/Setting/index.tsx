@@ -20,27 +20,27 @@ const MenuItem = () => {
 const nav = [
   {
     path: '/home/setting',
-    node: <ToolBtn width='100%' src={chnBtn} />
+    node: <ToolBtn showActive path='/home/setting' width='100%' src={chnBtn} />
   },
   {
     path: '/home/setting/region',
-    node: <ToolBtn width='100%' src={regionBtn} />
+    node: <ToolBtn showActive path='/home/setting/region' width='100%' src={regionBtn} />
   },
   {
     path: '/home/setting/user',
-    node: <ToolBtn width='100%' src={userBtn} />
+    node: <ToolBtn showActive path='/home/setting/user' width='100%' src={userBtn} />
   },
   {
     path: '/home/setting/sys',
-    node: <ToolBtn width='100%' src={sysBtn} />
+    node: <ToolBtn showActive path='/home/setting/sys' width='100%' src={sysBtn} />
   },
   {
     path: '/home/setting/algo',
-    node: <ToolBtn width='100%' src={algoBtn} />
+    node: <ToolBtn showActive path='/home/setting/algo' width='100%' src={algoBtn} />
   },
   {
-    path: '/home/setting/seriaNet',
-    node: <ToolBtn width='100%' src={transmissionBtn} />
+    path: '/home/setting/',
+    node: <ToolBtn showActive path='/home/setting/seriaNet' width='100%' src={transmissionBtn} />
   }
 ] 
 

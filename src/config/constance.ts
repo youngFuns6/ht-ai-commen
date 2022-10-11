@@ -55,4 +55,9 @@ export const reactQueryKey = {
    * 获取煤量区间合计
    */
      getCoalSection: 'get-coal-section',
+
+    /**
+   * 获取巡检人员
+   */
+     getPatrolWorkerList: 'get-patrol-worker-list',
 }

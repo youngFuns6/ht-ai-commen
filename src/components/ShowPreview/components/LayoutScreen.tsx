@@ -45,7 +45,7 @@ const LayoutScreen = () => {
       case 4:
         setStyle({
           gridTemplateColumns: '1fr 1fr',
-          gridTemplateRows: '1fr minmax(1fr)',
+          gridTemplateRows: '1fr 1fr',
         })
         break;
       case 6:

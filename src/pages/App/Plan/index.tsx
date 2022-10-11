@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import './index.scss';
+import { useQuery, useMutation } from 'react-query';
 import { Col, Select, Table, Radio, DatePicker, Row, Pagination } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,15 +10,16 @@ import { reactQueryKey } from '@/config/constance';
 import FormList from '@/components/FormList';
 import ToolBtn from '@/components/base/ToolBtn';
 import { getRegion } from '@/api/region';
-import { getPatrolPlan, addPatrolPlan, editPatrolPlan, deletePatrolPlan } from '@/api/coal';
+import { getPatrolPlan, addPatrolPlan, editPatrolPlan, deletePatrolPlan, getPatrolWorkerList } from '@/api/coal';
 import { FormListFace } from '@/types/FormList';
 import { DeviceChn } from '@/types/Device';
-import { SearchPatrolPlan } from '@/types/Coal';
+import { SearchPatrolPlan, Worker } from '@/types/Coal';
 import { State as AppState, changeApp } from '@/store/reducer/appSlice';
 import { fillterQuery } from '@/utils/commen';
 import mergePageList from '@/utils/mergePageList';
 
 import queryBtn from '@/assets/images/btn/tools/query_btn.png';
+import moment from 'moment';
 
 const columns = [
   {
@@ -50,13 +52,20 @@ export default function Plan() {
   const { deviceChnArr, onChnScroll } = useOutletContext<{ deviceChnArr: DeviceChn[]; onChnScroll: Function }>();
 
   const searchFormlistRef = useRef<FormInstance>(null);
+  const planOptFormListRef = useRef<FormInstance>(null);
 
   const { searchPatrolPlan, patrolPlan: patrolPlanForm } = useSelector((state: AppState) => state.app);
   const dispatch = useDispatch();
 
   // 获取巡检计划
   const { data: patrolPlanInfo, isFetched: patrolPlanIsFetched, hasNextPage: patrolPlanHasNextPage, fetchNextPage: patrolPlanFetchNextPage, } = useGetCommenList<SearchPatrolPlan>([reactQueryKey.getPatrolPlan, searchPatrolPlan], getPatrolPlan, { ...fillterQuery(searchPatrolPlan, '全部') });
-  
+
+  // 获取巡检人员
+  const { data: patrolWorker, isFetched: patrolWorkerIsFetched, } = useQuery([reactQueryKey.getPatrolWorkerList], getPatrolWorkerList,);
+
+  // 添加计划
+  const mutation = useMutation(() => addPatrolPlan(planOptFormListRef.current?.getFieldsValue()));
+
   // 巡检类型
   const onPlanTypeChange = () => {
 
@@ -65,6 +74,21 @@ export default function Plan() {
   // 分页
   const onPageChange = (page: number, pageSize: number) => {
     dispatch(changeApp({ searchPatrolPlan: { page, limit: pageSize } }));
+  }
+
+  // 计划(增删改)
+  const onOptPlan = (type: string) => {
+    planOptFormListRef.current?.validateFields().then((v) => {
+      switch (type) {
+        case 'add':
+          mutation.mutate();
+          break;
+        case 'edit':
+          break;
+        case 'delete':
+          break;
+      }
+    })
   }
 
   const searchFormList: FormListFace[] = [
@@ -79,7 +103,7 @@ export default function Plan() {
       label: '巡检类型',
       name: 'type',
       defNode: (
-        <Select onPopupScroll={(e) => onChnScroll('device', e)} options={[{ label: '轨迹巡检', value: 0, key: 0 }, { label: '人脸巡检', value: 1, key: 1 }]} />
+        <Select onPopupScroll={(e) => onChnScroll('device', e)} options={[{ label: '轨迹巡检', value: 'XJ_001', key: 0 }, { label: '人脸巡检', value: 'XJ_001', key: 1 }]} />
       )
     },
   ]
@@ -88,7 +112,6 @@ export default function Plan() {
     {
       label: '巡检类型',
       name: 'type',
-      checked: true,
       defNode: (
         <Radio.Group onChange={onPlanTypeChange}>
           <Radio value={'XJ_001'}>轨迹巡检</Radio>
@@ -99,17 +122,20 @@ export default function Plan() {
     {
       label: '计划名称',
       name: 'name',
+      rules: [{ required: true, message: '必填' }]
     },
     {
       label: '计划巡检开始时间',
       name: 'begin_time',
+      rules: [{ required: true, message: '必填' }],
       defNode: (
         <DatePicker picker='time' />
       )
     },
     {
       label: '计划巡检结束时间',
-      name: 'region',
+      name: 'duration',
+      rules: [{ required: true, message: '必填' }],
       defNode: (
         <DatePicker picker='time' />
       )
@@ -117,6 +143,7 @@ export default function Plan() {
     {
       label: '巡检设备',
       name: 'device',
+      rules: [{ required: true, message: '必填' }],
       defNode: (
         <Select onPopupScroll={(e) => onChnScroll('chn', e)} options={deviceChnArr.map(item => ({ label: item.id, value: item.name, key: item.id }))} />
       )
@@ -124,8 +151,9 @@ export default function Plan() {
     {
       label: '巡检人',
       name: 'worker',
+      rules: [{ required: true, message: '必填' }],
       defNode: (
-        <Select onPopupScroll={(e) => onChnScroll('region', e)} options={deviceChnArr.map(item => ({ label: item.id, value: item.id, key: item.id }))} />
+        <Select options={(patrolWorker as any)?.map((item: Worker) => ({ label: item.name, value: item.id, key: item.id })) || []} />
       )
     },
   ]
@@ -153,16 +181,16 @@ export default function Plan() {
           </Col>
         </div>
         <div className='plan-right-opt'>
-          <FormList initialValues={patrolPlanForm} col={{ span: 24 }} labelSpan={6} wrapperSpan={18} formList={optFormList} />
+          <FormList onValuesChange={(changeValues) => dispatch(changeApp({ patrolPlan: { ...patrolPlanForm, ...fillterQuery(changeValues) } }))} ref={planOptFormListRef} initialValues={{ ...patrolPlanForm, begin_time: patrolPlanForm.begin_time && moment(patrolPlanForm.begin_time), duration: patrolPlanForm.begin_time && moment(patrolPlanForm.duration) }} col={{ span: 24 }} labelSpan={7} wrapperSpan={17} formList={optFormList} />
           <Row gutter={20}>
             <Col span={8}>
-              <ToolBtn src={queryBtn} native content='增加' />
+              <ToolBtn onClick={() => onOptPlan('add')} src={queryBtn} native content='增加' />
             </Col>
             <Col span={8}>
-              <ToolBtn src={queryBtn} native content='修改' />
+              <ToolBtn onClick={() => onOptPlan('edit')} src={queryBtn} native content='修改' />
             </Col>
             <Col span={8}>
-              <ToolBtn src={queryBtn} native content='删除' />
+              <ToolBtn onClick={() => onOptPlan('delete')} src={queryBtn} native content='删除' />
             </Col>
           </Row>
         </div>

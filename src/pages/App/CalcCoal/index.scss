@@ -20,6 +20,7 @@
       height: 0;
       grid-gap: 20px;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+      grid-template-rows: minmax(0, 1fr);
       padding: 10px 30px;
       .cocal-counter {
         background: url('@/assets/images/bgc/cocal_counter.png') no-repeat;
