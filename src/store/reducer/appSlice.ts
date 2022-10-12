@@ -4,6 +4,7 @@ import { SearchPatrolPlan, PatrolPlan, searchPatrolRecord, SearchCoalCount, Sear
 interface planState {
   searchPatrolPlan: SearchPatrolPlan;
   patrolPlan: PatrolPlan;
+  selectedRowKeys: number[];
   searchPatrolResult: searchPatrolRecord;
   searchCoalCount: SearchCoalCount;
   chartType: string;
@@ -21,7 +22,7 @@ export const appSlice = createSlice({
       device: '全部',
       type: '全部',
       page: 1,
-      limit: 15
+      limit: 12
     },
     patrolPlan: {
       type: 'XJ_001',
@@ -31,11 +32,12 @@ export const appSlice = createSlice({
       device: '',
       worker: ''
     },
+    selectedRowKeys: [],
     searchPatrolResult: {
       device: '全部',
       begin_time: Date.now(),
       page: 1,
-      limit: 15
+      limit: 12
     },
     searchCoalCount: {
       id: '全部',

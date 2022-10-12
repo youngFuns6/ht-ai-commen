@@ -5,6 +5,7 @@ import { screenSlice } from "./reducer/screenSlice";
 import { alarmSlice } from "./reducer/alarmSlice";
 import { calcSlice } from "./reducer/calcSlice";
 import { appSlice } from "./reducer/appSlice";
+import { settingSlice } from "./reducer/settingSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     alarm: alarmSlice.reducer,
     calc: calcSlice.reducer,
     app: appSlice.reducer,
+    setting: settingSlice.reducer,
   }
 })
 

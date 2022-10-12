@@ -11,7 +11,7 @@ export interface SearchDeviceChn {
 }
 
 export interface DeviceChn {
-  id: string;
+  id?: string;
   name: string;
   pid: string;
   region: number;

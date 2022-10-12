@@ -14,14 +14,19 @@ export const getAlarmLev = (alarmGrade?: number) => {
 }
 
 // 过滤查询参数
-export const fillterQuery = (obj: { [key: string]: any }, fillter: string = '全部') => {
+export const fillterQuery = (obj: { [key: string]: any }, fillter: string = '全部', day: boolean = false) => {
   let newObj = clone(obj);
   Object.keys(newObj).forEach(item => {
     if(newObj[item] === fillter){
       delete newObj[item];
     }
     if(newObj[item] instanceof moment){
-      newObj[item] = newObj[item].valueOf();
+      if(!day){
+        newObj[item] = newObj[item].valueOf();
+      }else {
+        newObj[item] = moment.duration(newObj[item].format('HH:mm:ss')).as('seconds');
+        // console.log(moment.duration(newObj[item].format('HH:mm:ss')).as('seconds'))
+      }
     }
   })
   return newObj;

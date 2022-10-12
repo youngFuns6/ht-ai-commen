@@ -1,22 +1,22 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import './index.scss';
-import { useQuery, useMutation } from 'react-query';
-import { Col, Select, Table, Radio, DatePicker, Row, Pagination } from 'antd';
+import { useQuery, useMutation, } from 'react-query';
+import { cloneDeep } from 'lodash';
+import { Col, Select, Table, Radio, DatePicker, Row, Pagination, message } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import { useSelector, useDispatch } from 'react-redux';
 import useGetCommenList from '@/hooks/useGetCommenList';
 import { reactQueryKey } from '@/config/constance';
 import FormList from '@/components/FormList';
 import ToolBtn from '@/components/base/ToolBtn';
-import { getRegion } from '@/api/region';
+import Confirm from '@/components/Confirm';
 import { getPatrolPlan, addPatrolPlan, editPatrolPlan, deletePatrolPlan, getPatrolWorkerList } from '@/api/coal';
 import { FormListFace } from '@/types/FormList';
-import { DeviceChn } from '@/types/Device';
-import { SearchPatrolPlan, Worker } from '@/types/Coal';
+import { ChnContext } from '@/types/Commen';
+import { SearchPatrolPlan, Worker, PatrolPlan } from '@/types/Coal';
 import { State as AppState, changeApp } from '@/store/reducer/appSlice';
 import { fillterQuery } from '@/utils/commen';
-import mergePageList from '@/utils/mergePageList';
 
 import queryBtn from '@/assets/images/btn/tools/query_btn.png';
 import moment from 'moment';
@@ -25,6 +25,7 @@ const columns = [
   {
     title: '巡检类型',
     dataIndex: 'type',
+    render: (type: string) => type === 'XJ_001' ? '轨迹巡检' : '人脸巡检'
   },
   {
     title: '计划名称',
@@ -37,10 +38,12 @@ const columns = [
   {
     title: '计划巡检开始时间',
     dataIndex: 'begin_time',
+    render: (time: number) => moment(time).format('HH:mm:ss')
   },
   {
     title: '计划巡检结束时间',
     dataIndex: 'duration',
+    render: (time: number) => moment(time).format('HH:mm:ss')
   },
   {
     title: '巡检人',
@@ -49,22 +52,33 @@ const columns = [
 ];
 
 export default function Plan() {
-  const { deviceChnArr, onChnScroll } = useOutletContext<{ deviceChnArr: DeviceChn[]; onChnScroll: Function }>();
+  const { deviceChnArr, onChnScroll } = useOutletContext<ChnContext>();
 
   const searchFormlistRef = useRef<FormInstance>(null);
   const planOptFormListRef = useRef<FormInstance>(null);
 
-  const { searchPatrolPlan, patrolPlan: patrolPlanForm } = useSelector((state: AppState) => state.app);
+  const { searchPatrolPlan, patrolPlan: patrolPlanForm, selectedRowKeys } = useSelector((state: AppState) => state.app);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if(!selectedRowKeys.length) return;
+    planOptFormListRef.current?.setFieldsValue({...patrolPlanForm, begin_time: moment(patrolPlanForm.begin_time), duration: moment(patrolPlanForm.duration)});
+  }, [patrolPlanForm])
+
   // 获取巡检计划
-  const { data: patrolPlanInfo, isFetched: patrolPlanIsFetched, hasNextPage: patrolPlanHasNextPage, fetchNextPage: patrolPlanFetchNextPage, } = useGetCommenList<SearchPatrolPlan>([reactQueryKey.getPatrolPlan, searchPatrolPlan], getPatrolPlan, { ...fillterQuery(searchPatrolPlan, '全部') });
+  const { data: patrolPlanInfo, isFetched: patrolPlanIsFetched, hasNextPage: patrolPlanHasNextPage, fetchNextPage: patrolPlanFetchNextPage, refetch: patrolPlanRefetch } = useGetCommenList<SearchPatrolPlan>([reactQueryKey.getPatrolPlan, searchPatrolPlan], getPatrolPlan, { ...fillterQuery(searchPatrolPlan, '全部') });
 
   // 获取巡检人员
   const { data: patrolWorker, isFetched: patrolWorkerIsFetched, } = useQuery([reactQueryKey.getPatrolWorkerList], getPatrolWorkerList,);
 
   // 添加计划
-  const mutation = useMutation(() => addPatrolPlan(planOptFormListRef.current?.getFieldsValue()));
+  const addMutation = useMutation((formData: PatrolPlan) => addPatrolPlan(formData));
+
+ // 修改计划
+ const editMutation = useMutation((formData: PatrolPlan) => editPatrolPlan(formData));
+
+ // 删除计划
+ const deleteMutation = useMutation((id: number) => deletePatrolPlan(id));
 
   // 巡检类型
   const onPlanTypeChange = () => {
@@ -73,7 +87,7 @@ export default function Plan() {
 
   // 分页
   const onPageChange = (page: number, pageSize: number) => {
-    dispatch(changeApp({ searchPatrolPlan: { page, limit: pageSize } }));
+    dispatch(changeApp({ searchPatrolPlan: {...searchPatrolPlan, page, limit: pageSize } }));
   }
 
   // 计划(增删改)
@@ -81,14 +95,29 @@ export default function Plan() {
     planOptFormListRef.current?.validateFields().then((v) => {
       switch (type) {
         case 'add':
-          mutation.mutate();
+          addMutation.mutate(patrolPlanForm);
           break;
         case 'edit':
+          if(!selectedRowKeys.length) return message.error('请先选中所需修改的计划');
+          editMutation.mutate({...patrolPlanForm, id: selectedRowKeys[0]});
           break;
         case 'delete':
+          if(!selectedRowKeys.length) return message.error('请先选中所需删除的计划');
+          deleteMutation.mutate(selectedRowKeys[0]);
           break;
       }
+      patrolPlanRefetch();
     })
+  }
+
+  const onSelectRow = (record: PatrolPlan) => {
+    if(selectedRowKeys[0] === record.id){
+      dispatch(changeApp({selectedRowKeys: []}));
+    }else {
+      let obj = cloneDeep(record);
+      delete obj.id;
+      dispatch(changeApp({selectedRowKeys: [record.id], patrolPlan: obj}));
+    }
   }
 
   const searchFormList: FormListFace[] = [
@@ -103,7 +132,7 @@ export default function Plan() {
       label: '巡检类型',
       name: 'type',
       defNode: (
-        <Select onPopupScroll={(e) => onChnScroll('device', e)} options={[{ label: '轨迹巡检', value: 'XJ_001', key: 0 }, { label: '人脸巡检', value: 'XJ_001', key: 1 }]} />
+        <Select options={[{ label: '轨迹巡检', value: 'XJ_001', key: 0 }, { label: '人脸巡检', value: 'XJ_002', key: 1 }]} />
       )
     },
   ]
@@ -145,7 +174,7 @@ export default function Plan() {
       name: 'device',
       rules: [{ required: true, message: '必填' }],
       defNode: (
-        <Select onPopupScroll={(e) => onChnScroll('chn', e)} options={deviceChnArr.map(item => ({ label: item.id, value: item.name, key: item.id }))} />
+        <Select onPopupScroll={(e) => onChnScroll('chn', e)} options={deviceChnArr.map(item => ({ label: item.name, value: item.id, key: item.id }))} />
       )
     },
     {
@@ -161,8 +190,15 @@ export default function Plan() {
   return (
     <div className='plan'>
       <div className='plan-content'>
-        <Table rowKey='id' dataSource={patrolPlanInfo?.pages[patrolPlanInfo.pages.length - 1].items} columns={columns} />
-        <div className='plan-page'>
+        <Table pagination={{
+          current: searchPatrolPlan.page,
+          onChange: onPageChange,
+          pageSize: 12,
+          total: patrolPlanInfo?.pages[0].total,
+          showQuickJumper: true,
+          showTotal: total => `共 ${total} 条数据`
+        }} rowKey='id' rowClassName={(record) => record.id === selectedRowKeys[0] ? 'active-row' : ''} dataSource={patrolPlanInfo?.pages[patrolPlanInfo.pages.length - 1].items} columns={columns} onRow={(record => ({onClick: () => onSelectRow(record)}))} />
+        {/* <div className='plan-page'>
           <Pagination
             current={searchPatrolPlan.page}
             onChange={onPageChange}
@@ -171,7 +207,7 @@ export default function Plan() {
             showQuickJumper
             showTotal={total => `共 ${total} 条数据`}
           />
-        </div>
+        </div> */}
       </div>
       <div className='plan-right'>
         <div>
@@ -190,7 +226,9 @@ export default function Plan() {
               <ToolBtn onClick={() => onOptPlan('edit')} src={queryBtn} native content='修改' />
             </Col>
             <Col span={8}>
-              <ToolBtn onClick={() => onOptPlan('delete')} src={queryBtn} native content='删除' />
+              <Confirm title='确认删除？' onConfirm={() => onOptPlan('delete')}>
+              <ToolBtn src={queryBtn} native content='删除' />
+              </Confirm>
             </Col>
           </Row>
         </div>

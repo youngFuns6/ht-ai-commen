@@ -19,9 +19,9 @@ export const addPatrolPlan = (data: PatrolPlan) => {
 } 
 
 // 修改巡检计划
-export const editPatrolPlan = (id: number, data: PatrolPlan) => {
+export const editPatrolPlan = (data: PatrolPlan) => {
   return request({
-    url: `/patrol/plan/${id}`,
+    url: `/patrol/plan/${data.id}`,
     method: 'put',
     data
   })

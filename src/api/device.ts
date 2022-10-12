@@ -17,9 +17,18 @@ export const getDeviceChnById = (id: string) => {
 }
 
 // 修改通道设备
-export const editDdeviceChn = (id: string, deviceChn: DeviceChn) => {
+export const editDdeviceChn = (deviceChn: DeviceChn) => {
   return request({
-    url: `catalog/device/${id}`,
+    url: `/catalog/device/${deviceChn.id}`,
+    data: deviceChn
+  })
+}
+
+// 添加通道设备
+export const addDdeviceChn = (deviceChn: DeviceChn) => {
+  return request({
+    url: `/config/device`,
+    method: 'post',
     data: deviceChn
   })
 }

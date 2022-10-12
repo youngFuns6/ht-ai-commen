@@ -83,6 +83,10 @@ html {
   color: rgb(187, 186, 186) !important;
 }
 
+:global(.ant-modal-confirm-title) {
+  color: #fff !important;
+}
+
 :global(.ant-table-thead > tr > th::before) {
   width: 2px !important;
   height: 100% !important;
@@ -99,3 +103,7 @@ $color-border-base: #0686D8;
 $color-arrow-bgc: rgba(21, 39, 53, 1);
 $color-text-desc: rgb(214, 208, 208);
 $color-text-base: #70D5F8;
+
+.active-row {
+  background-color: rgba(15, 60, 53, 0.5);
+}

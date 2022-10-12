@@ -1,7 +1,7 @@
 import React from 'react';
 import { useOutletContext } from 'react-router-dom';
 import './index.scss';
-import { Select, DatePicker, Table, Pagination } from 'antd';
+import { Select, DatePicker, Table, } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import useGetCommenList from '@/hooks/useGetCommenList';
 import FormList from '@/components/FormList';
@@ -9,7 +9,7 @@ import ToolBtn from '@/components/base/ToolBtn';
 import { getPatrolRecord } from '@/api/coal';
 import { reactQueryKey } from '@/config/constance';
 import { FormListFace } from '@/types/FormList';
-import { DeviceChn } from '@/types/Device';
+import { ChnContext } from '@/types/Commen';
 import { State as AppState, changeApp } from '@/store/reducer/appSlice';
 import { fillterQuery } from '@/utils/commen';
 
@@ -24,18 +24,22 @@ const columns = [
   {
     title: '巡检计划开始时间',
     dataIndex: 'begin_time',
+    render: (time: number) => moment(time).format('HH:mm:ss')
   },
   {
     title: '巡检计划结束时间',
     dataIndex: 'end_time',
+    render: (time: number) => moment(time).format('HH:mm:ss')
   },
   {
-    title: '实际巡检开始时间',
+    title: '巡检事件开始时间',
     dataIndex: 'start_time',
+    render: (time: number) => moment(time).format('HH:mm:ss')
   },
   {
-    title: '实际巡检结束时间',
+    title: '巡检事件结束时间',
     dataIndex: 'stop_time',
+    render: (time: number) => moment(time).format('HH:mm:ss')
   },
   {
     title: '巡检状态',
@@ -50,7 +54,7 @@ const columns = [
 
 export default function Result() {
 
-  const { deviceChnArr, onChnScroll } = useOutletContext<{ deviceChnArr: DeviceChn[]; onChnScroll: Function }>();
+  const { deviceChnArr, onChnScroll } = useOutletContext<ChnContext>();
 
   const { searchPatrolResult } = useSelector((state: AppState) => state.app);
   const dispatch = useDispatch();
@@ -86,17 +90,24 @@ export default function Result() {
         <ToolBtn native src={commenBtn} />
       </div>
       <div className="result-content">
-        <Table rowKey='id' dataSource={patrolRecordInfo?.pages[patrolRecordInfo.pages.length - 1].items} columns={columns} />
-        <div className='result-page'>
+        <Table pagination={{
+           current: searchPatrolResult.page,
+           onChange: onPageChange,
+           pageSize: 12,
+           total: patrolRecordInfo?.pages[0].total,
+           showQuickJumper: true,
+           showTotal: total => `共 ${total} 条数据`
+        }} rowKey='id' dataSource={patrolRecordInfo?.pages[patrolRecordInfo.pages.length - 1].items} columns={columns} />
+        {/* <div className='result-page'>
           <Pagination
             current={searchPatrolResult.page}
             onChange={onPageChange}
-            pageSize={15}
+            pageSize={12}
             total={patrolRecordInfo?.pages[0].total}
             showQuickJumper
             showTotal={total => `共 ${total} 条数据`}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   )

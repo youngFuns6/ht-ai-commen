@@ -16,6 +16,7 @@
 .alarmCalc {
 
   @include flex-center();
+  align-items: flex-start;
   flex-shrink: 0;
 
   .left {

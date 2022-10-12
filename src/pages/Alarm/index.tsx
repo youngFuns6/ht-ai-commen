@@ -83,7 +83,7 @@ export default function Alarm() {
       label: '所属通道',
       name: 'device',
       defNode: (
-        <Select onPopupScroll={(e) => onPopupScroll('chn', e)} options={mergePageList<DeviceChn>(chnInfo?.pages).map(item => ({ label: item.id, value: item.id, key: item.id }))} />
+        <Select onPopupScroll={(e) => onPopupScroll('chn', e)} options={[{label: '全部', value: '全部', key: '全部'}, ...mergePageList<DeviceChn>(chnInfo?.pages).map(item => ({ label: item.id, value: item.id, key: item.id }))]} />
       )
     },
     {

@@ -1,4 +1,5 @@
 export const ALARM_LEV = [
+  {label: '全部', value: '全部', key: '全部'},
   {
     label: '一级',
     value: 1,
@@ -17,6 +18,7 @@ export const ALARM_LEV = [
 ]
 
 export const HANDLER_STATUS = [
+  {label: '全部', value: '全部', key: '全部'},
   {
     label: '未处理',
     value: 1,

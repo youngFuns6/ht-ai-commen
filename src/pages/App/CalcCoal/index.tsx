@@ -3,7 +3,6 @@ import { useOutletContext } from 'react-router-dom';
 import './index.scss';
 import { Select, Radio, Space, DatePicker, Col, Row } from 'antd';
 import type { FormInstance } from 'antd/es/form';
-import type { RadioChangeEvent } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { useQuery } from 'react-query';
 import moment from 'moment';
@@ -15,7 +14,7 @@ import Charts from '@/components/Charts';
 import { State as AppState, changeApp } from '@/store/reducer/appSlice';
 import { getCoalCount, getCoalSection } from '@/api/coal';
 import { FormListFace } from '@/types/FormList';
-import { DeviceChn } from '@/types/Device';
+import { ChnContext } from '@/types/Commen';
 import { fillterQuery } from '@/utils/commen';
 
 import commenBtn from '@/assets/images/btn/tools/query_btn.png';
@@ -23,12 +22,12 @@ import cocalCount from '@/assets/images/text/cocal_count.png';
 
 const CalcCoal = () => {
 
-  const { deviceChnArr, onChnScroll } = useOutletContext<{ deviceChnArr: DeviceChn[]; onChnScroll: Function }>();
+  const { deviceChnArr, onChnScroll } = useOutletContext<ChnContext>();
 
   const coalCountRef = useRef<FormInstance>(null);
   const cocalSectionRef = useRef<FormInstance>(null);
 
-  const { searchCoalCount, searchSectionCount } = useSelector((state: AppState) => state.app);
+  const { searchCoalCount, searchSectionCount, chartType } = useSelector((state: AppState) => state.app);
   const dispatch = useDispatch();
 
   // 获取煤量统计
@@ -36,10 +35,6 @@ const CalcCoal = () => {
 
   // 获取煤量合计区间
   const { data: cocalSectionInfo, isFetched: cocalSectionIsfetched, }: any = useQuery([reactQueryKey.getCoalSection, searchSectionCount], () => getCoalSection(fillterQuery(searchSectionCount, '全部')));
-
-  const onTimeTyChange = (e: RadioChangeEvent) => {
-
-  }
 
   const getTimeTy = (value: number) => {
     switch (value) {
@@ -63,15 +58,14 @@ const CalcCoal = () => {
       label: '所属通道',
       name: 'id',
       defNode: (
-        <Select onPopupScroll={(e) => onChnScroll('chn', e)} options={deviceChnArr.map(item => ({ label: item.id, value: item.id, key: item.id }))} />
+        <Select onPopupScroll={(e) => onChnScroll('chn', e)} options={[{label: '全部', value: '全部', key: '全部'}, ...deviceChnArr.map(item => ({ label: item.id, value: item.id, key: item.id }))]} />
       )
     },
     {
       label: '',
       name: 'unit',
-      checked: true,
       defNode: (
-        <Radio.Group onChange={onTimeTyChange}>
+        <Radio.Group>
           <Space direction="vertical">
             <Radio value={1}>按年统计</Radio>
             <Radio value={2}>按月统计</Radio>
@@ -108,7 +102,7 @@ const CalcCoal = () => {
       label: '所属通道',
       name: 'device',
       defNode: (
-        <Select onPopupScroll={(e) => onChnScroll('chn', e)} options={deviceChnArr.map(item => ({ label: item.id, value: item.id, key: item.id }))} />
+        <Select onPopupScroll={(e) => onChnScroll('chn', e)} options={[{label: '全部', value: '全部', key: '全部'}, ...deviceChnArr.map(item => ({ label: item.id, value: item.id, key: item.id }))]} />
       )
     },
   ]
@@ -122,7 +116,7 @@ const CalcCoal = () => {
       <div className="calc-coal-content">
         <Row>
           <Col span={24}>
-            <Charts data={countCoalInfo} xField='' yField='' textBarSrc={cocalCount} onClick={(type) => { dispatch(changeApp({ chartType: type })) }} />
+            <Charts type={chartType} data={countCoalInfo} xField={getTimeTy(searchCoalCount.unit!) as string === 'date' ? 'day' : getTimeTy(searchCoalCount.unit!) as string} yField='volume' textBarSrc={cocalCount} onClick={(type) => { dispatch(changeApp({ chartType: type })) }} />
           </Col>
         </Row>
         <div className="cocal-count-all">

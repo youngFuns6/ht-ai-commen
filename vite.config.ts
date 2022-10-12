@@ -45,6 +45,8 @@ export default defineConfig({
           '@border-color-split': 'none',
           '@border-color-base': '#10337E',
           '@text-color-secondary': '#fff', // modal 关闭x颜色
+          '@background-color-light': 'rgba(15, 60, 53, 0.5)',
+          '@table-selected-row-bg': 'rgba(15, 60, 53, 0.5)'
         },
       },
     }

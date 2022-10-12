@@ -15,6 +15,7 @@ export default function<T> (key: any, fn: Fn<T>, params: T, enabled=true) {
         return lastPage.offset / lastPage.limit + 2
       }
     },
+    // keepPreviousData: true,
     enabled
   });
 

@@ -11,12 +11,6 @@ import sysBtn from '@/assets/images/btn/set_sys.png';
 import algoBtn from '@/assets/images/btn/set_algo.png';
 import transmissionBtn from '@/assets/images/btn/set_transmission.png';
 
-const MenuItem = () => {
-  return (
-    <div className={styles.menuItem}></div>
-  )
-}
-
 const nav = [
   {
     path: '/home/setting',
@@ -45,11 +39,12 @@ const nav = [
 ] 
 
 export default function Setting() {
+
   return (
     <div className={styles.setting}>
       <div className={styles.left}>
         {nav.map(item => (
-          <ChildrenNav path={item.path}>{item.node}</ChildrenNav>
+          <ChildrenNav key={item.path} path={item.path}>{item.node}</ChildrenNav>
         ))}
       </div>
       <div className={styles.content}>

@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import styles from './ShowDevices.module.scss';
 import VirtualList from 'rc-virtual-list';
 import { List } from 'antd';
+import { cloneDeep } from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
 import TextBar from '../base/TextBar';
 import CSelect from '../base/CSelect';
@@ -25,7 +26,7 @@ interface Props {
 const ShowDevices = (props: Props) => {
   const { showPanControl = false } = props;
   const showDevicesRef = useRef<HTMLDivElement>(null);
-  const { selectRegionId, hiddenPreviewList, panControlSelect } = useSelector((state: State) => state.screen);
+  const { selectRegionId, hiddenPreviewList, panControlSelect, count, chnListByRegion } = useSelector((state: State) => state.screen);
   const dispatch = useDispatch();
   const [containerHeight, setContainerHeight] = useState<number>(0);
 
@@ -47,12 +48,18 @@ const ShowDevices = (props: Props) => {
       dispatch(changeScreen({ selectRegionId: regionInfo?.pages[0].items[0]?.id }));
     }
     if (chnIsFetched) {
-      // 创建至少为显示最大数的数组存储通道列表
-      const arr = Array.from({ length: 16 });
-      arr.splice(0, 16, ...mergePageList<DeviceChn>(chnInfo?.pages));
-      dispatch(changeScreen({ chnListByRegion: arr || [], }));
+      if (chnInfo) {
+        let arr;
+        // 创建至少为显示最大数的数组存储通道列表
+        arr = Array.from({ length: chnInfo.pages[0].total > 16 ? chnInfo.pages[0].total :  count});
+        if(chnListByRegion.length){
+          arr.splice(0, chnListByRegion.length, ...cloneDeep(chnListByRegion));
+        }
+        arr.splice(0, chnInfo.pages[0].total, ...mergePageList<DeviceChn>(chnInfo.pages));
+        dispatch(changeScreen({ chnListByRegion: arr || [], }));
+      }
     }
-  }, [isFetched, chnInfo])
+  }, [isFetched, chnInfo, count])
 
   const onScrollEnd = () => {
     if (hasNextPage) {
