@@ -1,0 +1,24 @@
+.set-algo {
+  @include flex-center();
+  height: 100%;
+  align-items: flex-start;
+  .set-algo-content {
+    flex-grow: 1;
+  }
+  .set-algo-right {
+    width: 300px;
+    height: 100%;
+    margin-left: 20px;
+    padding-right: 10px;
+    @include flex-sb();
+    flex-direction: column;
+    .set-algo-right-btn {
+      @include flex-sb();
+    }
+    .set-algo-right-tools {
+      @include flex-sb();
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+}

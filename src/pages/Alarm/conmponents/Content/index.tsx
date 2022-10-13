@@ -117,7 +117,7 @@ const Content = React.forwardRef((props: Props & PropsWithChildren, ref: any) =>
     <>
       {alarmIsfetched && <div className={styles.content} ref={printRef}>
         {alarmInfo && alarmInfo.pages[alarmInfo.pages.length - 1].items.map((item: Alarm) => (
-          <CardItem onClick={(alarmImage) => onDetail(alarmImage, item)} id={item.id} title={item.description} time={moment(item.start_time).format('YYYY-MM-DD HH:mm:ss')} width='100%' key={item.id}></CardItem>
+          <CardItem boxes={item.boxes as string} zones={item.zones as string} onClick={(alarmImage) => onDetail(alarmImage, item)} id={item.id} title={item.description} time={moment(item.start_time).format('YYYY-MM-DD HH:mm:ss')} width='100%' key={item.id}></CardItem>
         ))}
       </div>}
       <div className={styles.tools}>

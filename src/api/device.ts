@@ -20,7 +20,16 @@ export const getDeviceChnById = (id: string) => {
 export const editDdeviceChn = (deviceChn: DeviceChn) => {
   return request({
     url: `/catalog/device/${deviceChn.id}`,
+    method: 'put',
     data: deviceChn
+  })
+}
+
+// 删除通道设备
+export const deleteDdeviceChn = (id: string) => {
+  return request({
+    url: `/config/device/${id}`,
+    method: 'delete',
   })
 }
 

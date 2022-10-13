@@ -1,15 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SearchAlarm } from '@/types/Alarm';
 
-interface SettingState {
-  chn: {
+export interface Commen {
     search: {
       page: number;
       limit: number;
     };
-    selectedRowKeys: string[];
+    selectedRowKeys: number[] & string[];
     form: any;
-  }
+}
+
+interface SettingState {
+  chn: Commen;
+  region: Commen;
+  user: Commen;
+  sys: {
+    targetKeys: string[];
+    selectedKeys: string[];
+    vol: number;
+    enableVol: boolean;
+  },
+  algo: Commen;
 }
 
 export interface State {
@@ -28,7 +39,43 @@ export const settingSlice = createSlice({
       form: {
 
       }
-    }
+    },
+    region: {
+      search: {
+        page: 1,
+        limit: 12
+      },
+      selectedRowKeys: [],
+      form: {
+
+      }
+    },
+    user: {
+      search: {
+        page: 1,
+        limit: 12
+      },
+      selectedRowKeys: [],
+      form: {
+
+      }
+    },
+    sys: {
+      targetKeys: [],
+      selectedKeys: [],
+      vol: 0,
+      enableVol: true
+    },
+    algo: {
+      search: {
+        page: 1,
+        limit: 12
+      },
+      selectedRowKeys: [],
+      form: {
+
+      }
+    },
   },
   reducers: {
     changeSetting(state: SettingState, action) {

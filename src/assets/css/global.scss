@@ -96,6 +96,10 @@ html {
   background-color: #333 !important;
 }
 
+:global(.ant-transfer-list-content-item-checked) {
+  background-color: rgba(15, 60, 53, 0.5) !important;
+}
+
 $color-border: #92FFFF;
 $color-bgc: rgba(21, 39, 53, 0.65);
 $color-arrow: rgba(77, 176, 252, 1);

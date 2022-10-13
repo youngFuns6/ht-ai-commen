@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import useWebsocket from '@/hooks/useWebsocket';
 import { DevicesInfo, MessgeType, drawInfo, METHOD } from '@/types/Socket';
 import { playerParse } from '@/utils/dataParse';
-import { drawLinesForZones, drawLinesForBoxes } from '@/utils/drawLines';
+import { drawAlarmImage } from '@/utils/drawLines';
 import { State } from '@/store/reducer/screenSlice';
 import styles from './alarmInfo.module.scss';
 import { getAlarmLev } from '@/utils/commen';
@@ -77,45 +77,59 @@ export default function AlarmInfo() {
             // setCurrentAlarmImage(res.src);
 
             // 展示图片
-            if (res.src) {
-              const img = new Image();
-              const canvas = document.createElement('canvas');
-              const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
-              const jsonData: drawInfo = res.jsonData;
-
-              if (ctx) {
-                img.src = res.src;
-                img.onload = () => {
-                  canvas.width = img.width;
-                  canvas.height = img.height;
-                  const bounds = { width: canvas.width, height: canvas.height };
-
-                  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                  if (jsonData.zones && jsonData.zones.length) {
-                    // 绘制检测区
-                    drawLinesForZones(ctx, bounds, jsonData.zones);
-                  }
-
-                  if (jsonData.boxes && jsonData.boxes.length) {
-                    // 绘制报警区
-                    drawLinesForBoxes(ctx, bounds, jsonData.boxes)
-                  }
-                  let obj = {
-                    src: canvas.toDataURL(),
-                    ...res.jsonData
-                  };
-                  setImageList((pre) => {
-                    if (pre.length > 10) {
-                      pre.splice(0, 2);
-                    } else {
-                      pre.push(obj);
-                    }
-                    return [...pre];
-                  })
-                  
+            drawAlarmImage(res.src, res.jsonData.zones, res.jsonData.boxes).then(src => {
+              let obj = {
+                src,
+                ...res.jsonData
+              };
+              setImageList((pre) => {
+                if (pre.length > 10) {
+                  pre.splice(0, 2);
+                } else {
+                  pre.push(obj);
                 }
-              }
-            }
+                return [...pre];
+              })
+            })
+            // if (res.src) {
+            //   const img = new Image();
+            //   const canvas = document.createElement('canvas');
+            //   const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
+            //   const jsonData: drawInfo = res.jsonData;
+
+            //   if (ctx) {
+            //     img.src = res.src;
+            //     img.onload = () => {
+            //       canvas.width = img.width;
+            //       canvas.height = img.height;
+            //       const bounds = { width: canvas.width, height: canvas.height };
+
+            //       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            //       if (jsonData.zones && jsonData.zones.length) {
+            //         // 绘制检测区
+            //         drawLinesForZones(ctx, bounds, jsonData.zones);
+            //       }
+
+            //       if (jsonData.boxes && jsonData.boxes.length) {
+            //         // 绘制报警区
+            //         drawLinesForBoxes(ctx, bounds, jsonData.boxes)
+            //       }
+            //       let obj = {
+            //         src: canvas.toDataURL(),
+            //         ...res.jsonData
+            //       };
+            //       setImageList((pre) => {
+            //         if (pre.length > 10) {
+            //           pre.splice(0, 2);
+            //         } else {
+            //           pre.push(obj);
+            //         }
+            //         return [...pre];
+            //       })
+                  
+            //     }
+            //   }
+            // }
           })
         }
       }

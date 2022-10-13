@@ -33,7 +33,7 @@ const nav = [
     node: <ToolBtn showActive path='/home/setting/algo' width='100%' src={algoBtn} />
   },
   {
-    path: '/home/setting/',
+    path: '/home/setting/seriaNet',
     node: <ToolBtn showActive path='/home/setting/seriaNet' width='100%' src={transmissionBtn} />
   }
 ] 

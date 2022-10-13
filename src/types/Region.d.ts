@@ -9,7 +9,7 @@ export interface QueryRegion {
 }
 
 export interface Region {
-  id: number;
+  id?: number;
   name: string;
   parent: number;
   sort: number;

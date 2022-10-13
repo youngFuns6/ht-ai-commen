@@ -112,14 +112,14 @@ export default function TecAlarm(props: Props) {
                 <ul ref={ulRef}>
                   {alarmImgArr?.map(item => (
                     <li key={item.id}>
-                      <Image preview={{ visible: false }} onClick={() => setVisible(true)} src={`http://${Config.BASE_URL_HOST}${item.url}?token=${token}`} />
+                      <Image preview={{ visible: false }} onClick={() => setVisible(true)} src={item.url} />
                     </li>
                   ))}
                 </ul>
                 <div style={{ display: 'none' }}>
                   <Image.PreviewGroup preview={{ visible, onVisibleChange: vis => setVisible(vis) }}>
                     {alarmImgArr?.map(item => (
-                      <Image key={item.id} src={`http://${Config.BASE_URL_HOST}${item.url}?token=${token}`} />
+                      <Image key={item.id} src={item.url} />
                     ))}
                   </Image.PreviewGroup>
                 </div>

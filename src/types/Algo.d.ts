@@ -11,6 +11,6 @@ export interface Algo {
   alarm_voice_text: string;
   desc: string;
   event_type: string;
-  id: number;
+  id?: number;
   memo: string;
 }

@@ -34,30 +34,40 @@ export const reactQueryKey = {
   /**
    * 自定义统计告警
    */
-   getCustomAlarmCount: 'get-custom-alarm-count',
+  getCustomAlarmCount: 'get-custom-alarm-count',
 
-   /**
-   * 获取巡检计划
-   */
-    getPatrolPlan: 'get-patrol-plan',
+  /**
+  * 获取巡检计划
+  */
+  getPatrolPlan: 'get-patrol-plan',
 
-    /**
-   * 获取巡检结果
-   */
-     getPatrolRecord: 'get-patrol-record',
+  /**
+ * 获取巡检结果
+ */
+  getPatrolRecord: 'get-patrol-record',
 
-    /**
-   * 获取煤量统计
-   */
-     getCoalCount: 'get-coal-count',
+  /**
+ * 获取煤量统计
+ */
+  getCoalCount: 'get-coal-count',
 
-    /**
-   * 获取煤量区间合计
-   */
-     getCoalSection: 'get-coal-section',
+  /**
+ * 获取煤量区间合计
+ */
+  getCoalSection: 'get-coal-section',
 
-    /**
-   * 获取巡检人员
-   */
-     getPatrolWorkerList: 'get-patrol-worker-list',
+  /**
+ * 获取巡检人员
+ */
+  getPatrolWorkerList: 'get-patrol-worker-list',
+
+  /**
+* 获取角色列表
+*/
+  getRoleList: 'get-role-list',
+
+  /**
+* 获取用户
+*/
+  getUser: 'get-user',
 }

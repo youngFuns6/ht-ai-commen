@@ -1,6 +1,20 @@
 import { CommenSearch } from './Commen';
 import { Moment } from 'moment';
 
+export interface Boxes {
+  name: string;
+  Score: number;
+  id: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+export interface Zones {
+  x: number;
+  y: number;
+}
+
 export interface SearchAlarm extends CommenSearch {
   start_time?: number | Moment;
   stop_time?: number | Moment;
@@ -25,7 +39,7 @@ export interface AlarmImage {
 }
 
 export interface Alarm {
-  boxes: string;
+  boxes: Boxes[] | string;
   branch: number;
   break_address: string;
   break_category: string;
@@ -61,7 +75,7 @@ export interface Alarm {
   wday: number;
   workshift: number;
   year: number;
-  zones: string;
+  zones: Zones[][] | string;
 }
 
 export interface AlarmHandle {

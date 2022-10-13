@@ -1,5 +1,5 @@
-import { fabric } from 'fabric'
-import { Zones, Boxes } from '@/types/DevicesInfo';
+import { Zones, Boxes } from '@/types/Alarm';
+import { drawInfo } from '@/types/Socket';
 
 interface Bounds {
   width: number;
@@ -7,7 +7,7 @@ interface Bounds {
 }
 
 // let catchZones = new Set();
-export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bounds, args: Array<Zones[]>) => {
+export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bounds, args: Array<Zones[]>, strokeColor: string = "#0000ff") => {
   if (context) {
     context.lineWidth = 1;
     args.forEach(zones => {
@@ -17,7 +17,7 @@ export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bou
       zones.forEach(zone => {
         context.lineTo(zone.x * bounds.width, zone.y * bounds.height);
       })
-      context.strokeStyle = "#0000ff"
+      context.strokeStyle = strokeColor;
       context.closePath();
       context.stroke();
       // catchZones.add(JSON.stringify(zones));
@@ -29,13 +29,14 @@ export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bou
 }
 
 // let catchBoxes = new Set();
-export const drawLinesForBoxes = (context: CanvasRenderingContext2D, bounds: Bounds, args: Boxes[]) => {
+export const drawLinesForBoxes = (context: CanvasRenderingContext2D, bounds: Bounds, args: Boxes[], strokeColor: string = 'red') => {
   if (context) {
     context.lineWidth = 1;
     args.forEach(box => {
       // if (catchBoxes.has(JSON.stringify(box))) return;
       context.moveTo(box.x * bounds.width, box.y * bounds.height);
       context.strokeRect(box.x * bounds.width, box.y * bounds.height, box.w * bounds.width, box.h * bounds.height);
+      context.strokeStyle = strokeColor;
       // if (catchBoxes.size > args.length) {
       //   catchBoxes.delete(JSON.stringify(box));
       // }
@@ -53,4 +54,36 @@ export const drawLinesOfPoint = (canvas: HTMLCanvasElement) => {
       context.stroke();
     }
   }
+}
+
+export const drawAlarmImage = (src: string, zones: Zones[][], boxes: Boxes[], zonesColor?: string, boxesColor?: string) => {
+  return new Promise<string>((resolve) => {
+    if (src) {
+      const img = new Image();
+      const canvas = document.createElement('canvas');
+      const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
+  
+      if (ctx) {
+        img.src = src;
+        img.setAttribute("crossOrigin",'Anonymous'); // 谷歌策略（画布污染），图片设置跨域解决
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const bounds = { width: canvas.width, height: canvas.height };
+  
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          if (zones && zones.length) {
+            // 绘制检测区
+            drawLinesForZones(ctx, bounds, zones, zonesColor);
+          }
+  
+          if (boxes && boxes.length) {
+            // 绘制报警区
+            drawLinesForBoxes(ctx, bounds, boxes, zonesColor);
+          }
+           resolve(canvas.toDataURL());
+        }
+      }
+    }
+  })
 }
