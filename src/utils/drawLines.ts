@@ -7,9 +7,9 @@ interface Bounds {
 }
 
 // let catchZones = new Set();
-export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bounds, args: Array<Zones[]>, strokeColor: string = "#0000ff") => {
+export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bounds, args: Array<Zones[]>, strokeColor: string = "#0000ff", lineWidth: number = 1) => {
   if (context) {
-    context.lineWidth = 1;
+    context.lineWidth = lineWidth;
     args.forEach(zones => {
       // if (catchZones.has(JSON.stringify(zones))) return;
       context.beginPath();
@@ -29,14 +29,18 @@ export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bou
 }
 
 // let catchBoxes = new Set();
-export const drawLinesForBoxes = (context: CanvasRenderingContext2D, bounds: Bounds, args: Boxes[], strokeColor: string = 'red') => {
+export const drawLinesForBoxes = (context: CanvasRenderingContext2D, bounds: Bounds, args: Boxes[], strokeColor: string = 'red', lineWidth: number = 1) => {
+  console.log(args)
   if (context) {
     context.lineWidth = 1;
     args.forEach(box => {
       // if (catchBoxes.has(JSON.stringify(box))) return;
       context.moveTo(box.x * bounds.width, box.y * bounds.height);
-      context.strokeRect(box.x * bounds.width, box.y * bounds.height, box.w * bounds.width, box.h * bounds.height);
       context.strokeStyle = strokeColor;
+      context.strokeRect(box.x * bounds.width, box.y * bounds.height, box.w * bounds.width, box.h * bounds.height);
+      context.font = `${bounds.width * 0.03}pt Calibri`;
+      context.fillStyle = strokeColor;
+      context.fillText(box.name, box.x * bounds.width, box.y * bounds.height + bounds.width * 0.03);
       // if (catchBoxes.size > args.length) {
       //   catchBoxes.delete(JSON.stringify(box));
       // }
@@ -56,7 +60,7 @@ export const drawLinesOfPoint = (canvas: HTMLCanvasElement) => {
   }
 }
 
-export const drawAlarmImage = (src: string, zones: Zones[][], boxes: Boxes[], zonesColor?: string, boxesColor?: string) => {
+export const drawAlarmImage = (src: string, zones: Zones[][], boxes: Boxes[], zonesColor?: string, boxesColor?: string, lineWidth?: number) => {
   return new Promise<string>((resolve) => {
     if (src) {
       const img = new Image();
@@ -74,12 +78,12 @@ export const drawAlarmImage = (src: string, zones: Zones[][], boxes: Boxes[], zo
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           if (zones && zones.length) {
             // 绘制检测区
-            drawLinesForZones(ctx, bounds, zones, zonesColor);
+            drawLinesForZones(ctx, bounds, zones, zonesColor, lineWidth);
           }
   
           if (boxes && boxes.length) {
             // 绘制报警区
-            drawLinesForBoxes(ctx, bounds, boxes, zonesColor);
+            drawLinesForBoxes(ctx, bounds, boxes, boxesColor, lineWidth);
           }
            resolve(canvas.toDataURL());
         }

@@ -33,7 +33,7 @@ export default function CardItem(props: Props) {
   useEffect(() => {
     if(zones && boxes && data){
       data.forEach(item => {
-        drawAlarmImage(`http://${Config.BASE_URL_HOST}${item.url}?token=${token}`, JSON.parse(zones), JSON.parse(boxes), 'blue', 'red').then(src => {
+        drawAlarmImage(`http://${Config.BASE_URL_HOST}${item.url}?token=${token}`, JSON.parse(zones), JSON.parse(boxes), 'yellow', 'red', 2).then(src => {
         setAlarmImages([...alarmImages, {...item, url: src}]);
       })
       })
