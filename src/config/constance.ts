@@ -71,3 +71,19 @@ export const reactQueryKey = {
 */
   getUser: 'get-user',
 }
+
+/**
+ * 事件分类
+ */
+export const EVENT_TYPE = [
+  {type: "XJ_000", name: '巡检分析', },
+  {type: "PD_000", name: '皮带分析', },
+  {type: "ML_000", name: '煤量分析', },
+  {type: "RQ_000", name: '区域入侵',},
+  {type: "XW_000", name: '行为监管',},
+  {type: "ZC_000", name: '钻场分析', },
+  {type: "JL_000", name: '距离监测', },
+  {type: "CY_000", name: '超员检测',},
+  {type: "HJ_000", name: '环境隐患',},
+  {type: "SB_000", name: '设备隐患', },
+]

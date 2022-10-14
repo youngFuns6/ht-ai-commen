@@ -4,7 +4,6 @@ import { useQuery } from 'react-query';
 import { useSelector, } from 'react-redux';
 import { getAlarmImagesById } from '@/api/alarm';
 import { AlarmImage } from '@/types/Alarm';
-import { Boxes, Zones } from '@/types/Alarm';
 import Config from '@/config/network';
 import { State as AuthState } from '@/store/reducer/authSlice';
 import { reactQueryKey } from '@/config/constance';

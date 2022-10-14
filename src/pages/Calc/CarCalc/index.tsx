@@ -79,6 +79,7 @@ export default function CarCalc() {
         onChange={onPageChange}
         pageSize={8}
         total={100}
+        showSizeChanger={false}
         showQuickJumper
         showTotal={() => `共 ${100} 条数据`}
       />

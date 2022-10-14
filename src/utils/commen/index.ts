@@ -13,6 +13,10 @@ export const getAlarmLev = (alarmGrade?: number) => {
   }
 }
 
+export const getEventTypeByText = (type: string) => {
+
+}
+
 // 过滤查询参数
 export const fillterQuery = (obj: { [key: string]: any }, fillter: string = '全部', day: boolean = false) => {
   let newObj = clone(obj);

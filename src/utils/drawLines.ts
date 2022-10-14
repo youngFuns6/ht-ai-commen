@@ -7,7 +7,7 @@ interface Bounds {
 }
 
 // let catchZones = new Set();
-export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bounds, args: Array<Zones[]>, strokeColor: string = "#0000ff", lineWidth: number = 1) => {
+export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bounds, args: Array<Zones[]>, strokeColor: string = "yellow", lineWidth: number = 1) => {
   if (context) {
     context.lineWidth = lineWidth;
     args.forEach(zones => {
@@ -30,7 +30,6 @@ export const drawLinesForZones = (context: CanvasRenderingContext2D, bounds: Bou
 
 // let catchBoxes = new Set();
 export const drawLinesForBoxes = (context: CanvasRenderingContext2D, bounds: Bounds, args: Boxes[], strokeColor: string = 'red', lineWidth: number = 1) => {
-  console.log(args)
   if (context) {
     context.lineWidth = 1;
     args.forEach(box => {

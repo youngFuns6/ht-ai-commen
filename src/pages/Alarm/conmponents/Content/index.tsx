@@ -17,6 +17,7 @@ import ToolBtn from '@/components/base/ToolBtn';
 import outputExcel from '@/utils/outputExcel';
 import { getRecord } from '@/api/record';
 import { Record } from '@/types/Record';
+import { Algo } from '@/types/Algo';
 import { reactQueryKey } from '@/config/constance';
 import { fillterQuery } from '@/utils/commen';
 
@@ -74,7 +75,7 @@ const Content = React.forwardRef((props: Props & PropsWithChildren, ref: any) =>
 
   // 分页
   const onPageChange = (page: number, pageSize: number) => {
-    dispatch(changeAlarm({ searchAlarm: { page, limit: pageSize } }));
+    dispatch(changeAlarm({ searchAlarm: {...searchAlarm, page, limit: pageSize } }));
   }
 
   // 导出表格
@@ -129,6 +130,7 @@ const Content = React.forwardRef((props: Props & PropsWithChildren, ref: any) =>
           current={searchAlarm.page}
           onChange={onPageChange}
           pageSize={8}
+          showSizeChanger={false}
           total={alarmInfo?.pages[0].total}
           showQuickJumper
           showTotal={total => `共 ${total} 条数据`}

@@ -1,48 +1,49 @@
 import * as XLSX from 'xlsx';
 
 export default (file: File) => {
+  return new Promise((resolve, reject) => {
+    let data: ArrayBuffer[] = [];// 存储获取到的数据
 
-  let data: ArrayBuffer[] = [];// 存储获取到的数据
+    // 通过FileReader对象读取文件
 
-  // 通过FileReader对象读取文件
+    const fileReader = new FileReader();
 
-  const fileReader = new FileReader();
+    fileReader.readAsBinaryString(file);  //二进制
 
-  fileReader.readAsBinaryString(file);  //二进制
+    fileReader.onload = event => {
 
-  fileReader.onload = event => {
+      try {
 
-    try {
+        const { result }: any = event.target;
 
-      const { result }: any = event.target;
+        // 以二进制流方式读取得到整份excel表格对象
 
-      // 以二进制流方式读取得到整份excel表格对象
+        const workbook = XLSX.read(result, { type: 'binary' });
 
-      const workbook = XLSX.read(result, { type: 'binary' });
+        // 遍历每张工作表进行读取（这里默认只读取第一张表）
 
-      // 遍历每张工作表进行读取（这里默认只读取第一张表）
+        for (const sheet in workbook.Sheets) {
 
-      for (const sheet in workbook.Sheets) {
+          if (workbook.Sheets.hasOwnProperty(sheet)) {
 
-        if (workbook.Sheets.hasOwnProperty(sheet)) {
+            // 利用 sheet_to_json 方法将 excel 转成 json 数据
 
-          // 利用 sheet_to_json 方法将 excel 转成 json 数据
+            data = data.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
 
-          data = data.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
-
-          // break; // 如果只取第一张表，就取消注释这行
+            // break; // 如果只取第一张表，就取消注释这行
+          }
         }
+
+          resolve(data);
+
+      } catch (e) {
+
+        reject(e);
+
+        return;
+
       }
 
-      console.log(data)
-    } catch (e) {
-
-      console.log('文件类型不正确');
-
-      return;
-
-    }
-
-  };
-
+    };
+  })
 }

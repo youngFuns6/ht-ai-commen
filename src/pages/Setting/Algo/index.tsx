@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import './index.scss';
 import { Table, Select, message, Upload } from 'antd';
 import type { FormInstance } from 'antd/es/form';
+import { RcFile } from 'antd/lib/upload';
 import { cloneDeep } from 'lodash';
 import { useMutation } from 'react-query';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +17,7 @@ import useGetCommenList from '@/hooks/useGetCommenList';
 import { State as SettingState, changeSetting } from '@/store/reducer/settingSlice';
 import inputExcel from '@/utils/inputExcel';
 import outputExcel from '@/utils/outputExcel';
+import { EVENT_TYPE } from '@/config/constance';
 
 import commenBtn from '@/assets/images/btn/tools/commen.png';
 import mergePageList from '@/utils/mergePageList';
@@ -54,7 +56,7 @@ export default function AlgoCom() {
   }, [algo.form])
 
   // 获取算法
-  const { data: algoInfo, isFetched: algoIsFetched, hasNextPage: algoHasNexPage, fetchNextPage: algoFetchNextPage } = useGetCommenList([reactQueryKey.getAlgo], getAlgo, {});
+  const { data: algoInfo, isFetched: algoIsFetched, hasNextPage: algoHasNexPage, fetchNextPage: algoFetchNextPage, refetch } = useGetCommenList([reactQueryKey.getAlgo], getAlgo, algo.search);
 
   // 分页
   const onPageChange = (page: number, pageSize: number) => {
@@ -100,9 +102,12 @@ export default function AlgoCom() {
     }
   }
 
-  const onIo = (type: string) => {
+  const onIo = (type: string, file?: RcFile) => {
     switch (type) {
       case 'input':
+        file && inputExcel(file).then(data => {
+          console.log(data)
+        })
         break;
       case 'output':
         // outputExcel()
@@ -123,6 +128,7 @@ export default function AlgoCom() {
         }, 'algo')
         break;
     }
+    refetch();
   }
 
   const formList: FormListFace[] = [
@@ -131,7 +137,7 @@ export default function AlgoCom() {
       name: 'event_type',
       rules: [{ required: true, message: '必填' }],
       defNode: (
-        <Select />
+        <Select options={EVENT_TYPE.map(item => ({label: item.name, value: item.type, key: item.type}))} />
       )
     },
     {
@@ -167,6 +173,7 @@ export default function AlgoCom() {
           pageSize: 12,
           total: algoInfo?.pages[0].total,
           showQuickJumper: true,
+          showSizeChanger: false,
           showTotal: total => `共 ${total} 条数据`
         }} rowKey='id' dataSource={algoInfo?.pages[algoInfo.pages.length - 1].items} columns={columns} rowClassName={(record) => record.id === algo.selectedRowKeys[0] ? 'active-row' : ''} onRow={(record => ({ onClick: () => onSelectRow(record) }))} />
       </div>
@@ -183,7 +190,7 @@ export default function AlgoCom() {
         </div>
         <div className="set-algo-right-tools">
           <ToolBtn onClick={() => onIo('output')} src={commenBtn} content='导出' />
-          <Upload customRequest={() => { }} showUploadList={false} name="excel" listType="text" accept="file" beforeUpload={inputExcel}>
+          <Upload customRequest={() => { }} showUploadList={false} name="excel" listType="text" accept="file" beforeUpload={(file) => onIo('input', file)}>
             <ToolBtn src={commenBtn} content='导入' />
           </Upload>
         </div>

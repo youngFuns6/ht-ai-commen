@@ -194,6 +194,7 @@ export default function Plan() {
           current: searchPatrolPlan.page,
           onChange: onPageChange,
           pageSize: 12,
+          showSizeChanger: false,
           total: patrolPlanInfo?.pages[0].total,
           showQuickJumper: true,
           showTotal: total => `共 ${total} 条数据`
