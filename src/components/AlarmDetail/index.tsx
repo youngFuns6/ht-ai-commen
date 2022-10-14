@@ -14,6 +14,9 @@ import { getAlarmLev } from '@/utils/commen';
 import Config from '@/config/network';
 import { State as AuthState } from '@/store/reducer/authSlice';
 import { Record } from '@/types/Record';
+import { reactQueryKey } from '@/config/constance';
+import useGetCommenList from '@/hooks/useGetCommenList';
+import { getAlgo } from '@/api/algo';
 
 interface Props {
   alarmInfo?: Alarm;
@@ -34,6 +37,9 @@ export default function TecAlarm(props: Props) {
   const ulRef = useRef<HTMLUListElement>(null);
   const formListRef = useRef<FormInstance>(null);
   const [visible, setVisible] = useState(false);
+
+  // 获取算法
+  const { data: algoInfo, isFetched: algoIsFetched, hasNextPage: algoHasNexPage, fetchNextPage: algoFetchNextPage, refetch } = useGetCommenList([reactQueryKey.getAlgo], getAlgo, {alarm_type: alarmInfo?.type});
   
   const onScroll = (type: string) => {
     scrollAnimation(type);
