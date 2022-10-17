@@ -4,9 +4,10 @@ import { setLocationAuth, getLocationAuth, removeLocationAuth } from "@/utils/lo
 interface AuthState {
   username: string;
   password: string;
-  token: string | number | null;
+  token: string | null;
   isLogged: boolean;
   remember: false;
+
 }
 
 export interface State {
@@ -23,7 +24,7 @@ export const authSlice = createSlice({
     remember: false
   },
   reducers: {
-    loginRdc(state: AuthState, action) {
+    loginRdc(state: any, action) {
       state.isLogged = true;
       state.token = action.payload.token;
       state.username = action.payload.username;
@@ -31,7 +32,7 @@ export const authSlice = createSlice({
       state.remember = action.payload.remember;
       setLocationAuth(state);
     },
-    logoutRdc(state: AuthState) {
+    logoutRdc(state: any) {
       state.isLogged = false;
       state.token = null;
       state.username = '';

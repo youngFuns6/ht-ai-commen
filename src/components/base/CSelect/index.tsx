@@ -4,7 +4,7 @@ import styles from './cSelect.module.scss';
 
 interface Props {
   list?: Array<{
-    key: number | string;
+    key: number | string | undefined;
     label: any;
     value: any;
   }>,

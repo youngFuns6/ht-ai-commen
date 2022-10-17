@@ -7,8 +7,8 @@ import Config from '@/config/network';
 import { getLocationAuth } from "@/utils/locationAuth";
 
 const request = axios.create({
-  timeout: 30000,
-  baseURL: process.env.NODE_ENV === 'development' ?  `http://${Config.BASE_URL_HOST}/api` : window.location.origin + '/api',
+  timeout: 20000,
+  baseURL: `http://${Config.BASE_URL_HOST}/api`,
   headers: {
     "Content-Type": "application/json; charset=UTF-8",
   },
@@ -25,7 +25,6 @@ request.interceptors.request.use(
     if(getLocationAuth()){
       config.headers!.Authorization = getLocationAuth()!.token as string
     }
-
     return config;
   },
   (error: AxiosError) => {

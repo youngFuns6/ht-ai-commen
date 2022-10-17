@@ -33,7 +33,7 @@ export default function Login() {
       setErrMessage('');
       navigate('/home/preview')
     } catch (error: any) {
-      setErrMessage(error.response.data.message);
+      setErrMessage(error.response.data?.message);
     }
   };
 

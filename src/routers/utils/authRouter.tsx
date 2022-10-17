@@ -3,7 +3,7 @@ import { searchRoute } from "@/utils/router";
 import { rootRouter } from "@/routers/index";
 // import { HOME_URL } from "@/config/config";
 import { useSelector } from "react-redux";
-import { loginRdc, State } from '@/store/reducer/authSlice';
+import { State } from '@/store/reducer/authSlice';
 
 /**
  * @description 路由守卫组件
