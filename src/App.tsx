@@ -1,4 +1,5 @@
 import Router from "@/routers/index";
+import { useLocation } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
@@ -11,11 +12,14 @@ import '@/assets/font/iconfont.css';
 const queryClient = new QueryClient();
 
 function App() {
+
+  const { pathname } = useLocation();
+
   return (
     <ConfigProvider locale={zh_CN}>
       <AuthRouter>
         <QueryClientProvider client={queryClient}>
-          <Router />
+              <Router />
         </QueryClientProvider>
       </AuthRouter>
     </ConfigProvider>

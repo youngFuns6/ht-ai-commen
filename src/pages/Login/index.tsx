@@ -13,7 +13,7 @@ import manIcon from '@/assets/images/icon/man.png';
 import lockIcon from '@/assets/images/icon/lock.png';
 
 export default function Login() {
-  const { remember, username, password } = useSelector((state: State) => state.auth)
+  const { remember, username, password } = useSelector((state: State) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const formRef = useRef<FormInstance>(null);
