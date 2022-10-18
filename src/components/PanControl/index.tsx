@@ -90,18 +90,18 @@ export default function PanControl() {
       </h3>
       <div className={styles.flex}>
         <div className={styles.commenBtn}>
-          <ToolBtn src={commenBtn} content='镜头雨刷开' />
+          <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='镜头雨刷开' />
         </div>
         <div className={styles.commenBtn}>
-          <ToolBtn src={commenBtn} content='镜头雨刷关' />
+          <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='镜头雨刷关' />
         </div>
       </div>
       <div className={styles.flex}>
         <div className={styles.commenBtn}>
-          <ToolBtn src={commenBtn} content='激光雨刷开' />
+          <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='激光雨刷开' />
         </div>
         <div className={styles.commenBtn}>
-          <ToolBtn src={commenBtn} content='激光雨刷关' />
+          <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='激光雨刷关' />
         </div>
       </div>
       <h3 className={styles.text}>
@@ -109,10 +109,10 @@ export default function PanControl() {
       </h3>
       <div className={styles.flex}>
         <div className={styles.commenBtn}>
-          <ToolBtn src={commenBtn} content='灯光开' />
+          <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='灯光开' />
         </div>
         <div className={styles.commenBtn}>
-          <ToolBtn src={commenBtn} content='灯光关' />
+          <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='灯光关' />
         </div>
       </div>
       </div>}

@@ -16,6 +16,7 @@ import { getRoleList, getUser, editUser, deleteUser, addUser } from '@/api/user'
 import { State as SettingState, changeSetting } from '@/store/reducer/settingSlice';
 
 import commenBtn from '@/assets/images/btn/tools/commen.png';
+import commenAcBtn from '@/assets/images/btn/tools/commen_ac.png';
 
 export default function User() {
   // 获取角色列表
@@ -126,10 +127,10 @@ export default function User() {
       <div className="set-user-right">
         <FormList onValuesChange={(changeValues) => dispatch(changeSetting({ user: { ...user, form: { ...user.form, ...changeValues } } }))} initialValues={user.form} ref={formListRef} formList={formList} col={{ span: 24 }} labelSpan={7} wrapperSpan={17} />
         <div className='set-user-right-btn'>
-          <ToolBtn onClick={() => onOptUser('add')} src={commenBtn} content='增加' />
-          <ToolBtn onClick={() => onOptUser('edit')} src={commenBtn} content='修改' />
+          <ToolBtn onClick={() => onOptUser('add')} src={commenBtn} acSrc={commenAcBtn} content='增加' />
+          <ToolBtn onClick={() => onOptUser('edit')} src={commenBtn} acSrc={commenAcBtn} content='修改' />
           <Confirm title='确认删除？' onConfirm={() => onOptUser('delete')}>
-            <ToolBtn src={commenBtn} content='删除' />
+            <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='删除' />
           </Confirm>
         </div>
       </div>

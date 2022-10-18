@@ -12,6 +12,7 @@ import mergePageList from '@/utils/mergePageList';
 import ToolBtn from '@/components/base/ToolBtn';
 
 import commenBtn from '@/assets/images/btn/tools/commen.png';
+import commenAcBtn from '@/assets/images/btn/tools/commen_ac.png';
 
 interface RecordType {
   key: string;
@@ -68,7 +69,7 @@ export default function Sys() {
             <Row gutter={30}>
               <Col span={8} style={{ display: 'flex', alignItems: 'center' }}>样本抓取时间间隔（单位：秒）：</Col>
               <Col span={8}><Input /></Col>
-              <Col span={8}><ToolBtn src={commenBtn} content='保存' /></Col>
+              <Col span={8}><ToolBtn src={commenBtn} acSrc={commenAcBtn} content='保存' /></Col>
             </Row>
           </Col>
         </Row>
@@ -77,7 +78,7 @@ export default function Sys() {
             <Row gutter={30}>
               <Col span={8} style={{ display: 'flex', alignItems: 'center' }}>样本存储路径：</Col>
               <Col span={8}><Input /></Col>
-              <Col span={8}><ToolBtn src={commenBtn} content='保存' /></Col>
+              <Col span={8}><ToolBtn src={commenBtn} acSrc={commenAcBtn} content='保存' /></Col>
             </Row>
           </Col>
         </Row>

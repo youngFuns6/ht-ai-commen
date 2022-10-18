@@ -20,6 +20,7 @@ import outputExcel from '@/utils/outputExcel';
 import { EVENT_TYPE } from '@/config/constance';
 
 import commenBtn from '@/assets/images/btn/tools/commen.png';
+import commenAcBtn from '@/assets/images/btn/tools/commen_ac.png';
 import mergePageList from '@/utils/mergePageList';
 
 const columns = [
@@ -181,17 +182,17 @@ export default function AlgoCom() {
         <div>
           <FormList ref={formListRef} formList={formList} col={{ span: 24 }} labelSpan={10} wrapperSpan={14} onValuesChange={(changeValues) => dispatch(changeSetting({ algo: { ...algo, form: { ...algo.form, ...changeValues } } }))} />
           <div className='set-algo-right-btn'>
-            <ToolBtn onClick={() => onOptAlgo('add')} src={commenBtn} content='增加' />
-            <ToolBtn onClick={() => onOptAlgo('edit')} src={commenBtn} content='修改' />
+            <ToolBtn onClick={() => onOptAlgo('add')} src={commenBtn} acSrc={commenAcBtn} content='增加' />
+            <ToolBtn onClick={() => onOptAlgo('edit')} src={commenBtn} acSrc={commenAcBtn} content='修改' />
             <Confirm title='确认删除？' onConfirm={() => onOptAlgo('delete')}>
-              <ToolBtn src={commenBtn} content='删除' />
+              <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='删除' />
             </Confirm>
           </div>
         </div>
         <div className="set-algo-right-tools">
-          <ToolBtn onClick={() => onIo('output')} src={commenBtn} content='导出' />
+          <ToolBtn onClick={() => onIo('output')} src={commenBtn} acSrc={commenAcBtn} content='导出' />
           <Upload customRequest={() => { }} showUploadList={false} name="excel" listType="text" accept="file" beforeUpload={(file) => onIo('input', file)}>
-            <ToolBtn src={commenBtn} content='导入' />
+            <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='导入' />
           </Upload>
         </div>
       </div>
