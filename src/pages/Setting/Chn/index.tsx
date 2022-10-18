@@ -18,6 +18,7 @@ import { State as SettingState, changeSetting } from '@/store/reducer/settingSli
 
 import chnTextBar from '@/assets/images/text/chn_info.png';
 import commenBtn from '@/assets/images/btn/tools/commen.png';
+import commenAcBtn from '@/assets/images/btn/tools/commen_ac.png';
 
 const columns = [
   {
@@ -188,10 +189,10 @@ export default function Chn() {
         <TextBar width='100%' height='50px' src={chnTextBar} />
         <FormList onValuesChange={(changeValues) => dispatch(changeSetting({ chn: { ...chn, form: { ...chn.form, ...changeValues } } }))} ref={formListRef} initialValues={chn.form} formList={formList} col={{ span: 24 }} labelSpan={8} wrapperSpan={16} />
         <div className='set-chn-right-btn'>
-          <ToolBtn onClick={() => onOptChn('add')} src={commenBtn} content='增加' />
-          <ToolBtn onClick={() => onOptChn('edit')} src={commenBtn} content='修改' />
+          <ToolBtn onClick={() => onOptChn('add')} src={commenBtn} acSrc={commenAcBtn} content='增加' />
+          <ToolBtn onClick={() => onOptChn('edit')} src={commenBtn} acSrc={commenAcBtn} content='修改' />
           <Confirm title='确认删除？' onConfirm={() => onOptChn('delete')}>
-            <ToolBtn src={commenBtn} content='删除' />
+            <ToolBtn src={commenBtn} acSrc={commenAcBtn} content='删除' />
           </Confirm>
         </div>
       </div>

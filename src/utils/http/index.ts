@@ -44,7 +44,8 @@ request.interceptors.response.use(
   },
   (error: AxiosError) => {
     Nprogress.done();
-    if(error.response?.status === 401){
+    console.log(error.response)
+    if(error.response?.status === 401 && !(error.response?.data as any).message.match('用户')){
       window.location.href = window.location.origin + '/login';
       message.error('登陆已失效，请重新登录');
     }else {

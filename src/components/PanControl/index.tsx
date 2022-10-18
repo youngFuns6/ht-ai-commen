@@ -10,14 +10,23 @@ import CSelect from '../base/CSelect';
 
 import panControlBar from '@/assets/images/text/pan_control.png';
 import upArrow from '@/assets/images/btn/tools/up.png';
+import upArrowAc from '@/assets/images/btn/tools/up_ac.png';
 import downArrow from '@/assets/images/btn/tools/down.png';
+import downArrowAc from '@/assets/images/btn/tools/down_ac.png';
 import leftArrow from '@/assets/images/btn/tools/left.png';
+import leftArrowAc from '@/assets/images/btn/tools/left_ac.png';
 import rightArrow from '@/assets/images/btn/tools/right.png';
+import rightArrowAc from '@/assets/images/btn/tools/right_ac.png';
 import yuan from '@/assets/images/btn/tools/yuan.png';
+import yuanAc from '@/assets/images/btn/tools/yuan_ac.png';
 import jin from '@/assets/images/btn/tools/jin.png';
+import jinAc from '@/assets/images/btn/tools/jin_ac.png';
 import jia from '@/assets/images/btn/tools/jia.png';
+import jiaAc from '@/assets/images/btn/tools/jia_ac.png';
 import jian from '@/assets/images/btn/tools/jian.png';
+import jianAc from '@/assets/images/btn/tools/jian_ac.png';
 import commenBtn from '@/assets/images/btn/tools/commen.png';
+import commenAcBtn from '@/assets/images/btn/tools/commen_ac.png';
 
 export default function PanControl() {
 
@@ -38,25 +47,25 @@ export default function PanControl() {
       <div className={styles.options}>
         <div className={styles.left}>
           <div>
-            <ToolBtn width='30px' height='30px' src={upArrow} />
+            <ToolBtn width='30px' height='30px' src={upArrow} acSrc={upArrowAc} />
           </div>
           <div className={styles.center}>
-            <ToolBtn width='30px' height='30px' src={leftArrow} />
+            <ToolBtn width='30px' height='30px' src={leftArrow} acSrc={leftArrowAc} />
             <i style={{ margin: '10px' }}>云台</i>
-            <ToolBtn width='30px' height='30px' src={rightArrow} />
+            <ToolBtn width='30px' height='30px' src={rightArrow} acSrc={rightArrowAc} />
           </div>
           <div>
-            <ToolBtn width='30px' height='30px' src={downArrow} />
+            <ToolBtn width='30px' height='30px' src={downArrow} acSrc={downArrowAc} />
           </div>
           <div className={styles.center}>
-            <ToolBtn width='30px' height='30px' src={yuan} />
+            <ToolBtn width='30px' height='30px' src={yuan} acSrc={yuanAc} />
             <i style={{ margin: '10px' }}>聚焦</i>
-            <ToolBtn width='30px' height='30px' src={jin} />
+            <ToolBtn width='30px' height='30px' src={jin} acSrc={jinAc} />
           </div>
           <div className={styles.center}>
-            <ToolBtn width='30px' height='30px' src={jia} />
+            <ToolBtn width='30px' height='30px' src={jia} acSrc={jiaAc} />
             <i style={{ margin: '10px' }}>焦点</i>
-            <ToolBtn width='30px' height='30px' src={jian} />
+            <ToolBtn width='30px' height='30px' src={jian} acSrc={jianAc} />
           </div>
         </div>
         <div className={styles.right}>
@@ -65,13 +74,13 @@ export default function PanControl() {
           </h3>
           <CSelect width='100px' size='small' value={0} list={Array.from({ length: 99 }).map((_, index) => ({ label: index + 1, value: index, key: index }))} />
           <div className={styles.commenBtn}>
-            <ToolBtn width='80px' src={commenBtn} content='设置' />
+            <ToolBtn width='80px' src={commenBtn} acSrc={commenAcBtn} content='设置' />
           </div>
           <div className={styles.commenBtn}>
-            <ToolBtn width='80px' src={commenBtn} content='调用' />
+            <ToolBtn width='80px' src={commenBtn} acSrc={commenAcBtn} content='调用' />
           </div>
           <div className={styles.commenBtn}>
-            <ToolBtn width='80px' src={commenBtn} content='删除' />
+            <ToolBtn width='80px' src={commenBtn} acSrc={commenAcBtn} content='删除' />
           </div>
         </div>
       </div>

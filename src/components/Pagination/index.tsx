@@ -5,7 +5,9 @@ import { useSelector } from 'react-redux';
 import { State } from '@/store/reducer/screenSlice';
 
 import leftBtn from '@/assets/images/btn/tools/left.png';
+import leftAcBtn from '@/assets/images/btn/tools/left_ac.png';
 import rightBtn from '@/assets/images/btn/tools/right.png';
+import rightAcBtn from '@/assets/images/btn/tools/right_ac.png';
 
 interface Props {
   total?: number;
@@ -48,13 +50,13 @@ export default function Pageination(props: Props) {
   return (
     <div className={styles.pagination}>
       <div className={styles.left}>
-        <ToolBtn disable={page === 1 ? true : false} onClick={() => togglePage('prev')} src={leftBtn} width="32px" height='32px' />
+        <ToolBtn disable={page === 1 ? true : false} onClick={() => togglePage('prev')} src={leftBtn} acSrc={leftAcBtn} width="32px" height='32px' />
       </div>
       <div className={styles.center}>
         {page}&nbsp;/&nbsp;{Math.ceil(total / count) <= 1 ? 1 : Math.ceil(total / count)}
       </div>
       <div className={styles.right}>
-        <ToolBtn disable={page === Math.ceil(total / count) ? true : false} onClick={() => togglePage('next')} src={rightBtn} width="32px" height='32px' />
+        <ToolBtn disable={page === Math.ceil(total / count) ? true : false} onClick={() => togglePage('next')} src={rightBtn} acSrc={rightAcBtn} width="32px" height='32px' />
       </div>
     </div>
   )

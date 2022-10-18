@@ -5,7 +5,9 @@ import TextBar from '@/components/base/TextBar';
 import ToolBtn from '@/components/base/ToolBtn';
 
 import chartCircleBtn from '@/assets/images/btn/tools/chart_circle.png'
+import chartCircleAcBtn from '@/assets/images/btn/tools/chart_circle_ac.png'
 import chartLineBtn from '@/assets/images/btn/tools/chart_line.png'
+import chartLineAcBtn from '@/assets/images/btn/tools/chart_line_ac.png'
 
 interface Props {
   data: Array<{
@@ -82,8 +84,8 @@ export default function Charts(props: Props) {
       <div className='charts-header'>
         <TextBar src={textBarSrc} />
         <div className='charts-header-btn'>
-          <ToolBtn onClick={() => {onClick && onClick('line')}}  src={chartLineBtn} />
-          <ToolBtn onClick={() => {onClick && onClick('column')}} src={chartCircleBtn} />
+          <ToolBtn onClick={() => {onClick && onClick('line')}}  src={chartLineBtn} acSrc={chartLineAcBtn} />
+          <ToolBtn onClick={() => {onClick && onClick('column')}} src={chartCircleBtn} acSrc={chartCircleAcBtn} />
         </div>
       </div>
       {type === 'line' ? <Line {...lineConfig} /> : <Column {...columnConfig} />}

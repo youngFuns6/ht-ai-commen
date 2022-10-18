@@ -25,8 +25,9 @@ import { changeCalc, State as CalcState } from '@/store/reducer/calcSlice';
 import { fillterQuery } from '@/utils/commen';
 
 import dataQuery from '@/assets/images/text/data_query.png';
-import commenBtn from '@/assets/images/btn/tools/commen.png'
-import calcBar from '@/assets/images/text/calc.png'
+import commenBtn from '@/assets/images/btn/tools/commen.png';
+import commenAcBtn from '@/assets/images/btn/tools/commen_ac.png';
+import calcBar from '@/assets/images/text/calc.png';
 import { useQuery } from 'react-query';
 
 export default function AlarmCalc() {
@@ -146,7 +147,7 @@ export default function AlarmCalc() {
           <div className={styles.btn}>
             <Row>
               <Col offset={7}>
-                <ToolBtn content='搜索' src={commenBtn} onClick={onQuery} />
+                <ToolBtn content='搜索' src={commenBtn} acSrc={commenAcBtn} onClick={onQuery} />
               </Col>
             </Row>
           </div>

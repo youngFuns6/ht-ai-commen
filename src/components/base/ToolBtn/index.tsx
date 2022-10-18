@@ -6,6 +6,7 @@ import path from 'path';
 
 interface Props {
   src: string;
+  acSrc?: string;
   width?: string;
   height?: string;
   onClick?: () => void;
@@ -18,7 +19,7 @@ interface Props {
 
 export default function ToolBtn(props: Props) {
 
-  const { src, width, height, onClick, disable=false, content, native=false, showActive=false, path } = props;
+  const { src, acSrc, width, height, onClick, disable=false, content, native=false, showActive=false, path } = props;
 
   const location = useLocation();
 
@@ -34,7 +35,7 @@ export default function ToolBtn(props: Props) {
 
   return (
     <div onClick={onClick && debounce(onClick, 500)} style={{ width, height, pointerEvents: disable ? 'none' : 'auto', cursor: disable ? 'not-allowed' : 'pointer' }} className='tool-btn' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <img src={(active && !native) || (showActive && location.pathname === path) ? `${src.replace('.png', '_ac.png')}` : src} alt="" />
+      <img src={(active && !native) || (showActive && location.pathname === path) ? acSrc: src} alt="" />
       {content && <i>{content}</i>}
     </div>
   )

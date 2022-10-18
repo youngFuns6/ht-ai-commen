@@ -11,8 +11,11 @@ import LayoutScreen from './components/LayoutScreen';
 import HiddenBtn from '../base/HiddenBtn';
 
 import qpBtn from '@/assets/images/btn/tools/qp.png';
+import qpAcBtn from '@/assets/images/btn/tools/qp_ac.png';
 import gbBtn from '@/assets/images/btn/tools/gb.png';
+import gbAcBtn from '@/assets/images/btn/tools/gb_ac.png';
 import fpBtn from '@/assets/images/btn/tools/fp.png';
+import fpAcBtn from '@/assets/images/btn/tools/fp_ac.png';
 
 const { Content, } = Layout;
 
@@ -49,13 +52,13 @@ const ShowPreview = () => {
       </Content>
       <div className={styles.tools}>
         <div className={styles.left}>
-          <ToolBtn src={qpBtn} onClick={handlerFull} />
-          <ToolBtn src={gbBtn} onClick={handlerClose} />
+          <ToolBtn src={qpBtn} acSrc={qpAcBtn} onClick={handlerFull} />
+          <ToolBtn src={gbBtn} acSrc={gbAcBtn} onClick={handlerClose} />
         </div>
         <div className={styles.right}>
           <Pageination page={page} total={chnListByRegion.length} onChange={onChange} />
           <div className={styles.screenWrop}>
-            <ToolBtn src={fpBtn} onClick={onShowScreen} />
+            <ToolBtn src={fpBtn} acSrc={fpAcBtn} onClick={onShowScreen} />
             {showScreen && <ShowScreen />}
           </div>
         </div>
