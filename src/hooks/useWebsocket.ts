@@ -7,7 +7,7 @@ export default (params: string) => {
   useEffect(() => {
     setSocket(() => {
       // const socket = new WebSocket(`ws://${Config.BASE_URL_HOST}/?user=` + params);
-      const socket = new WebSocket(`ws://${Config.BASE_URL_HOST.replace(/:\d+/, ':8208')}?user=` + params);
+      const socket = new WebSocket(`ws://${Config.BASE_URL_HOST.replace(/:\d+/, ':8108')}?user=` + params);
 
       socket.onopen = () => {
         console.log('连接成功');

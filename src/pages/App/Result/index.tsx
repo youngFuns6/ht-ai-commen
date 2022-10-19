@@ -63,7 +63,7 @@ export default function Result() {
 
   // 分页
   const onPageChange = (page: number, pageSize: number) => {
-    dispatch(changeApp({ searchPatrolPlan: { page, limit: pageSize } }));
+    dispatch(changeApp({ searchPatrolResult: {...searchPatrolResult, page, limit: pageSize } }));
   }
 
   const formList: FormListFace[] = [
