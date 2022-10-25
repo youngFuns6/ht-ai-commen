@@ -3,6 +3,11 @@
   align-items: flex-start;
   .set-region-left {
     flex-grow: 1;
+    position: relative;
+    .set-region-left-table {
+      width: 100%;
+      position: absolute;
+    }
   }
   .set-region-right {
     width: 300px;

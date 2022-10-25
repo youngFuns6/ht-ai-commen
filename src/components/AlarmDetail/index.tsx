@@ -30,6 +30,7 @@ interface Props {
 import leftBtn from '@/assets/images/btn/tools/left_btn.png';
 import rightBtn from '@/assets/images/btn/tools/right_btn.png';
 import commenBtn from '@/assets/images/btn/tools/commen.png';
+import commenAcBtn from '@/assets/images/btn/tools/commen_ac.png';
 
 export default function TecAlarm(props: Props) {
   const { alarmInfo, alarmImgArr, isShow, alarmRecord, onClose, onSubmit: formSubmit } = props;
@@ -157,7 +158,7 @@ export default function TecAlarm(props: Props) {
                 <FormList ref={formListRef} labelSpan={9} wrapperSpan={15} formList={formList} searchForm={false} />
                 <Row>
                   <Col offset={9}>
-                    <ToolBtn onClick={onSubmit} src={commenBtn} content='提交' width='80px' height='30px' />
+                    <ToolBtn onClick={onSubmit} src={commenBtn} acSrc={commenAcBtn} content='提交' width='80px' height='30px' />
                   </Col>
                 </Row>
               </div>

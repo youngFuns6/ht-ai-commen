@@ -2,17 +2,23 @@
   @include flex-center();
   justify-content: right;
   align-items: flex-start;
+  height: 100%;
+  width: 100%;
   .plan-right {
     width: 300px;
+    height: 100%;
     margin-left: 20px;
-    .plan-right-opt {
-      margin-top: 100px;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .plan-content {
+    position: relative;
+    .plan-content-table {
+      width: 100%;
+      position: absolute;
+    }
     flex-grow: 1;
-    // .plan-page {
-    //   margin-top: 20px;
-    // }
+    height: 100%;
   }
 }

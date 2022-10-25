@@ -4,6 +4,11 @@
   align-items: flex-start;
   .set-algo-content {
     flex-grow: 1;
+    position: relative;
+    .set-algo-content-table {
+      width: 100%;
+      position: absolute;
+    }
   }
   .set-algo-right {
     width: 300px;

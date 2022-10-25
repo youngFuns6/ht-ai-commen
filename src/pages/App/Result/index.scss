@@ -9,6 +9,11 @@
   }
   .result-content {
     flex-grow: 1; 
+    position: relative;
+    .result-content-table {
+      width: 100%;
+      position: absolute;
+    }
     // .result-page {
     //   margin-top: 20px;
     // }

@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default React.forwardRef(function Player(props: Props, ref) {
-  const { channelId, controls = true, width = "100%", height = "100%", autoPlay = false, muted = false, flvUrl = '' } = props;
+  const { channelId, controls = true, width = "100%", height = "100%", autoPlay = true, muted = false, flvUrl = '' } = props;
   const videoRef = useRef<HTMLVideoElement>(null);
   const [flvPlayer, setFlvPlayer] = useState<flvjs.Player | null>(null);
   console.log(flvUrl)

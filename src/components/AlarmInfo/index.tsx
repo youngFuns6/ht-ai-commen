@@ -165,7 +165,7 @@ export default function AlarmInfo() {
               <AntdImage width={'100%'} height="100%" src={item.src} />
             </div>
             <div className={styles.textWrop}>
-              <p>告警类型：{getAlarmLev(item.alarmGrade)}</p>
+              <p>告警等级：{getAlarmLev(item.alarmGrade)}</p>
               {/* <p>所属摄像机：{chnListByRegion.find((channel: any) => channel.id === item.chnId)?.name}</p> */}
               <p>描述：{item.desc}</p>
             </div>

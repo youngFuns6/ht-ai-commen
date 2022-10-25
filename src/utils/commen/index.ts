@@ -3,10 +3,8 @@ import { clone } from 'lodash';
 
 export const getAlarmLev = (alarmGrade?: number) => {
   if (!alarmGrade && alarmGrade !== 0) return;
-  console.log(alarmGrade)
   switch (alarmGrade) {
     case 0:
-      console.log(alarmGrade)
       return '一级报警';
     case 1:
       return '二级报警';

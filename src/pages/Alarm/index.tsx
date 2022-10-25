@@ -61,7 +61,7 @@ export default function Alarm() {
     if (!formRef.current) return;
     const { getFieldsValue, getFieldValue } = formRef.current;
     const query = getFieldsValue();
-    dispatch(changeAlarm({ searchAlarm: { ...query, start_time: getFieldValue('start_time').valueOf(), stop_time: getFieldValue('stop_time').valueOf() } }));
+    dispatch(changeAlarm({ searchAlarm: { ...query, start_time: getFieldValue('start_time')?.valueOf(), stop_time: getFieldValue('stop_time')?.valueOf() } }));
   }
 
   const formList: FormListFace[] = [

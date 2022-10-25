@@ -111,7 +111,7 @@ const CalcCoal = () => {
     <div className='calc-coal'>
       <div className="calc-coal-left">
         <FormList ref={coalCountRef} onValuesChange={onCountChange} initialValues={{ ...searchCoalCount, start_time: moment(searchCoalCount.start_time) }} labelOut='horizontal' labelSpan={24} wrapperSpan={24} col={{ span: 24 }} formList={countFormList} />
-        <ToolBtn onClick={() => { dispatch(changeApp({ searchCoalCount: {...coalCountRef.current?.getFieldsValue(), start_time: coalCountRef.current?.getFieldValue('start_time').valueOf(), stop_time: coalCountRef.current?.getFieldValue('stop_time').valueOf()} })) }} native src={commenBtn} />
+        <ToolBtn onClick={() => { dispatch(changeApp({ searchCoalCount: {...coalCountRef.current?.getFieldsValue(), start_time: coalCountRef.current?.getFieldValue('start_time')?.valueOf(), stop_time: coalCountRef.current?.getFieldValue('stop_time')?.valueOf()} })) }} native src={commenBtn} />
       </div>
       <div className="calc-coal-content">
         <Row>
@@ -139,7 +139,7 @@ const CalcCoal = () => {
                 <FormList ref={cocalSectionRef} initialValues={{ ...searchSectionCount, start_time: moment(searchSectionCount.start_time), stop_time: moment(searchSectionCount.stop_time) }} labelSpan={7} wrapperSpan={17} col={{ span: 24 }} formList={sectionFormList} />
               </div>
               <div>
-                <ToolBtn onClick={() => { dispatch(changeApp({ searchSectionCount: {...cocalSectionRef.current?.getFieldsValue(), start_time: cocalSectionRef.current?.getFieldValue('start_time').valueOf(), stop_time: cocalSectionRef.current?.getFieldValue('stop_time').valueOf()} })) }} width='100px' native src={commenBtn} />
+                <ToolBtn onClick={() => { dispatch(changeApp({ searchSectionCount: {...cocalSectionRef.current?.getFieldsValue(), start_time: cocalSectionRef.current?.getFieldValue('start_time')?.valueOf(), stop_time: cocalSectionRef.current?.getFieldValue('stop_time')?.valueOf()} })) }} width='100px' native src={commenBtn} />
               </div>
             </div>
           </div>

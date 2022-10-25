@@ -1,13 +1,25 @@
 .set-chn {
   @include flex-center();
   align-items: flex-start;
+  height: 100%;
   .set-chn-left {
     flex-grow: 1;
+    position: relative;
+    .set-chn-left-table {
+      width: 100%;
+      position: absolute;
+    }
   }
   .set-chn-right {
     width: 300px;
+    height: 100%;
     margin-left: 20px;
     padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    .set-chn-right-form {
+      overflow: auto;
+    }
     .set-chn-right-btn {
       @include flex-sb();
     }
