@@ -35,7 +35,7 @@ specifiers:
   typescript: ^4.6.4
   vite: ^3.1.0
   vite-plugin-imp: ^2.3.0
-  xlsx: ^0.18.5
+  xlsx: ~0.18.5
 
 dependencies:
   '@ant-design/icons': 4.7.0_biqbaboplfbrettd7655fr4n2y

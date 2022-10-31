@@ -44,7 +44,7 @@ const FormList = React.forwardRef((props: FormListProps, ref) => {
             {...formList[i].checked ? { valuePropName: 'checked' } : {}}
           >
             {!formList[i].defNode ? (
-              !formList[i].password ? <Input placeholder={formList[i].placeholder} /> : <Input.Password />
+              !formList[i].password ? <Input allowClear placeholder={formList[i].placeholder} /> : <Input.Password />
             ) : (
               formList[i].defNode
             )}

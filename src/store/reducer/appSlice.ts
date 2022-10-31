@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SearchPatrolPlan, PatrolPlan, searchPatrolRecord, SearchCoalCount, SearchSectionCount } from '@/types/Coal';
+import moment from 'moment';
 
 interface planState {
   searchPatrolPlan: SearchPatrolPlan;
@@ -35,14 +36,14 @@ export const appSlice = createSlice({
     selectedRowKeys: [],
     searchPatrolResult: {
       device: '全部',
-      begin_time: Date.now(),
+      start_time: Date.now() -  60 * 60 * 24 * 1000 * 30,
       page: 1,
       limit: 12
     },
     searchCoalCount: {
       id: '全部',
       unit: 2,
-      start_time: Date.now()
+      start_time: new Date(+moment(Date.now()).format('YYYY'), +moment(Date.now()).format('MM')-1).valueOf()
     },
     chartType: 'line',
     searchSectionCount: {

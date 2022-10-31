@@ -40,7 +40,7 @@ export default function TecAlarm(props: Props) {
   const [visible, setVisible] = useState(false);
 
   // 获取算法
-  const { data: algoInfo, isFetched: algoIsFetched, hasNextPage: algoHasNexPage, fetchNextPage: algoFetchNextPage, refetch } = useGetCommenList([reactQueryKey.getAlgo], getAlgo, {alarm_type: alarmInfo?.type});
+  // const { data: algoInfo, isFetched: algoIsFetched, hasNextPage: algoHasNexPage, fetchNextPage: algoFetchNextPage, refetch } = useGetCommenList([reactQueryKey.getAlgo], getAlgo, {alarm_type: alarmInfo?.type});
   
   const onScroll = (type: string) => {
     scrollAnimation(type);
@@ -112,9 +112,10 @@ export default function TecAlarm(props: Props) {
           <div className="tec-alarm-wrop">
             <div className='tec-alarm-left'>
               <div className="tec-alarm-lt">
-                {alarmRecord.length > 0 && <Player flvUrl={`http://${Config.BASE_URL_HOST}${alarmRecord[0].url}?token=${token}` || ''} />}
+                {/* {alarmRecord.length > 0 && <Player flvUrl={`http://${Config.BASE_URL_HOST}${alarmRecord[0].url}?token=${token}` || ''} />} */}
+                {alarmImgArr && alarmImgArr.length > 0 && <Image  src={alarmImgArr![0].url}></Image>}
               </div>
-              <div className="tec-alarm-lb">
+              {/* <div className="tec-alarm-lb">
                 <ToolBtn onClick={() => onScroll('left')} native width='30px' height='80px' src={leftBtn} />
                 <ul ref={ulRef}>
                   {alarmImgArr?.map(item => (
@@ -131,7 +132,7 @@ export default function TecAlarm(props: Props) {
                   </Image.PreviewGroup>
                 </div>
                 <ToolBtn onClick={() => onScroll('right')} native width='30px' height='80px' src={rightBtn} />
-              </div>
+              </div> */}
             </div>
             <div className="tec-alarm-right">
               <div className='tec-alarm-rt'>

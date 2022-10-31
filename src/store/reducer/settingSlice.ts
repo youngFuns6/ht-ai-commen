@@ -57,7 +57,7 @@ export const settingSlice = createSlice({
       },
       selectedRowKeys: [],
       form: {
-
+        
       }
     },
     sys: {

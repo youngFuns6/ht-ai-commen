@@ -65,10 +65,9 @@
   .layoutScreen {
     height: 100%;
     display: grid;
-    min-height: 0;
     grid-gap: 20px;
     .screen {
-      // border: 1px solid #0154BE;
+      min-height: 0;
       background: url('@/assets/images/bgc/screen_bgc.png') no-repeat;
       background-size: 100% 100%;
     }

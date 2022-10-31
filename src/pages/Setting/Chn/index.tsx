@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import "./index.scss";
-import { message, Table } from "antd";
+import { message, Select, InputNumber, Table } from "antd";
 import type { FormInstance } from "antd/es/form";
 import { cloneDeep } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,8 +11,11 @@ import ToolBtn from "@/components/base/ToolBtn";
 import Confirm from "@/components/Confirm";
 import { FormListFace } from "@/types/FormList";
 import { DeviceChn } from "@/types/Device";
+import { Algo } from "@/types/Algo";
 import useGetCommenList from "@/hooks/useGetCommenList";
-import { reactQueryKey } from "@/config/constance";
+import { reactQueryKey, DEVICE_TYPE, EVENT_TYPE } from "@/config/constance";
+import mergePageList from "@/utils/mergePageList";
+import { getAlgo } from "@/api/algo";
 import {
   getDevicesChn,
   addDdeviceChn,
@@ -27,6 +30,7 @@ import {
 import chnTextBar from "@/assets/images/text/chn_info.png";
 import commenBtn from "@/assets/images/btn/tools/commen.png";
 import commenAcBtn from "@/assets/images/btn/tools/commen_ac.png";
+import { fillterQuery } from "@/utils/commen";
 
 const columns = [
   {
@@ -36,6 +40,8 @@ const columns = [
   {
     title: "设备类型",
     dataIndex: "devType",
+    render: (devType: string) =>
+      DEVICE_TYPE.find((item) => item.type === devType)?.name,
   },
   {
     title: "所在区域",
@@ -53,7 +59,7 @@ const columns = [
 
 export default function Chn() {
   const formListRef = useRef<FormInstance>(null);
-  const { chn } = useSelector((state: SettingState) => state.setting);
+  const { chn, algo } = useSelector((state: SettingState) => state.setting);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,12 +67,22 @@ export default function Chn() {
     formListRef.current?.setFieldsValue(chn.form);
   }, [chn.form]);
 
+  // 获取算法
+  const {
+    data: algoInfo,
+    isFetched: algoIsFetched,
+    hasNextPage: algoHasNexPage,
+    fetchNextPage: algoFetchNextPage,
+    refetch,
+  } = useGetCommenList([reactQueryKey.getAlgo], getAlgo, {});
+
   // 获取设备通道
   const {
     data: chnInfo,
     isFetched: chnIsFetched,
     hasNextPage: chnHasNexPage,
     fetchNextPage: chnFetchNextPage,
+    refetch: chnRefetch,
   } = useGetCommenList([reactQueryKey.getDeviceChn], getDevicesChn, {});
 
   // 分页
@@ -91,7 +107,7 @@ export default function Chn() {
   };
 
   // 增加通道
-  const addMutation = useMutation((form: DeviceChn) => addDdeviceChn(form));
+  const addMutation = useMutation((form: DeviceChn) => addDdeviceChn(fillterQuery(form) as any));
 
   // 修改通道
   const editMutation = useMutation((form: DeviceChn) => editDdeviceChn(form));
@@ -106,18 +122,42 @@ export default function Chn() {
     }
     switch (type) {
       case "add":
-        addMutation.mutate(chn.form);
+        try {
+          await addMutation.mutateAsync(chn.form);
+          formListRef.current?.resetFields();
+        } catch (error) {
+          message.error("添加失败");
+        }
         break;
       case "edit":
         if (!chn.selectedRowKeys.length)
           return message.error("请先选择所需修改的通道");
-        editMutation.mutate({ ...chn.form, id: chn.selectedRowKeys[0] });
+        await editMutation.mutateAsync({
+          ...chn.form,
+          id: chn.selectedRowKeys[0],
+        });
         break;
       case "delete":
         if (!chn.selectedRowKeys.length)
           return message.error("请先选择所需删除的通道");
-        deleteMutation.mutate(chn.selectedRowKeys[0]);
+        await deleteMutation.mutateAsync(chn.selectedRowKeys[0]);
+        dispatch(
+          changeSetting({
+            chn: { ...chn, selectedRowKeys: [] },
+          })
+        );
         break;
+    }
+    chnRefetch();
+  };
+
+  const onPopupScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
+    // console.log(e)
+    const h = e.target as HTMLElement;
+    if (h.scrollTop + h.offsetHeight >= h.scrollHeight) {
+      if (algoFetchNextPage) {
+        algoFetchNextPage();
+      }
     }
   };
 
@@ -134,16 +174,29 @@ export default function Chn() {
     {
       label: "设备IP",
       name: "ip",
-      rules: [{ required: true, message: "必填项" }],
+      // rules: [{ required: true, message: "必填项" }],
     },
     {
       label: "设备端口",
       name: "port",
       rules: [{ required: true, message: "必填项" }],
+      defNode: (
+        <InputNumber min={0} />
+      )
     },
     {
       label: "设备类型",
       name: "devType",
+      initValue: "AiCam_H",
+      defNode: (
+        <Select
+          options={DEVICE_TYPE.map((item) => ({
+            label: item.name,
+            value: item.type,
+            key: item.type,
+          }))}
+        />
+      ),
     },
     {
       label: "算法版本",
@@ -168,20 +221,39 @@ export default function Chn() {
     {
       label: "IPC 用户名",
       name: "username",
-      rules: [{ required: true, message: "必填项" }],
     },
     {
       label: "IPC 密码",
       name: "userpass",
-      rules: [{ required: true, message: "必填项" }],
     },
     {
       label: "报警类型",
       name: "alarmType",
+      // rules: [{ required: true, message: "必填项" }],
+      defNode: (
+        <Select
+          onPopupScroll={(e) => onPopupScroll(e)}
+          options={mergePageList<Algo>(algoInfo?.pages).map((item) => ({
+            label: item.alarm_type,
+            value: item.alarm_type_code,
+            key: item.id,
+          }))}
+        />
+      ),
     },
     {
       label: "事件类型",
       name: "domain",
+      initValue: "XW_000",
+      defNode: (
+        <Select
+          options={EVENT_TYPE.map((item) => ({
+            label: item.name,
+            value: item.type,
+            key: item.type,
+          }))}
+        />
+      ),
     },
     {
       label: "雨刷板IP",
@@ -190,6 +262,9 @@ export default function Chn() {
     {
       label: "雨刷板端口",
       name: "wiperPort",
+      defNode: (
+        <InputNumber min={0} />
+      )
     },
   ];
 
@@ -197,24 +272,24 @@ export default function Chn() {
     <div className="set-chn">
       <div className="set-chn-left">
         <div className="set-chn-left-table">
-        <Table
-          pagination={{
-            current: chn.search.page,
-            onChange: onPageChange,
-            pageSize: 12,
-            total: chnInfo?.pages[0].total,
-            showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条数据`,
-          }}
-          scroll={{ y:  '60vh', scrollToFirstRowOnChange: true }}
-          rowKey="id"
-          dataSource={chnInfo?.pages[chnInfo.pages.length - 1].items}
-          columns={columns}
-          rowClassName={(record) =>
-            record.id === chn.selectedRowKeys[0] ? "active-row" : ""
-          }
-          onRow={(record) => ({ onClick: () => onSelectRow(record) })}
-        />
+          <Table
+            pagination={{
+              current: chn.search.page,
+              onChange: onPageChange,
+              pageSize: 12,
+              total: chnInfo?.pages[0].total,
+              showQuickJumper: true,
+              showTotal: (total) => `共 ${total} 条数据`,
+            }}
+            scroll={{ y: "60vh", scrollToFirstRowOnChange: true }}
+            rowKey="id"
+            dataSource={chnInfo?.pages[chnInfo.pages.length - 1].items}
+            columns={columns}
+            rowClassName={(record) =>
+              record.id === chn.selectedRowKeys[0] ? "active-row" : ""
+            }
+            onRow={(record) => ({ onClick: () => onSelectRow(record) })}
+          />
         </div>
       </div>
       <div className="set-chn-right">

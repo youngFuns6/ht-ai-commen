@@ -3,16 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import "./index.scss";
 import { useQuery, useMutation } from "react-query";
 import { cloneDeep } from "lodash";
-import {
-  Col,
-  Select,
-  Table,
-  Radio,
-  DatePicker,
-  Row,
-  Pagination,
-  message,
-} from "antd";
+import { Col, Select, Table, Radio, DatePicker, Row, message } from "antd";
 import type { FormInstance } from "antd/es/form";
 import { useSelector, useDispatch } from "react-redux";
 import useGetCommenList from "@/hooks/useGetCommenList";
@@ -33,7 +24,7 @@ import { SearchPatrolPlan, Worker, PatrolPlan } from "@/types/Coal";
 import { State as AppState, changeApp } from "@/store/reducer/appSlice";
 import { fillterQuery } from "@/utils/commen";
 
-import queryBtn from "@/assets/images/btn/tools/query_btn.png";
+import commenBtn from "@/assets/images/btn/tools/commen.png";
 import moment from "moment";
 
 const columns = [
@@ -47,7 +38,7 @@ const columns = [
     dataIndex: "name",
   },
   {
-    title: "巡检设备",
+    title: "巡检设备编号",
     dataIndex: "device",
   },
   {
@@ -134,20 +125,28 @@ export default function Plan() {
 
   // 计划(增删改)
   const onOptPlan = (type: string) => {
-    planOptFormListRef.current?.validateFields().then((v) => {
+    planOptFormListRef.current?.validateFields().then(async (v) => {
       switch (type) {
         case "add":
-          addMutation.mutate(patrolPlanForm);
+          await addMutation.mutateAsync(patrolPlanForm);
           break;
         case "edit":
           if (!selectedRowKeys.length)
             return message.error("请先选中所需修改的计划");
-          editMutation.mutate({ ...patrolPlanForm, id: selectedRowKeys[0] });
+          await editMutation.mutateAsync({
+            ...patrolPlanForm,
+            id: selectedRowKeys[0],
+          });
           break;
         case "delete":
           if (!selectedRowKeys.length)
             return message.error("请先选中所需删除的计划");
-          deleteMutation.mutate(selectedRowKeys[0]);
+          await deleteMutation.mutateAsync(selectedRowKeys[0]);
+          dispatch(
+            changeApp({
+            selectedRowKeys: [],
+            })
+          );
           break;
       }
       patrolPlanRefetch();
@@ -172,7 +171,7 @@ export default function Plan() {
         <Select
           onPopupScroll={(e) => onChnScroll("device", e)}
           options={deviceChnArr.map((item) => ({
-            label: item.name,
+            label: item.id + "-" + item.name,
             value: item.id,
             key: item.id,
           }))}
@@ -229,7 +228,7 @@ export default function Plan() {
         <Select
           onPopupScroll={(e) => onChnScroll("chn", e)}
           options={deviceChnArr.map((item) => ({
-            label: item.name,
+            label: item.id + "-" + item.name,
             value: item.id,
             key: item.id,
           }))}
@@ -245,7 +244,7 @@ export default function Plan() {
           options={
             (patrolWorker as any)?.map((item: Worker) => ({
               label: item.name,
-              value: item.id,
+              value: item.name,
               key: item.id,
             })) || []
           }
@@ -268,7 +267,7 @@ export default function Plan() {
               showQuickJumper: true,
               showTotal: (total) => `共 ${total} 条数据`,
             }}
-            scroll={{ y:  '60vh', scrollToFirstRowOnChange: true }}
+            scroll={{ y: "60vh", scrollToFirstRowOnChange: true }}
             rowKey="id"
             rowClassName={(record) =>
               record.id === selectedRowKeys[0] ? "active-row" : ""
@@ -280,16 +279,6 @@ export default function Plan() {
             onRow={(record) => ({ onClick: () => onSelectRow(record) })}
           />
         </div>
-        {/* <div className='plan-page'>
-          <Pagination
-            current={searchPatrolPlan.page}
-            onChange={onPageChange}
-            pageSize={15}
-            total={patrolPlanInfo?.pages[0].total}
-            showQuickJumper
-            showTotal={total => `共 ${total} 条数据`}
-          />
-        </div> */}
       </div>
       <div className="plan-right">
         <div>
@@ -312,7 +301,7 @@ export default function Plan() {
                 );
               }}
               native
-              src={queryBtn}
+              src={commenBtn}
               content="搜索"
             />
           </Col>
@@ -346,7 +335,7 @@ export default function Plan() {
             <Col span={8}>
               <ToolBtn
                 onClick={() => onOptPlan("add")}
-                src={queryBtn}
+                src={commenBtn}
                 native
                 content="增加"
               />
@@ -354,14 +343,14 @@ export default function Plan() {
             <Col span={8}>
               <ToolBtn
                 onClick={() => onOptPlan("edit")}
-                src={queryBtn}
+                src={commenBtn}
                 native
                 content="修改"
               />
             </Col>
             <Col span={8}>
               <Confirm title="确认删除？" onConfirm={() => onOptPlan("delete")}>
-                <ToolBtn src={queryBtn} native content="删除" />
+                <ToolBtn src={commenBtn} native content="删除" />
               </Confirm>
             </Col>
           </Row>

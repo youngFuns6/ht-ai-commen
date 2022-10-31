@@ -94,17 +94,27 @@ export default function RegionCom() {
     }
     switch (type) {
       case "add":
-        addMutation.mutate(region.form);
+        await addMutation.mutateAsync(region.form);
+        dispatch(
+          changeSetting({
+            region: { ...region, selectedRowKeys: [] },
+          })
+        );
         break;
       case "edit":
         if (!region.selectedRowKeys.length)
           return message.error("请先选择所需修改的通道");
-        editMutation.mutate({ ...region.form, id: region.selectedRowKeys[0] });
+        await editMutation.mutateAsync({ ...region.form, id: region.selectedRowKeys[0] });
         break;
       case "delete":
         if (!region.selectedRowKeys.length)
           return message.error("请先选择所需删除的通道");
-        deleteMutation.mutate(region.selectedRowKeys[0]);
+        await deleteMutation.mutateAsync(region.selectedRowKeys[0]);
+        dispatch(
+          changeSetting({
+            region: { ...region, selectedRowKeys: [] },
+          })
+        );
         break;
     }
     refetch();

@@ -7,7 +7,7 @@ export interface SearchPatrolPlan extends CommenSearch {
 
 export interface searchPatrolRecord extends CommenSearch {
   device?: string;
-  begin_time?: number;
+  start_time?: number;
 }
 
 export interface PatrolPlan {
@@ -51,8 +51,8 @@ export interface SearchCoalCount {
 }
 
 export interface SearchSectionCount {
-  start_time: number;
-  stop_time: number;
+  start_time?: number;
+  stop_time?: number;
   device?: string;
 }
 

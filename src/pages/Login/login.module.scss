@@ -30,7 +30,7 @@
     margin-top: 100px;
 
     :global(.ant-form-item) {
-      margin-bottom: 45px;
+      margin-bottom: 45px !important;
     }
     .loginFormButton {
       width: 100%;

@@ -29,10 +29,10 @@ const nav = [
     path: '/home/setting/user',
     node: <ToolBtn showActive path='/home/setting/user' width='100%' src={userBtn} acSrc={userAcBtn} />
   },
-  {
-    path: '/home/setting/sys',
-    node: <ToolBtn showActive path='/home/setting/sys' width='100%' src={sysBtn} acSrc={sysAcBtn} />
-  },
+  // {
+  //   path: '/home/setting/sys',
+  //   node: <ToolBtn showActive path='/home/setting/sys' width='100%' src={sysBtn} acSrc={sysAcBtn} />
+  // },
   {
     path: '/home/setting/algo',
     node: <ToolBtn showActive path='/home/setting/algo' width='100%' src={algoBtn} acSrc={algoAcBtn} />

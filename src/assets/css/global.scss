@@ -29,6 +29,14 @@ html {
   user-select: none;
 }
 
+:global(.ant-form-item) {
+  margin-bottom: 8px !important;
+}
+
+:global(.ant-input-clear-icon) {
+  color: #ddd !important;
+}
+
 :global(.ant-input:hover) {
   background: transparent !important;
   // border-color: #ff4d4f;
@@ -36,7 +44,7 @@ html {
 
 :global(.ant-input-affix-wrapper) {
   background-color: transparent !important;
-  border: 1px solid #00EAFF;
+  border: 1px solid #00eaff;
 }
 
 :global(.ant-picker-header-view) {
@@ -56,7 +64,7 @@ html {
 }
 
 :global(.ant-picker) {
-  border-color: #10337E !important;
+  border-color: #10337e !important;
 }
 
 :global(.ant-picker-suffix) {
@@ -92,7 +100,9 @@ html {
   height: 100% !important;
 }
 
-:global(.ant-picker-time-panel-column > li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner) {
+:global(.ant-picker-time-panel-column
+    > li.ant-picker-time-panel-cell-selected
+    .ant-picker-time-panel-cell-inner) {
   background-color: #333 !important;
 }
 
@@ -100,13 +110,13 @@ html {
   background-color: rgba(15, 60, 53, 0.5) !important;
 }
 
-$color-border: #92FFFF;
+$color-border: #92ffff;
 $color-bgc: rgba(21, 39, 53, 0.65);
 $color-arrow: rgba(77, 176, 252, 1);
-$color-border-base: #0686D8;
+$color-border-base: #0686d8;
 $color-arrow-bgc: rgba(21, 39, 53, 1);
 $color-text-desc: rgb(214, 208, 208);
-$color-text-base: #70D5F8;
+$color-text-base: #70d5f8;
 
 .active-row {
   background-color: rgba(15, 60, 53, 0.5);

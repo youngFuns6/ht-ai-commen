@@ -87,3 +87,16 @@ export const EVENT_TYPE = [
   {type: "HJ_000", name: '环境隐患',},
   {type: "SB_000", name: '设备隐患', },
 ]
+
+/**
+ * 设备分类
+ */
+ export const DEVICE_TYPE: { [key: string]: string }[] = [
+  {type: "AiCam_H", name: 'AI高速分析相机'},
+  {type: "AiCam_L", name: 'AI中低速分析相机'},
+  {type: "Ai_ARM", name: 'AI分析装置'},
+  {type: "Ai_GPU", name: 'GPU服务器'},
+  {type: "Ai_FACE", name: '人脸服务器'},
+  {type: "Ai_DZFT", name: '电子封条分析装置'},
+ ]
+ 

@@ -30,6 +30,8 @@ const columns = [
   {
     title: "事件分类",
     dataIndex: "event_type",
+    render: (eventType: string) =>
+      EVENT_TYPE.find((item) => item.type === eventType)?.name,
   },
   {
     title: "报警类型编号",
@@ -66,12 +68,16 @@ export default function AlgoCom() {
     hasNextPage: algoHasNexPage,
     fetchNextPage: algoFetchNextPage,
     refetch,
-  } = useGetCommenList([reactQueryKey.getAlgo], getAlgo, algo.search);
+  } = useGetCommenList(
+    [reactQueryKey.getAlgo, algo.search],
+    getAlgo,
+    algo.search
+  );
 
   // 分页
   const onPageChange = (page: number, pageSize: number) => {
     dispatch(
-      changeSetting({ chn: { ...algo, search: { page, limit: pageSize } } })
+      changeSetting({ algo: { ...algo, search: { page, limit: pageSize } } })
     );
   };
 
@@ -105,28 +111,39 @@ export default function AlgoCom() {
     }
     switch (type) {
       case "add":
-        addMutation.mutate(algo.form);
+        await addMutation.mutateAsync(algo.form);
         break;
       case "edit":
         if (!algo.selectedRowKeys.length)
           return message.error("请先选择所需修改的算法");
-        editMutation.mutate({ ...algo.form, id: algo.selectedRowKeys[0] });
+        await editMutation.mutateAsync({
+          ...algo.form,
+          id: algo.selectedRowKeys[0],
+        });
         break;
       case "delete":
         if (!algo.selectedRowKeys.length)
           return message.error("请先选择所需删除的算法");
-        deleteMutation.mutate(algo.selectedRowKeys[0]);
+        await deleteMutation.mutateAsync(algo.selectedRowKeys[0]);
+        dispatch(
+          changeSetting({
+            algo: { ...algo, selectedRowKeys: [] },
+          })
+        );
         break;
     }
+    refetch();
   };
 
-  const onIo = (type: string, file?: RcFile) => {
+  const onIo = async (type: string, file?: RcFile) => {
     switch (type) {
       case "input":
-        file &&
-          inputExcel(file).then((data) => {
-            console.log(data);
-          });
+          const data = file && await inputExcel(file) as Algo[];
+          data?.shift();
+          data?.forEach(async(item) => {
+            await addMutation.mutateAsync(item);
+            refetch();
+          })
         break;
       case "output":
         // outputExcel()
@@ -196,27 +213,27 @@ export default function AlgoCom() {
   return (
     <div className="set-algo">
       <div className="set-algo-content">
-       <div className="set-algo-content-table">
-       <Table
-          pagination={{
-            current: algo.search.page,
-            onChange: onPageChange,
-            pageSize: 12,
-            total: algoInfo?.pages[0].total,
-            showQuickJumper: true,
-            showSizeChanger: false,
-            showTotal: (total) => `共 ${total} 条数据`,
-          }}
-          scroll={{ y:  '60vh', scrollToFirstRowOnChange: true }}
-          rowKey="id"
-          dataSource={algoInfo?.pages[algoInfo.pages.length - 1].items}
-          columns={columns}
-          rowClassName={(record) =>
-            record.id === algo.selectedRowKeys[0] ? "active-row" : ""
-          }
-          onRow={(record) => ({ onClick: () => onSelectRow(record) })}
-        />
-       </div>
+        <div className="set-algo-content-table">
+          <Table
+            pagination={{
+              current: algo.search.page,
+              onChange: onPageChange,
+              pageSize: 12,
+              total: algoInfo?.pages[0].total,
+              showQuickJumper: true,
+              showSizeChanger: false,
+              showTotal: (total) => `共 ${total} 条数据`,
+            }}
+            scroll={{ y: "60vh", scrollToFirstRowOnChange: true }}
+            rowKey="id"
+            dataSource={algoInfo?.pages[algoInfo.pages.length - 1].items}
+            columns={columns}
+            rowClassName={(record) =>
+              record.id === algo.selectedRowKeys[0] ? "active-row" : ""
+            }
+            onRow={(record) => ({ onClick: () => onSelectRow(record) })}
+          />
+        </div>
       </div>
       <div className="set-algo-right">
         <div>

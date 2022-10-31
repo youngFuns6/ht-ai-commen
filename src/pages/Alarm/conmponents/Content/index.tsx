@@ -57,7 +57,8 @@ const Content = React.forwardRef((props: Props & PropsWithChildren, ref: any) =>
 
   // 获取详情(包含录像查询)
   const onDetail = async (alarmImage?: AlarmImage[], alarm?: Alarm) => {
-    const {items}: any = await getRecord({start_time: alarm?.start_time, stop_time: alarm?.stop_time, device: alarm?.device});
+    if(!alarm) return;
+    const {items}: any = await getRecord({start_time: +moment(alarm.start_time).format('X'), stop_time: +moment(alarm.stop_time).format('X'), device: alarm.device});
     setCurrentAlarmDetail({ ...currentAlarmDetail, isShow: true, alarmImgArr: alarmImage || [], alarmInfo: alarm, alarmRecord: items });
   }
 
@@ -124,7 +125,7 @@ const Content = React.forwardRef((props: Props & PropsWithChildren, ref: any) =>
       <div className={styles.tools}>
         <div className={styles.toolBtn}>
           <ToolBtn onClick={() => setIsModalOpen(true)} native width='80px' src={outputBtn} />
-          <ReactToPrint trigger={() => <ToolBtn native width='80px' src={printBtn} />} content={() => printRef.current} />
+          {/* <ReactToPrint trigger={() => <ToolBtn native width='80px' src={printBtn} />} content={() => printRef.current} /> */}
         </div>
         <Pagination
           current={searchAlarm.page}

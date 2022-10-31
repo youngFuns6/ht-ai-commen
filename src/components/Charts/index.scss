@@ -1,7 +1,11 @@
 .charts {
+  height: 100%;
   padding: 30px;
   background: url('@/assets/images/bgc/calc_big.png') no-repeat;
   background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   .charts-header {
     @include flex-sb();
     margin-bottom: 50px;
@@ -10,5 +14,9 @@
       @include flex-sb();
       width: 220px;
     }
+  }
+  .charts-content {
+    flex-grow: 1;
+    // height: 50%;
   }
 }

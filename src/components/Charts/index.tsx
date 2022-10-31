@@ -30,7 +30,7 @@ export default function Charts(props: Props) {
     xField,
     yField,
     xAxis: {
-      tickCount: 5,
+      tickCount: data.length,
       line: {
         style: {
           stroke: '#ddd',
@@ -88,7 +88,9 @@ export default function Charts(props: Props) {
           <ToolBtn onClick={() => {onClick && onClick('column')}} src={chartCircleBtn} acSrc={chartCircleAcBtn} />
         </div>
       </div>
+      <div className='charts-content'>
       {type === 'line' ? <Line {...lineConfig} /> : <Column {...columnConfig} />}
+      </div>
     </div>
   )
 }
