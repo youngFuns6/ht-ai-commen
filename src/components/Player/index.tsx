@@ -25,28 +25,29 @@ export default React.forwardRef(function Player(props: Props, ref) {
     name = "",
   } = props;
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [flvPlayer, setFlvPlayer] = useState<flvjs.Player | null>(null);
+  const flvRef = useRef<flvjs.Player | null>(null);
   console.log(flvUrl);
   useEffect(() => {
     if (channelId) {
       console.log("通道号：", channelId);
       asyncGetChannelStream();
     }
-    // return () => {
-    //   if (flvPlayer) {
-    //     flvPlayer.pause();
-    //     flvPlayer.unload();
-    //     flvPlayer.detachMediaElement();
-    //     flvPlayer.destroy();
-    //   }
-    // };
+    return () => {
+      if (flvRef && flvRef.current) {
+        flvRef.current.pause();
+        flvRef.current.unload();
+        flvRef.current.detachMediaElement();
+        flvRef.current.destroy();
+      }
+    };
   }, [channelId]);
 
   // 获取视频流地址
   const asyncGetChannelStream = async () => {
+    if (!flvjs.isSupported) return;
     const data: any = await getLivestream(channelId as string);
-    setFlvPlayer(() => {
-      const player = flvjs.createPlayer({
+    flvRef.current = flvjs.createPlayer(
+      {
         type: "flv",
         cors: true,
         isLive: true,
@@ -56,23 +57,25 @@ export default React.forwardRef(function Player(props: Props, ref) {
         url: flvUrl ? flvUrl : data.flv,
         // url: "https://sf1-hscdn-tos.pstatp.com/obj/media-fe/xgplayer_doc_video/flv/xgplayer-demo-720p.flv",
         // url: 'http://192.168.1.152:7080/0'
-      });
-      player.attachMediaElement(videoRef.current as HTMLVideoElement);
-      player.load();
-      return player;
-    });
+      },
+      {
+        deferLoadAfterSourceOpen: false,
+      }
+    );
+    flvRef.current.attachMediaElement(videoRef.current as HTMLVideoElement);
+    flvRef.current.load();
   };
 
   // 暴露实例
   useImperativeHandle(ref, () => ({
-    flvPlayer,
+    flvPlayer: flvRef.current,
     getCurrentBounts: () => videoRef.current!.getBoundingClientRect(),
   }));
 
   return (
     <>
       {(channelId || flvUrl) && (
-        <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+        <div style={{ width: "100%", height: "100%", position: "relative" }}>
           <video
             style={{ objectFit: "fill", width, height }}
             ref={videoRef}
@@ -80,7 +83,16 @@ export default React.forwardRef(function Player(props: Props, ref) {
             autoPlay={autoPlay}
             controls={controls}
           ></video>
-          <h3 style={{ position: 'absolute', left: '5px', top: '5px', color: '#fff' }}>{name}</h3>
+          <h3
+            style={{
+              position: "absolute",
+              left: "5px",
+              top: "5px",
+              color: "#fff",
+            }}
+          >
+            {name}
+          </h3>
         </div>
       )}
     </>
