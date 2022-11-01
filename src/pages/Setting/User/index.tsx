@@ -61,13 +61,22 @@ export default function User() {
 
   const onSelectRow = (record: UserInfo) => {
     if (user.selectedRowKeys[0] === record.id) {
-      dispatch(changeSetting({ user: { ...user, selectedRowKeys: [] }, form: {...formList, password: ''} }));
+      dispatch(
+        changeSetting({
+          user: { ...user, selectedRowKeys: [] },
+          form: { ...formList, password: "" },
+        })
+      );
     } else {
       const obj = cloneDeep(record);
       delete obj.id;
       dispatch(
         changeSetting({
-          user: { ...user, form: {...obj, password: ''}, selectedRowKeys: [record.id] },
+          user: {
+            ...user,
+            form: { ...obj, password: "" },
+            selectedRowKeys: [record.id],
+          },
         })
       );
     }
@@ -77,7 +86,9 @@ export default function User() {
   const addMutation = useMutation((form: UserInfo) => addUser(form));
 
   // 修改通道
-  const editMutation = useMutation((form: UserInfo) => editUser(fillterQuery(form)));
+  const editMutation = useMutation((form: UserInfo) =>
+    editUser(user.selectedRowKeys[0], fillterQuery(form))
+  );
 
   // 删除通道
   const deleteMutation = useMutation((id: number) => deleteUser(id));
@@ -95,9 +106,9 @@ export default function User() {
         if (!user.selectedRowKeys.length)
           return message.error("请先选择所需修改的通道");
         await editMutation.mutateAsync({
-          id: user.selectedRowKeys[0],
           username: user.form.username,
-          password: user.form.password, role: user.form.role,
+          password: user.form.password,
+          role: user.form.role,
         });
         break;
       case "delete":

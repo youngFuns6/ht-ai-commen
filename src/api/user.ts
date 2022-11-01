@@ -34,9 +34,9 @@ export const addUser = (data: UserInfo) => {
 }
 
 // 编辑用户
-export const editUser = (data: UserInfo) => {
+export const editUser = (id: number, data: UserInfo) => {
   return request({
-    url: `/user/${data.id}`,
+    url: `/user/${id}`,
     method: 'put',
     data
   })
