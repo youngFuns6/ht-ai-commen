@@ -16,7 +16,8 @@ const store = configureStore({
     calc: calcSlice.reducer,
     app: appSlice.reducer,
     setting: settingSlice.reducer,
-  }
+  },
+  // middleware: (getDefaultMiddlware) => getDefaultMiddlware({serializableCheck: false})
 })
 
 export default store;

@@ -34,10 +34,14 @@ export default React.forwardRef(function Player(props: Props, ref) {
     }
     return () => {
       if (flvRef && flvRef.current) {
+       try {
         flvRef.current.pause();
         flvRef.current.unload();
         flvRef.current.detachMediaElement();
         flvRef.current.destroy();
+       } catch (error) {
+        
+       } 
       }
     };
   }, [channelId]);
