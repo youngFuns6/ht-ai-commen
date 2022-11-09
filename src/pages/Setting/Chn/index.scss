@@ -21,7 +21,8 @@
       overflow: auto;
     }
     .set-chn-right-btn {
-      @include flex-sb();
+      @include flex-center();
+      // justify-content: left;
     }
   }
 }

@@ -1,3 +1,5 @@
+import internal from "stream";
+
 export interface SearchDeviceChn {
   offset?: number;
   page?: number;
@@ -10,6 +12,24 @@ export interface SearchDeviceChn {
   alarn?: string;
 }
 
+export interface Device {
+  id?: string;
+  enabled?: int;
+  name?: string;
+  username: string;
+  userpass: string;
+  ip: string;
+  port: int;
+  status?: int;
+  memo?: string;
+  sw?: string;
+  hw?: string;
+  algoVer?: string;
+  modVer?: string;
+  fwVer?: string;
+  devType?: string;
+  sn?: string;
+}
 export interface DeviceChn {
   id?: string;
   name: string;

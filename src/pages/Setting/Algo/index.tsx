@@ -216,7 +216,7 @@ export default function AlgoCom() {
         <div className="set-algo-content-table">
           <Table
             pagination={{
-              current: algo.search.page,
+              current: algo.search?.page,
               onChange: onPageChange,
               pageSize: 12,
               total: algoInfo?.pages[0].total,

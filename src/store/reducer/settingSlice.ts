@@ -1,16 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { SearchAlarm } from '@/types/Alarm';
+import { SearchAlarm } from "@/types/Alarm";
 
 export interface Commen {
-    search: {
-      page: number;
-      limit: number;
-    };
-    selectedRowKeys: number[] & string[];
-    form: any;
+  search?: {
+    page: number;
+    limit: number;
+  };
+  selectedRowKeys: number[] & string[];
+  form: any;
 }
 
 interface SettingState {
+  activeTabKey: string;
+  device: Commen;
   chn: Commen;
   region: Commen;
   user: Commen;
@@ -19,7 +21,7 @@ interface SettingState {
     selectedKeys: string[];
     vol: number;
     enableVol: boolean;
-  },
+  };
   algo: Commen;
 }
 
@@ -30,58 +32,55 @@ export interface State {
 export const settingSlice = createSlice({
   name: "setting",
   initialState: {
+    activeTabKey: "0",
+    device: {
+      selectedRowKeys: [],
+      form: {},
+    },
     chn: {
       search: {
         page: 1,
-        limit: 12
+        limit: 12,
       },
       selectedRowKeys: [],
-      form: {
-
-      }
+      form: {},
     },
     region: {
       search: {
         page: 1,
-        limit: 12
+        limit: 12,
       },
       selectedRowKeys: [],
-      form: {
-
-      }
+      form: {},
     },
     user: {
       search: {
         page: 1,
-        limit: 12
+        limit: 12,
       },
       selectedRowKeys: [],
-      form: {
-        
-      }
+      form: {},
     },
     sys: {
       targetKeys: [],
       selectedKeys: [],
       vol: 0,
-      enableVol: true
+      enableVol: true,
     },
     algo: {
       search: {
         page: 1,
-        limit: 12
+        limit: 12,
       },
       selectedRowKeys: [],
-      form: {
-
-      }
+      form: {},
     },
   },
   reducers: {
     changeSetting(state: SettingState, action) {
-      state = Object.assign(state, { ...action.payload});
+      state = Object.assign(state, { ...action.payload });
     },
-  }
+  },
 });
 
-export const { changeSetting, } = settingSlice.actions;
+export const { changeSetting } = settingSlice.actions;

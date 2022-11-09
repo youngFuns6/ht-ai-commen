@@ -1,5 +1,11 @@
 import request from "@/utils/http";
-import { SearchDeviceChn, DeviceChn } from '@/types/Device'
+import { SearchDeviceChn, DeviceChn, Device } from '@/types/Device'
+
+export const getDevicesList = () => {
+  return request({
+    url: 'config/device/device/list',
+  })
+}
 
 // 获取设备通道
 export const getDevicesChn = (searchDeviceChn?: SearchDeviceChn) => {
@@ -17,9 +23,9 @@ export const getDeviceChnById = (id: string) => {
 }
 
 // 修改通道设备
-export const editDdeviceChn = (deviceChn: DeviceChn) => {
+export const editDdeviceChn = (id: number | string, deviceChn: DeviceChn) => {
   return request({
-    url: `/catalog/device/${deviceChn.id}`,
+    url: `/catalog/device/${id}`,
     method: 'put',
     data: deviceChn
   })
@@ -33,11 +39,28 @@ export const deleteDdeviceChn = (id: string) => {
   })
 }
 
-// 添加通道设备
-export const addDdeviceChn = (deviceChn: DeviceChn) => {
+// 添加设备
+export const addDdevice = (device: Device) => {
   return request({
     url: `/config/device`,
     method: 'post',
-    data: deviceChn
+    data: device
+  })
+}
+
+// 修改设备
+export const editDdevice = (id: number | string, device: Device) => {
+  return request({
+    url: `/config/device/${id}`,
+    method: 'put',
+    data: device
+  })
+}
+
+// 删除设备
+export const deleteDdevice = (id: number | string) => {
+  return request({
+    url: `/config/device/${id}`,
+    method: 'delete',
   })
 }

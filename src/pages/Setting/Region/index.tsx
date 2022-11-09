@@ -134,7 +134,7 @@ export default function RegionCom() {
         <div className="set-region-left-table">
         <Table
           pagination={{
-            current: region.search.page,
+            current: region.search?.page,
             onChange: onPageChange,
             pageSize: 12,
             total: regionInfo?.pages[0].total,

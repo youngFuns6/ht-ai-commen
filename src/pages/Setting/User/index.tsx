@@ -168,7 +168,7 @@ export default function User() {
       <div className="set-user-left">
         <Table
           pagination={{
-            current: user.search.page,
+            current: user.search?.page,
             onChange: onPageChange,
             pageSize: 12,
             total: userInfo?.pages[0].total,

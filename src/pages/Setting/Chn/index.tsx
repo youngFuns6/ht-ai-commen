@@ -1,89 +1,126 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, Ref } from "react";
 import "./index.scss";
-import { message, Select, InputNumber, Table } from "antd";
+import { message, Select, InputNumber, Tabs } from "antd";
 import type { FormInstance } from "antd/es/form";
 import { cloneDeep } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
-import { useMutation } from "react-query";
-import TextBar from "@/components/base/TextBar";
-import FormList from "@/components/FormList";
-import ToolBtn from "@/components/base/ToolBtn";
-import Confirm from "@/components/Confirm";
+import { useMutation, useQuery } from "react-query";
+import ChnTable from "./components/ChnTable";
 import { FormListFace } from "@/types/FormList";
-import { DeviceChn } from "@/types/Device";
-import { Algo } from "@/types/Algo";
+import { Device, DeviceChn } from "@/types/Device";
+import { Region } from "@/types/Region";
 import useGetCommenList from "@/hooks/useGetCommenList";
 import { reactQueryKey, DEVICE_TYPE, EVENT_TYPE } from "@/config/constance";
 import mergePageList from "@/utils/mergePageList";
-import { getAlgo } from "@/api/algo";
+import { getRegion } from "@/api/region";
 import {
+  getDevicesList,
+  editDdevice,
+  deleteDdevice,
   getDevicesChn,
-  addDdeviceChn,
+  addDdevice,
   editDdeviceChn,
   deleteDdeviceChn,
 } from "@/api/device";
 import {
   State as SettingState,
   changeSetting,
+  Commen,
 } from "@/store/reducer/settingSlice";
 
-import chnTextBar from "@/assets/images/text/chn_info.png";
-import commenBtn from "@/assets/images/btn/tools/commen.png";
-import commenAcBtn from "@/assets/images/btn/tools/commen_ac.png";
 import { fillterQuery } from "@/utils/commen";
 
-const columns = [
+const devicesColumns = [
   {
-    title: "通道名称",
+    title: "在线状态",
+    dataIndex: "status",
+    render: (status: number) => (status > 0 ? "在线" : "离线"),
+  },
+  {
+    title: "设备名称",
     dataIndex: "name",
   },
   {
-    title: "设备类型",
-    dataIndex: "devType",
-    render: (devType: string) =>
-      DEVICE_TYPE.find((item) => item.type === devType)?.name,
-  },
-  {
-    title: "所在区域",
-    dataIndex: "region",
-  },
-  {
-    title: "设备IP",
+    title: "ip",
     dataIndex: "ip",
   },
   {
-    title: "IPC IP",
-    dataIndex: "pip",
+    title: "端口",
+    dataIndex: "port",
+  },
+  {
+    title: "软件版本",
+    dataIndex: "sw",
+  },
+  {
+    title: "硬件版本",
+    dataIndex: "hw",
+  },
+  {
+    title: "算法库版本",
+    dataIndex: "algoVer",
+  },
+  {
+    title: "模型版本",
+    dataIndex: "modVer",
+  },
+  {
+    title: "固件版本",
+    dataIndex: "fwVer",
   },
 ];
 
 export default function Chn() {
-  const formListRef = useRef<FormInstance>(null);
-  const { chn, algo } = useSelector((state: SettingState) => state.setting);
+  const deviceFormListRef = useRef<FormInstance>(null);
+  const chnFormListRef = useRef<FormInstance>(null);
+  const { device, chn, activeTabKey, } = useSelector(
+    (state: SettingState) => state.setting
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!chn.selectedRowKeys.length) return;
-    formListRef.current?.setFieldsValue(chn.form);
-  }, [chn.form]);
+    if (activeTabKey === "0") {
+      if (!device.selectedRowKeys.length) return;
+      deviceFormListRef.current?.setFieldsValue(device.form);
+    } else {
+      if (!chn.selectedRowKeys.length) return;
+      chnFormListRef.current?.setFieldsValue(chn.form);
+    }
+  }, [chn.form, device.form]);
 
-  // 获取算法
-  const {
-    data: algoInfo,
-    isFetched: algoIsFetched,
-    hasNextPage: algoHasNexPage,
-    fetchNextPage: algoFetchNextPage,
-    refetch,
-  } = useGetCommenList([reactQueryKey.getAlgo], getAlgo, {});
+  // 获取设备列表
+  const { data: devicesList, refetch: deviceRefetch }: any = useQuery(
+    reactQueryKey.getDevicesList,
+    () => getDevicesList()
+  );
 
-  // 获取设备通道
+  // 获取通道
   const {
     data: chnInfo,
     isFetched: chnIsFetched,
     hasNextPage: chnHasNexPage,
     fetchNextPage: chnFetchNextPage,
     refetch: chnRefetch,
-  } = useGetCommenList([reactQueryKey.getDeviceChn], getDevicesChn, {});
+  } = useGetCommenList(
+    [reactQueryKey.getDeviceChn],
+    getDevicesChn,
+    { ...chn.search },
+    activeTabKey === "1"
+  );
+
+  // 获取区域信息
+  const {
+    data: regionInfo,
+    isFetched: regionIsFetched,
+    hasNextPage: regionHasNextPage,
+    fetchNextPage: regionFetchNextPage,
+    refetch,
+  } = useGetCommenList(
+    [reactQueryKey.getRegion],
+    getRegion,
+    { limit: 50 },
+    activeTabKey === "1"
+  );
 
   // 分页
   const onPageChange = (page: number, pageSize: number) => {
@@ -92,85 +129,90 @@ export default function Chn() {
     );
   };
 
-  const onSelectRow = (record: DeviceChn) => {
-    if (chn.selectedRowKeys[0] === record.id) {
-      dispatch(changeSetting({ chn: { ...chn, selectedRowKeys: [] } }));
+  const onSelectRow = (
+    record: Device & DeviceChn,
+    typeObj: Commen,
+    type: string
+  ) => {
+    if (typeObj.selectedRowKeys[0] === record.id) {
+      dispatch(changeSetting({ [type]: { ...typeObj, selectedRowKeys: [] } }));
     } else {
       const obj = cloneDeep(record);
       delete obj.id;
       dispatch(
         changeSetting({
-          chn: { ...chn, form: obj, selectedRowKeys: [record.id] },
+          [type]: { ...typeObj, form: obj, selectedRowKeys: [record.id] },
         })
       );
     }
   };
 
-  // 增加通道
-  const addMutation = useMutation((form: DeviceChn) => addDdeviceChn(fillterQuery(form) as any));
+  // 增加设备
+  const addMutation = useMutation((form: Device) =>
+    addDdevice(fillterQuery(form) as any)
+  );
 
-  // 修改通道
-  const editMutation = useMutation((form: DeviceChn) => editDdeviceChn(form));
+  // 修改设备
+  const editMutation = useMutation((form: Device & DeviceChn) =>
+    activeTabKey === "0"
+      ? editDdevice(device.selectedRowKeys[0], form)
+      : editDdeviceChn(chn.selectedRowKeys[0], form)
+  );
 
-  // 删除通道
-  const deleteMutation = useMutation((id: string) => deleteDdeviceChn(id));
+  // 删除设备
+  const deleteMutation = useMutation((id: string) =>
+    activeTabKey === "0" ? deleteDdevice(id) : deleteDdeviceChn(id)
+  );
 
-  // 操作（增删改）
-  const onOptChn = async (type: string) => {
+  // 操作（增删改）设备
+  const onOptDevice = async (
+    type: string,
+    typeObj: Commen,
+    typeObjStr: string,
+    ref: React.RefObject<FormInstance>
+  ) => {
     if (type !== "delete") {
-      await formListRef.current?.validateFields();
+      await ref.current?.validateFields();
     }
     switch (type) {
       case "add":
         try {
-          await addMutation.mutateAsync(chn.form);
-          formListRef.current?.resetFields();
+          await addMutation.mutateAsync(ref.current?.getFieldsValue());
+          ref.current?.resetFields();
         } catch (error) {
           message.error("添加失败");
         }
         break;
       case "edit":
-        if (!chn.selectedRowKeys.length)
-          return message.error("请先选择所需修改的通道");
-        await editMutation.mutateAsync({
-          ...chn.form,
-          id: chn.selectedRowKeys[0],
-        });
+        if (!typeObj.selectedRowKeys.length)
+          return message.error("请先选择所需修改的数据");
+        await editMutation.mutateAsync(ref.current?.getFieldsValue());
         break;
       case "delete":
-        if (!chn.selectedRowKeys.length)
-          return message.error("请先选择所需删除的通道");
-        await deleteMutation.mutateAsync(chn.selectedRowKeys[0]);
+        if (!typeObj.selectedRowKeys.length)
+          return message.error("请先选择所需删除的数据");
+        await deleteMutation.mutateAsync(typeObj.selectedRowKeys[0]);
         dispatch(
           changeSetting({
-            chn: { ...chn, selectedRowKeys: [] },
+            [typeObjStr]: { ...typeObj, selectedRowKeys: [] },
           })
         );
         break;
     }
-    chnRefetch();
+    activeTabKey === "0" ? deviceRefetch() : chnRefetch();
   };
 
   const onPopupScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     // console.log(e)
     const h = e.target as HTMLElement;
     if (h.scrollTop + h.offsetHeight >= h.scrollHeight) {
-      if (algoFetchNextPage) {
-        algoFetchNextPage();
+      if (regionHasNextPage) {
+        regionFetchNextPage();
       }
     }
   };
 
-  const formList: FormListFace[] = [
-    {
-      label: "通道名称",
-      name: "name",
-    },
-    {
-      label: "所属区域",
-      name: "region",
-      checked: true,
-    },
+  const deviceFormList: FormListFace[] = [
     {
       label: "设备IP",
       name: "ip",
@@ -180,44 +222,9 @@ export default function Chn() {
       label: "设备端口",
       name: "port",
       rules: [{ required: true, message: "必填项" }],
-      defNode: (
-        <InputNumber min={0} />
-      )
+      defNode: <InputNumber min={0} />,
     },
-    {
-      label: "设备类型",
-      name: "devType",
-      initValue: "AiCam_H",
-      defNode: (
-        <Select
-          options={DEVICE_TYPE.map((item) => ({
-            label: item.name,
-            value: item.type,
-            key: item.type,
-          }))}
-        />
-      ),
-    },
-    {
-      label: "算法版本",
-      name: "algoVer",
-    },
-    {
-      label: "软件版本",
-      name: "sw",
-    },
-    {
-      label: "硬件版本",
-      name: "hw",
-    },
-    {
-      label: "通道号",
-      name: "id",
-    },
-    {
-      label: "IPC IP",
-      name: "pip",
-    },
+
     {
       label: "IPC 用户名",
       name: "username",
@@ -226,109 +233,107 @@ export default function Chn() {
       label: "IPC 密码",
       name: "userpass",
     },
+  ];
+
+  const chnFormList: FormListFace[] = [
     {
-      label: "报警类型",
-      name: "alarmType",
+      label: "通道名称",
+      name: "name",
       // rules: [{ required: true, message: "必填项" }],
+    },
+    {
+      label: "区域",
+      name: "region",
       defNode: (
         <Select
           onPopupScroll={(e) => onPopupScroll(e)}
-          options={mergePageList<Algo>(algoInfo?.pages).map((item) => ({
-            label: item.alarm_type,
-            value: item.alarm_type_code,
-            key: item.id,
-          }))}
+          options={[
+            ...mergePageList<Region>(regionInfo?.pages).map((item) => ({
+              label: item.name,
+              value: item.id,
+              key: item.id,
+            })),
+          ]}
         />
       ),
     },
+  ];
+
+  const chnColumns = [
     {
-      label: "事件类型",
-      name: "domain",
-      initValue: "XW_000",
-      defNode: (
-        <Select
-          options={EVENT_TYPE.map((item) => ({
-            label: item.name,
-            value: item.type,
-            key: item.type,
-          }))}
-        />
-      ),
+      title: "通道名称",
+      dataIndex: "name",
     },
     {
-      label: "雨刷板IP",
-      name: "wiperIp",
+      title: "设备类型",
+      dataIndex: "devType",
+      render: (devType: string) =>
+        DEVICE_TYPE.find((item) => item.type === devType)?.name,
     },
     {
-      label: "雨刷板端口",
-      name: "wiperPort",
-      defNode: (
-        <InputNumber min={0} />
-      )
+      title: "所在区域",
+      dataIndex: "region",
+      render: (region: number) =>
+        mergePageList<Region>(regionInfo?.pages).find(
+          (item) => item.id === region
+        )?.name,
+    },
+    {
+      title: "设备IP",
+      dataIndex: "ip",
+    },
+    {
+      title: "IPC IP",
+      dataIndex: "pip",
     },
   ];
 
   return (
-    <div className="set-chn">
-      <div className="set-chn-left">
-        <div className="set-chn-left-table">
-          <Table
-            pagination={{
-              current: chn.search.page,
-              onChange: onPageChange,
-              pageSize: 12,
-              total: chnInfo?.pages[0].total,
-              showQuickJumper: true,
-              showTotal: (total) => `共 ${total} 条数据`,
-            }}
-            scroll={{ y: "60vh", scrollToFirstRowOnChange: true }}
-            rowKey="id"
-            dataSource={chnInfo?.pages[chnInfo.pages.length - 1].items}
-            columns={columns}
-            rowClassName={(record) =>
-              record.id === chn.selectedRowKeys[0] ? "active-row" : ""
-            }
-            onRow={(record) => ({ onClick: () => onSelectRow(record) })}
-          />
-        </div>
-      </div>
-      <div className="set-chn-right">
-        <TextBar width="100%" height="50px" src={chnTextBar} />
-        <div className="set-chn-right-form">
-          <FormList
-            onValuesChange={(changeValues) =>
-              dispatch(
-                changeSetting({
-                  chn: { ...chn, form: { ...chn.form, ...changeValues } },
-                })
-              )
-            }
-            ref={formListRef}
-            initialValues={chn.form}
-            formList={formList}
-            col={{ span: 24 }}
-            labelSpan={8}
-            wrapperSpan={16}
-          />
-        </div>
-        <div className="set-chn-right-btn">
-          <ToolBtn
-            onClick={() => onOptChn("add")}
-            src={commenBtn}
-            acSrc={commenAcBtn}
-            content="增加"
-          />
-          <ToolBtn
-            onClick={() => onOptChn("edit")}
-            src={commenBtn}
-            acSrc={commenAcBtn}
-            content="修改"
-          />
-          <Confirm title="确认删除？" onConfirm={() => onOptChn("delete")}>
-            <ToolBtn src={commenBtn} acSrc={commenAcBtn} content="删除" />
-          </Confirm>
-        </div>
-      </div>
-    </div>
+    <Tabs
+      onChange={(key) => dispatch(changeSetting({ activeTabKey: key }))}
+      defaultActiveKey={activeTabKey}
+      items={[
+        {
+          label: "设备管理",
+          key: "0",
+          children: (
+            <ChnTable
+              onOpt={(type: string) => onOptDevice(type, device, "device", deviceFormListRef)}
+              list={devicesList}
+              columns={devicesColumns}
+              data={device}
+              formList={deviceFormList}
+              onSelectRow={(row) => onSelectRow(row, device, "device")}
+              ref={deviceFormListRef}
+            />
+          ),
+        },
+        {
+          label: "通道管理",
+          key: "1",
+          children: (
+            <ChnTable
+              onOpt={(type: string) => onOptDevice(type, chn, "chn", chnFormListRef)}
+              list={chnInfo?.pages[chnInfo.pages.length - 1].items}
+              columns={chnColumns}
+              data={chn}
+              formList={chnFormList}
+              onSelectRow={(row) => onSelectRow(row, chn, "chn")}
+              ref={chnFormListRef}
+              hasAdd={false}
+              hasDel={false}
+              pagination={{
+                current: chn.search!.page,
+                onChange: onPageChange,
+                pageSize: 12,
+                total: chnInfo?.pages[0].total,
+                showQuickJumper: true,
+                showTotal: (total) => `共 ${total} 条数据`,
+              }}
+            />
+          ),
+        },
+      ]}
+    />
   );
 }
